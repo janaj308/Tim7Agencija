@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="AgencijaJPA">
+		<class>model.Tim7Comment</class>
+		<class>model.Tim7Destination</class>
+		<class>model.Tim7Messagereceived</class>
+		<class>model.Tim7Messagesent</class>
+		<class>model.Tim7Offer</class>
+		<class>model.Tim7Photo</class>
+		<class>model.Tim7Thread</class>
+		<class>model.Tim7Traveleroffer</class>
+		<class>model.Tim7User</class>
+		<properties>
+         <property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect"/>         
+         <property name="javax.persistence.jdbc.url" value="jdbc:mysql://nastava.is.pmf.uns.ac.rs:3306/Pris"/>
+         <property name="javax.persistence.jdbc.user" value="pris"/>
+         <property name="javax.persistence.jdbc.password" value="pris"/>
+         <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+        </properties>
+	</persistence-unit>
+</persistence>
