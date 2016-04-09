@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Offers</title>
+</h:head>
+<h:body>
+	<f:view>
+		
+		<p:outputPanel>
+			<h2>Offers</h2>
+		</p:outputPanel>
+		
+		<h:form>
+		
+			<p:dataScroller value="#{dataManagedBean.allOffers}" var="offer" mode="inline" scrollHeight="500">
+				<h:commandLink action="#{offersManagedBean.loadOffer}" value="#{offer.tim7Destination.destinationname}" style="font-weight: bold">
+					<f:setPropertyActionListener target="#{offersManagedBean.chosenOffer}" value="#{offer}" />
+				</h:commandLink>
+			</p:dataScroller>
+		
+		</h:form>
+		
+	</f:view>
+</h:body>
+</html>
