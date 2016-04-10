@@ -13,7 +13,6 @@ public class OffersManagedBean {
 
 	public String loadOffer() {
 		
-		//chosenOffer = new OfferManager().findOffer(chosenId);
 		return "/pages/offerDetails";
 		
 	}

@@ -2,7 +2,6 @@ package managedBeans;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-import javax.faces.bean.SessionScoped;
 import javax.persistence.EntityManager;
 
 import managers.JPAUtil;

@@ -25,7 +25,7 @@
 		<groupId>org.primefaces</groupId>
 		<artifactId>primefaces</artifactId>
 		<version>5.2</version>
-	</dependency>	
+	</dependency>
   </dependencies>
   <build>
 	  <plugins>

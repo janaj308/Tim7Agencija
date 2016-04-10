@@ -9,17 +9,75 @@
 <h:head>
 	<title>About Offer</title>
 </h:head>
-<h:body>
+<h:body style="margin: 30px auto 30px auto">
 	<f:view>
 		
-		<p:outputPanel>
-			<h2>About Offer</h2>
+		<p:outputPanel style="margin-bottom: 20px; text-align:center">
+			<p:outputPanel style="margin-bottom: 10px" >
+				<h:outputText value="#{offersManagedBean.chosenOffer.tim7Destination.destinationname}" style="font-size: 1.5em; font-weight:bold" />
+			</p:outputPanel>
+			<h:outputText value="#{offersManagedBean.chosenOffer.startdate}" >
+				<f:convertDateTime pattern="dd.MM.yyyy" />
+			</h:outputText>
+			<h:outputText value=" - " />
+			<h:outputText value="#{offersManagedBean.chosenOffer.enddate}" >
+				<f:convertDateTime pattern="dd.MM.yyyy." />
+			</h:outputText>
 		</p:outputPanel>
 		
-		<h:form>
-		
-			<h:outputText value="#{offersManagedBean.chosenOffer.tim7Destination.destinationname}"></h:outputText>
-		
+		<h:form style="margin-left: 25px; margin-right: 25px">
+			
+			<p:layout style="min-height: 450px; max-height: 450px">
+				<p:layoutUnit position="center" style="padding: 10px" >
+				
+					<p:outputPanel style="margin-bottom: 5px">
+						<h:outputText value="Price" style="font-weight: bold" />
+					</p:outputPanel>
+					<p:outputPanel>
+						<h:outputText value="#{offersManagedBean.chosenOffer.price}" />
+					</p:outputPanel>
+					
+					<p:outputPanel style="margin-top: 25px; margin-bottom: 5px">
+						<h:outputText value="Starting point" style="font-weight: bold" />
+					</p:outputPanel>
+					<p:outputPanel>
+						<h:outputText value="#{offersManagedBean.chosenOffer.startingpoint}" />
+					</p:outputPanel>
+					
+					<p:outputPanel style="margin-top: 25px; margin-bottom: 5px">
+						<h:outputText value="Description" style="font-weight: bold" />
+					</p:outputPanel>
+					<p:outputPanel>
+						<h:outputText value="#{offersManagedBean.chosenOffer.description}" />
+					</p:outputPanel>
+					
+					<p:outputPanel style="margin-top: 25px; margin-bottom: 5px">
+						<h:outputText value="Current traveler count" style="font-weight: bold" />
+					</p:outputPanel>
+					<p:outputPanel>
+						<h:outputText value="#{offersManagedBean.chosenOffer.travelercurrentcount}/#{offersManagedBean.chosenOffer.travelernumber}" />
+					</p:outputPanel>
+					
+				</p:layoutUnit>
+				
+				<p:layoutUnit position="east" style="min-width: 200px; padding: 10px">
+				
+					<p:outputPanel style="margin-bottom: 5px">
+						<h:outputText value="Posted by: " style="font-weight: bold" />
+					</p:outputPanel>
+					<p:outputPanel style="margin-bottom: 5px">
+						<h:outputText value="#{offersManagedBean.chosenOffer.tim7User.username}" />
+					</p:outputPanel>
+					<p:outputPanel style="margin-bottom: 5px">
+						<h:outputText value="#{offersManagedBean.chosenOffer.tim7User.userfirstname} #{offersManagedBean.chosenOffer.tim7User.userlastname}" />
+					</p:outputPanel>
+					<p:outputPanel>
+						<h:outputText value="#{offersManagedBean.chosenOffer.tim7User.rating}" />
+					</p:outputPanel>
+				
+				</p:layoutUnit>
+			</p:layout>
+			
 		</h:form>
 		
 	</f:view>
