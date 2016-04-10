@@ -5,6 +5,19 @@ import javax.persistence.TypedQuery;
 
 import model.Tim7User;
 
+//Crated by 
+//************************
+//	Istvan Pete
+//************************
+//Email
+//************************
+//	perox49@gmail.com
+//************************
+//Date
+//************************
+//	4.10.2016
+//************************
+
 public class UserManager {
 	
 	public Integer saveNewUser(EntityManager em, Tim7User user){
@@ -73,6 +86,27 @@ public class UserManager {
 			e.printStackTrace();
 			System.out.println("Ne postoji takav mail");
 			return true;			
+		}		
+	}
+	
+	// Vraca usera ako je validan userName i password
+	public Tim7User logInUser(EntityManager em, String userName, String password){
+		try{
+			
+			TypedQuery<Tim7User> tq = em.createQuery("select u from Tim7User u where u.username =:username and u.userpassword =:userpassword", Tim7User.class);			
+			tq.setParameter("username", userName);
+			tq.setParameter("userpassword", password);
+			if(tq.getResultList().isEmpty()){
+				return null;
+			}else{				
+				return tq.getSingleResult();
+			}
+			
+		}catch(Exception e){
+			
+			e.printStackTrace();
+			System.out.println("Ne postoji takav userName");
+			return null;			
 		}		
 	}
 }
