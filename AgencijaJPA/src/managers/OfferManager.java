@@ -26,6 +26,41 @@ public class OfferManager {
 		
 	}
 	
+	public List<Tim7Offer> getOfferForDestination(String name){
+		try{
+			TypedQuery<Tim7Offer> tq=JPAUtil.getEntityManager().createQuery("select * from Tim7Offer o join fetch o.tim7Destination d"+
+			"d.destinationname=:destName",Tim7Offer.class);
+			tq.setParameter("destName", name);
+			return tq.getResultList();
+		}catch(Exception e){
+			e.printStackTrace();
+			return new ArrayList<>();
+		}
+	}
+	
+	public List<Tim7Offer> getOfferForStartingPoint(String start){
+		try{
+			TypedQuery<Tim7Offer> tq=JPAUtil.getEntityManager().createQuery("select * from Tim7Offer o where o.startingpoint=:start",Tim7Offer.class);
+			tq.setParameter("start", start);
+			return tq.getResultList();
+		}catch(Exception e){
+			e.printStackTrace();
+			return new ArrayList<>();
+		}
+	}
+	
+	public List<Tim7Offer> getOfferForPriceRange(float priceLow, float priceHigh){
+		try{
+			TypedQuery<Tim7Offer> tq=JPAUtil.getEntityManager().createQuery("select * from Tim7Offer o where o.price between :priceS and :priceF", Tim7Offer.class);
+			tq.setParameter("priceS", priceLow);
+			tq.setParameter("priceF", priceHigh);
+			return tq.getResultList();
+		}catch(Exception e){
+			e.printStackTrace();
+			return new ArrayList<>();
+		}
+	}
+	
 	public Tim7Offer findOffer(int offerId) {
 		
 		return JPAUtil.getEntityManager().find(Tim7Offer.class, offerId);
