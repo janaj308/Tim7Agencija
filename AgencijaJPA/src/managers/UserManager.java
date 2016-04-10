@@ -99,7 +99,7 @@ public class UserManager {
 			if(tq.getResultList().isEmpty()){
 				return null;
 			}else{				
-				return tq.getSingleResult();
+				return tq.getSingleResult();				
 			}
 			
 		}catch(Exception e){

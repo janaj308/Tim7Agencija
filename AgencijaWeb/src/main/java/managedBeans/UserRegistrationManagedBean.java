@@ -45,7 +45,7 @@ public class UserRegistrationManagedBean {
 		Integer userID = UM.saveNewUser(em, user);
 		
 		if(userID == null){
-			feedback = "User nije sacuvan.";		
+			feedback = "User nije sacuvano.";		
 		}else if(userID == -1){
 			feedback = "User vec postoji " + user.getUsername();
 		}else if(userID == -2){

@@ -45,7 +45,7 @@ public class UserLogInManagedBean {
 	public String logInUser(){
 		user = UM.logInUser(em, userName, password);
 		if(user == null){
-			feedback = "Pogresan username / password";
+			feedback = "Pogreasan username / password";
 		}else{
 			feedback = "Uspesno je ulogovan "+ user.getUserfirstname();
 			return "/pages/MainPage";
