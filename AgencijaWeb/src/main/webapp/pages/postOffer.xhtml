@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+	<title>Post Offer</title>
+</h:head>
+<h:body>
+	<f:view>
+		<h:form>
+			<h:panelGrid columns="2" id="postOfferPanel">
+			
+				<h:outputText value="Destination:"/>
+		        <p:selectOneMenu id="destination" value="#{offersManagedBean.offer.tim7Destination}">
+		 			<f:converter converterId="destinationConverter" />
+		 			<f:selectItems value="#{dataManagedBean.allDestinations}" var="d" 
+		 			itemLabel="#{d.destinationname}" itemValue="#{d}" />
+		 		</p:selectOneMenu>
+			
+				<h:outputText value="Starting point:"/>
+				<h:inputText  value="#{offersManagedBean.offer.startingpoint}"/>
+				
+				<h:outputText value="Start date:"/>
+        		<p:calendar id="startD" value="#{offersManagedBean.offer.startdate}" />
+				
+				<h:outputText value="End date:"/>
+				<p:calendar id="endD" value="#{offersManagedBean.offer.enddate}" />			
+				
+				<h:outputText value="Price:"/>
+				<h:inputText  value="#{offersManagedBean.offer.price}"/>
+				
+				<h:outputText value="Traveler number:"/>
+				<h:inputText  value="#{offersManagedBean.offer.travelernumber}"/>
+				
+				<h:outputText value="Description:"/>
+				<h:inputText  value="#{offersManagedBean.offer.description}"/>
+									
+				<h:commandButton action="#{offersManagedBean.postOffer}" value="Save" render="postOfferPanel" execute="@this"/>
+				<h:outputText value="#{offersManagedBean.feedback}"  />		
+			</h:panelGrid>		
+		</h:form>
+	</f:view>
+</h:body>
+</html>

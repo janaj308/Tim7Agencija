@@ -6,6 +6,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
 import managers.OfferManager;
+import model.Tim7Destination;
 import model.Tim7Offer;
 
 @ManagedBean
@@ -13,6 +14,9 @@ import model.Tim7Offer;
 public class DataManagedBean {
 
 	private List<Tim7Offer> allOffers = new OfferManager().getAllOffers();
+	
+	private List<Tim7Destination> allDestinations= new OfferManager().getAllDestinations();
+	
 
 	public List<Tim7Offer> getAllOffers() {
 		return allOffers;
@@ -21,5 +25,14 @@ public class DataManagedBean {
 	public void setAllOffers(List<Tim7Offer> allOffers) {
 		this.allOffers = allOffers;
 	}
+
+	public List<Tim7Destination> getAllDestinations() {
+		return allDestinations;
+	}
+
+	public void setAllDestinations(List<Tim7Destination> allDestinations) {
+		this.allDestinations = allDestinations;
+	}
+	
 	
 }
