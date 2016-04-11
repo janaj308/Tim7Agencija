@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+</h:head>
+<h:body>
+	<f:view>
+		<h:form>
+			<p:outputPanel style="text-align:center">
+				<h1>Main Page</h1>
+			</p:outputPanel>
+			
+			<p:menu style="margin: 20px auto 20px auto">
+			
+				<p:menuitem value="Browse Offers" action="#{offersManagedBean.loadOfferBrowse}" />
+				<p:menuitem value="Find Offers" action="/pages/offerSearch" />
+				<p:menuitem value="Post New Offer" action="#{offersManagedBean.loadOfferPost}" />
+				<p:menuitem>
+					<h:panelGrid columns="2">
+						<p:commandButton value="Login" action="#{UserLogInManagedBean.loadLogin}" />
+						<p:commandButton value="Register" action="#{UserRegistrationManagedBean.loadRegistration}" />
+					</h:panelGrid>
+				</p:menuitem>
+			
+			</p:menu>
+			<!-- <h:panelGrid columns="2" id="MainPagePanel">
+				
+				<h:outputText value="Username"/>
+				<h:outputText  value="#{UserLogInManagedBean.user.username}"/>				
+				
+				<h:outputText value="First Name"/>
+				<h:outputText  value="#{UserLogInManagedBean.user.userfirstname}"/>
+				
+				<h:outputText value="Last Name"/>
+				<h:outputText  value="#{UserLogInManagedBean.user.userlastname}"/>		
+							
+				<h:outputText value="Rating"/>
+				<h:outputText  value="#{UserLogInManagedBean.user.rating}"/>		
+			</h:panelGrid> -->
+		</h:form>
+	</f:view>
+</h:body>
+</html>

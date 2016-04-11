@@ -54,6 +54,12 @@ public class UserRegistrationManagedBean {
 			feedback = "User je uspesno sacuvan, ID je "+userID;
 		}
 	}
+	
+	public String loadRegistration() {
+		
+		return "/pages/RegistrationUser";
+		
+	}
 
 	public Tim7User getUser() {
 		return user;

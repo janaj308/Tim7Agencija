@@ -11,7 +11,7 @@
 <h:body>
 	<f:view>
 		<h:form >
-		<h1>Log Ina</h1>
+		<h1>Log In</h1>
 			<h:panelGrid columns="2" id="logInUserUserPanel">
 				
 				<h:outputText value="Username"/>
@@ -20,7 +20,7 @@
 				<h:outputText value="Password"/>
 				<h:inputText  value="#{UserLogInManagedBean.password}"/>
 									
-				<h:commandButton action="#{UserLogInManagedBean.logInUser}" value="LogIn" render="logInUserUserPanel" execute="@this"/>
+				<h:commandButton action="#{UserLogInManagedBean.logInUser}" value="LogIn" render="logInUserUserPanel" execute="@form"/>
 				<h:outputText value="#{UserLogInManagedBean.feedback}"  />		
 			</h:panelGrid>		
 		</h:form>

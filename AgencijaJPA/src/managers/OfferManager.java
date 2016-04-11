@@ -3,6 +3,7 @@ package managers;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import model.Tim7Destination;
@@ -20,7 +21,6 @@ public class OfferManager {
 		} catch (Exception e) {
 			
 			e.printStackTrace();
-			System.out.println("FAIL");
 			return new ArrayList<>();
 			
 		}
@@ -74,15 +74,16 @@ public class OfferManager {
 			return tq.getResultList();
 		}catch(Exception e){
 			e.printStackTrace();
-			System.out.println("FAIL");
 			return new ArrayList<>();
 		}
 	}
 	
 	public boolean postOffer(Tim7Offer of){
 		try{
-			
-    		JPAUtil.getEntityManager().persist(of);
+			EntityManager em = JPAUtil.getEntityManager();
+    		em.getTransaction().begin();
+    		em.persist(of);
+    		em.getTransaction().commit();
     		return true;
     		
     	}catch(Exception e){

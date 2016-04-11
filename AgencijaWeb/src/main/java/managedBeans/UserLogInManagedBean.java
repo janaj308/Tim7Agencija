@@ -1,7 +1,7 @@
 package managedBeans;
 
+import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.persistence.EntityManager;
 
 import managers.JPAUtil;
@@ -22,7 +22,7 @@ import model.Tim7User;
 //************************
 
 @ManagedBean (name="UserLogInManagedBean")
-@SessionScoped
+@ApplicationScoped
 public class UserLogInManagedBean {
 
 	private Tim7User user;
@@ -46,11 +46,17 @@ public class UserLogInManagedBean {
 		user = UM.logInUser(em, userName, password);
 		if(user == null){
 			feedback = "Pogreasan username / password";
+			return "";
 		}else{
 			feedback = "Uspesno je ulogovan "+ user.getUserfirstname();
-			return "/pages/MainPage";
+			return "index";
 		}
-		return null;
+	}
+	
+	public String loadLogin() {
+		
+		return "/pages/UserLogin";
+		
 	}
 
 	public String getUserName() {

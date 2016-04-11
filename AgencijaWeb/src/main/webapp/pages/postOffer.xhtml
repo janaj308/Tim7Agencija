@@ -22,10 +22,10 @@
 				<h:inputText  value="#{offersManagedBean.offer.startingpoint}"/>
 				
 				<h:outputText value="Start date:"/>
-        		<p:calendar id="startD" value="#{offersManagedBean.offer.startdate}" />
+        		<p:calendar id="startD" value="#{offersManagedBean.offer.startdate}" pattern="dd-MM-yyyy" />
 				
 				<h:outputText value="End date:"/>
-				<p:calendar id="endD" value="#{offersManagedBean.offer.enddate}" />			
+				<p:calendar id="endD" value="#{offersManagedBean.offer.enddate}" pattern="dd-MM-yyyy" />			
 				
 				<h:outputText value="Price:"/>
 				<h:inputText  value="#{offersManagedBean.offer.price}"/>
@@ -36,7 +36,7 @@
 				<h:outputText value="Description:"/>
 				<h:inputText  value="#{offersManagedBean.offer.description}"/>
 									
-				<h:commandButton action="#{offersManagedBean.postOffer}" value="Save" render="postOfferPanel" execute="@this"/>
+				<h:commandButton action="#{offersManagedBean.postOffer}" value="Save" />
 				<h:outputText value="#{offersManagedBean.feedback}"  />		
 			</h:panelGrid>		
 		</h:form>
