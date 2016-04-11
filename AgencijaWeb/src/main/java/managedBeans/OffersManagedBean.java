@@ -9,6 +9,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
 import managers.OfferManager;
+import model.Tim7Destination;
 import model.Tim7Offer;
 import model.Tim7User;
 
@@ -18,8 +19,10 @@ public class OffersManagedBean {
 
 	private Tim7Offer chosenOffer;
 	private Tim7Offer offer;
+	private Tim7Destination dest;
 	private OfferManager OM;
-	private String feedback;
+	private String feedbackO;
+	private String feedbackD;
 	@ManagedProperty(value = "#{UserLogInManagedBean}")
 	UserLogInManagedBean loginManagedBean;
 	private Tim7User loggedUser;
@@ -30,14 +33,18 @@ public class OffersManagedBean {
 	private String startingPoint;
 	private List<Tim7Offer> list;
 	
+	private DataManagedBean dmb;
+	
 	public OffersManagedBean() {
 		
 		offer = new Tim7Offer();
 		OM = new OfferManager();
-		feedback = "";
+		feedbackO = "";
+		feedbackD = "";
 		destinationname=null;
 		startingPoint=null;
 		priceHigh=OM.getMaxPrice();
+		dest= new Tim7Destination();
 	}
 	
 	@PostConstruct
@@ -53,9 +60,21 @@ public class OffersManagedBean {
 		boolean posted = OM.postOffer(offer);
 		
 		if (posted)
-			feedback = "Offer is posted.";
+			feedbackO = "Offer is posted.";
 		else
-			feedback="Offer is not posted. Try again!";
+			feedbackO="Offer is not posted. Try again!";
+	}
+	
+	public void addDestination(){
+		
+		boolean added= OM.addNewDestination(dest);
+		
+		if (added){
+			feedbackD = "Destination is added";
+		}
+		else
+			feedbackD ="Destination is not added. Try again!";
+		
 	}
 
 	public String searchOffers(){
@@ -138,12 +157,21 @@ public class OffersManagedBean {
 		this.chosenOffer = chosenOffer;
 	}
 
-	public String getFeedback() {
-		return feedback;
+
+	public String getFeedbackO() {
+		return feedbackO;
 	}
 
-	public void setFeedback(String feedback) {
-		this.feedback = feedback;
+	public void setFeedbackO(String feedbackO) {
+		this.feedbackO = feedbackO;
+	}
+
+	public String getFeedbackD() {
+		return feedbackD;
+	}
+
+	public void setFeedbackD(String feedbackD) {
+		this.feedbackD = feedbackD;
 	}
 
 	public Tim7Offer getOffer() {
@@ -160,6 +188,14 @@ public class OffersManagedBean {
 
 	public void setLoginManagedBean(UserLogInManagedBean loginManagedBean) {
 		this.loginManagedBean = loginManagedBean;
+	}
+
+	public Tim7Destination getDest() {
+		return dest;
+	}
+
+	public void setDest(Tim7Destination dest) {
+		this.dest = dest;
 	}
 	
 }

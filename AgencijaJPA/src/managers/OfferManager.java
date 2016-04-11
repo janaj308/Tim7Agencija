@@ -95,6 +95,20 @@ public class OfferManager {
 		}
 	}
 	
+	public boolean addNewDestination(Tim7Destination dest){
+		try{
+			EntityManager em = JPAUtil.getEntityManager();
+    		em.getTransaction().begin();
+    		em.persist(dest);
+    		em.getTransaction().commit();
+			return true;
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+		
+	}
+	
 	public List<Tim7Offer> searchOff(String destName, String startPoint, float priceLow, float priceHigh){
 		try{
 			if (destName!=null && startPoint==null && priceHigh==0.0 && priceLow==0.0){
