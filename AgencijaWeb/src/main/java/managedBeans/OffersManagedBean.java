@@ -23,8 +23,9 @@ public class OffersManagedBean {
 	@ManagedProperty(value = "#{UserLogInManagedBean}")
 	UserLogInManagedBean loginManagedBean;
 	private Tim7User loggedUser;
-	private int priceLow=0;
-	private int priceHigh=0;
+	
+	private float priceLow;
+	private float priceHigh;
 	private String destinationname;
 	private String startingPoint;
 	private List<Tim7Offer> list;
@@ -34,7 +35,9 @@ public class OffersManagedBean {
 		offer = new Tim7Offer();
 		OM = new OfferManager();
 		feedback = "";
-	
+		destinationname=null;
+		startingPoint=null;
+		priceHigh=OM.getMaxPrice();
 	}
 	
 	@PostConstruct
@@ -55,12 +58,59 @@ public class OffersManagedBean {
 			feedback="Offer is not posted. Try again!";
 	}
 
-	public void searchOffers(){
+	public String searchOffers(){
 		
-		list=OM.searchOff(destinationname,startingPoint,priceLow,priceHigh);
-		
+		if (destinationname.equals("")){
+			destinationname=null;
+		}
+		if (startingPoint.equals("")){
+			startingPoint=null;
+		}
+		list = OM.searchOff(destinationname, startingPoint, priceLow, priceHigh);
+		System.out.println(list.isEmpty());
+		return "/pages/offerFiltered";		
 	}
 	
+
+	public float getPriceLow() {
+		return priceLow;
+	}
+
+	public void setPriceLow(float priceLow) {
+		this.priceLow = priceLow;
+	}
+
+	public float getPriceHigh() {
+		return priceHigh;
+	}
+
+	public void setPriceHigh(float priceHigh) {
+		this.priceHigh = priceHigh;
+	}
+
+	public String getDestinationname() {
+		return destinationname;
+	}
+
+	public void setDestinationname(String destinationname) {
+		this.destinationname = destinationname;
+	}
+
+	public String getStartingPoint() {
+		return startingPoint;
+	}
+
+	public void setStartingPoint(String startingPoint) {
+		this.startingPoint = startingPoint;
+	}
+
+	public List<Tim7Offer> getList() {
+		return list;
+	}
+
+	public void setList(List<Tim7Offer> list) {
+		this.list = list;
+	}
 
 	public String loadOffer() {
 

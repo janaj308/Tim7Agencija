@@ -2,34 +2,38 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.jcp.org/jsf/html"
-	xmlns:f="http://java.jcp.org/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <h:head>
 </h:head>
-<h:body>
+<body> 
 	<f:view>
-		<h:form >
-		<h1>Search offers</h1>
+		<h:form>
+			<h1>Search offers</h1>
 			<h:panelGrid columns="2" id="searchOfferPanel">
-			
-				<h:outputText value="Destinacija putovanja: "/>
-				<h:inputText  value="#{OffersManagedBean.destinationname}"/>
-				
-				<h:outputText value="Pocetno mesto: "/>
-				<h:inputText  value="#{OffersManagedBean.startingPoint}"/>
-				
-				<h:outputText value="Najniza cena: "/>
-				<h:inputText  value="#{OffersManagedBean.priceLow}"/>
-				
-				<h:outputText value="Najveca cena: "/>
-				<h:inputText  value="#{OffersManagedBean.priceHigh}"/>				
-									
-				<h:commandButton action="#{OffersManagedBean.searchOffers}" value="Pretrazi" render="searchOfferPanel" execute="@this"/>
-				<h:outputText value="#{OffersManagedBean.feedback}"  />		
-			</h:panelGrid>		
+
+				<h:outputText value="Destinacija putovanja: " />
+				<h:inputText value="#{offersManagedBean.destinationname}" />
+
+				<h:outputText value="Pocetno mesto: " />
+				<h:inputText value="#{offersManagedBean.startingPoint}" />
+
+				<h:outputText value="Najniza cena: " />
+				<h:inputText value="#{offersManagedBean.priceLow}" />
+
+				<h:outputText value="Najveca cena: " />
+				<h:inputText value="#{offersManagedBean.priceHigh}" />
+
+				<h:commandButton action="#{offersManagedBean.searchOffers()}"
+					value="Pretrazi" render="searchOfferPanel" execute="@form" />
+				<h:outputText value="#{offersManagedBean.feedback}" />
+
+
+
+			</h:panelGrid>
 		</h:form>
 	</f:view>
-</h:body>
+</body>
 </html>

@@ -27,21 +27,38 @@ public class OfferManager {
 		
 	}
 	
+	public float getMaxPrice(){
+		try{
+			List<Tim7Offer> l=getAllOffers();
+			float max=0;
+			for (Tim7Offer o:l){
+				if (o.getPrice()>max){
+					max=o.getPrice();
+				}
+			}
+			System.out.println(max);
+			return max;
+		}catch(Exception e){
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
 	public List<Tim7Offer> getOfferForDestination(String name){
 		try{
-			TypedQuery<Tim7Offer> tq=JPAUtil.getEntityManager().createQuery("select * from Tim7Offer o join fetch o.tim7Destination d"+
+			TypedQuery<Tim7Offer> tq=JPAUtil.getEntityManager().createQuery("select o from Tim7Offer o join fetch o.tim7Destination d where "+
 			"d.destinationname=:destName",Tim7Offer.class);
 			tq.setParameter("destName", name);
 			return tq.getResultList();
 		}catch(Exception e){
 			e.printStackTrace();
 			return new ArrayList<>();
-		}
+		} 
 	}
 	
 	public List<Tim7Offer> getOfferForStartingPoint(String start){
 		try{
-			TypedQuery<Tim7Offer> tq=JPAUtil.getEntityManager().createQuery("select * from Tim7Offer o where o.startingpoint=:start",Tim7Offer.class);
+			TypedQuery<Tim7Offer> tq=JPAUtil.getEntityManager().createQuery("select o from Tim7Offer o where o.startingpoint=:start",Tim7Offer.class);
 			tq.setParameter("start", start);
 			return tq.getResultList();
 		}catch(Exception e){
@@ -52,7 +69,7 @@ public class OfferManager {
 	
 	public List<Tim7Offer> getOfferForPriceRange(float priceLow, float priceHigh){
 		try{
-			TypedQuery<Tim7Offer> tq=JPAUtil.getEntityManager().createQuery("select * from Tim7Offer o where o.price between :priceS and :priceF", Tim7Offer.class);
+			TypedQuery<Tim7Offer> tq=JPAUtil.getEntityManager().createQuery("select o from Tim7Offer o where o.price between :priceS and :priceF", Tim7Offer.class);
 			tq.setParameter("priceS", priceLow);
 			tq.setParameter("priceF", priceHigh);
 			return tq.getResultList();
@@ -78,34 +95,36 @@ public class OfferManager {
 		}
 	}
 	
-	public List<Tim7Offer> searchOff(String destName, String startPoint, int priceLow, int priceHigh){
+	public List<Tim7Offer> searchOff(String destName, String startPoint, float priceLow, float priceHigh){
 		try{
-			if (destName!=null && startPoint==null && priceHigh==0 && priceLow==0){
+			if (destName!=null && startPoint==null && priceHigh==0.0 && priceLow==0.0){
 				return getOfferForDestination(destName);
 			}
-			if (destName==null && startPoint!=null && priceHigh==0 && priceLow==0){
+			if (destName==null && startPoint!=null && priceHigh==0.0 && priceLow==0.0){
+				System.out.println("Pokrenuo sam pretragu");
 				return getOfferForStartingPoint(startPoint);
 			}
-			if (destName==null && startPoint==null && priceHigh!=0 && priceHigh>priceLow){
+			if (destName==null && startPoint==null && priceHigh!=0.0 && priceHigh>priceLow){
 				return getOfferForPriceRange(priceLow, priceHigh);
 			}
-			if (destName!=null && startPoint!=null && priceHigh==0 && priceLow==0){
-				TypedQuery<Tim7Offer> tq=JPAUtil.getEntityManager().createQuery("select * from Tim7Offer o join fetch o.tim7Destination d"+
+			if (destName!=null && startPoint!=null && priceHigh==0.0 && priceLow==0.0){
+				TypedQuery<Tim7Offer> tq=JPAUtil.getEntityManager().createQuery("select o from Tim7Offer o join fetch o.tim7Destination d where "+
 						"d.destinationname=:destName and o.startingpoint=:start",Tim7Offer.class);
 						tq.setParameter("destName", destName);
 						tq.setParameter("start", startPoint);
 						return tq.getResultList();
 			}
-			if (destName!=null && startPoint==null && priceHigh!=0 && priceHigh>priceLow){
-				TypedQuery<Tim7Offer> tq=JPAUtil.getEntityManager().createQuery("select * from Tim7Offer o join fetch o.tim7Destination d"+
+			if (destName!=null && startPoint==null && priceHigh!=0.0 && priceHigh>priceLow){
+				TypedQuery<Tim7Offer> tq=JPAUtil.getEntityManager().createQuery("select o from Tim7Offer o join fetch o.tim7Destination d where "+
 						"d.destinationname=:destName and o.price between :priceL and :priceH",Tim7Offer.class);
 						tq.setParameter("destName", destName);
 						tq.setParameter("priceL", priceLow);
 						tq.setParameter("priceH", priceHigh);
 						return tq.getResultList();
 			}
-			if (destName==null && startPoint!=null && priceHigh!=0 && priceHigh>priceLow){
-				TypedQuery<Tim7Offer> tq=JPAUtil.getEntityManager().createQuery("select * from Tim7Offer o"+
+			if (destName==null && startPoint!=null && priceHigh!=0.0 && priceHigh>priceLow){
+				System.out.println("Pokrenuo sam ovo");
+				TypedQuery<Tim7Offer> tq=JPAUtil.getEntityManager().createQuery("select o from Tim7Offer o where "+
 						"o.startingpoint=:start and o.price between :priceL and :priceH",Tim7Offer.class);
 						tq.setParameter("start", startPoint);
 						tq.setParameter("priceL", priceLow);
@@ -113,7 +132,7 @@ public class OfferManager {
 						return tq.getResultList();
 			}
 			if (destName!=null && startPoint!=null && priceHigh!=0 && priceHigh>priceLow){
-				TypedQuery<Tim7Offer> tq=JPAUtil.getEntityManager().createQuery("select * from Tim7Offer o join fetch o.tim7Destination d"+
+				TypedQuery<Tim7Offer> tq=JPAUtil.getEntityManager().createQuery("select o from Tim7Offer o join fetch o.tim7Destination d where " +
 						"d.destinationname=:destName and o.startingpoint=:start and o.price between :priceL and :priceH",Tim7Offer.class);
 						tq.setParameter("destName", destName);
 						tq.setParameter("start", startPoint);
