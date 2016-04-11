@@ -1,6 +1,9 @@
 package managedBeans;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
@@ -20,6 +23,11 @@ public class OffersManagedBean {
 	@ManagedProperty(value = "#{UserLogInManagedBean}")
 	UserLogInManagedBean loginManagedBean;
 	private Tim7User loggedUser;
+	private int priceLow=0;
+	private int priceHigh=0;
+	private String destinationname;
+	private String startingPoint;
+	private List<Tim7Offer> list;
 	
 	public OffersManagedBean() {
 		
@@ -42,16 +50,22 @@ public class OffersManagedBean {
 		boolean posted = OM.postOffer(offer);
 		
 		if (posted)
-			feedback="Offer is posted.";
+			feedback = "Offer is posted.";
 		else
-			feedback="Offer is not posted. Try again!";	
-	
+			feedback="Offer is not posted. Try again!";
 	}
 
+	public void searchOffers(){
+		
+		list=OM.searchOff(destinationname,startingPoint,priceLow,priceHigh);
+		
+	}
+	
+
 	public String loadOffer() {
-		
+
 		return "/pages/offerDetails";
-		
+
 	}
 	
 	public String loadOfferBrowse() {
