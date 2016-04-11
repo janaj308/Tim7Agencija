@@ -1,5 +1,8 @@
 package managedBeans;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
@@ -14,28 +17,36 @@ public class OffersManagedBean {
 	private Tim7Offer offer;
 	private OfferManager OM;
 	private String feedback;
-	
-	
-	
+	private int priceLow;
+	private int priceHigh;
+	private String destinationName;
+	private String startingPoint;
+	private List<Tim7Offer> list;
+
 	public OffersManagedBean() {
-		offer= new Tim7Offer();
-		OM= new OfferManager();
-		feedback="";
+		offer = new Tim7Offer();
+		OM = new OfferManager();
+		feedback = "";
 	}
 
-	public void postOffer(){
-		boolean posted= OM.postOffer(offer);
-		
+	public void postOffer() {
+		boolean posted = OM.postOffer(offer);
+
 		if (posted)
-			feedback="Offer is posted.";
+			feedback = "Offer is posted.";
 		else
-			feedback="Offer is not posted. Try again!";	
+			feedback = "Offer is not posted. Try again!";
 	}
+
+	public void searchOffers(){
+		list=OM.searchOff(destinationName,startingPoint,priceLow,priceHigh);
+	}
+	
 
 	public String loadOffer() {
-		
+
 		return "/pages/offerDetails";
-		
+
 	}
 
 	public Tim7Offer getChosenOffer() {
@@ -61,7 +72,5 @@ public class OffersManagedBean {
 	public void setOffer(Tim7Offer offer) {
 		this.offer = offer;
 	}
-	
 
-	
 }
