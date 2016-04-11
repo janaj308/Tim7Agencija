@@ -16,8 +16,13 @@ public class DataManagedBean {
 	private List<Tim7Offer> allOffers = new OfferManager().getAllOffers();
 	
 	private List<Tim7Destination> allDestinations= new OfferManager().getAllDestinations();
-	
 
+	public void reloadDestinations() {
+		
+		allDestinations = new OfferManager().getAllDestinations();
+		
+	}
+	
 	public List<Tim7Offer> getAllOffers() {
 		return allOffers;
 	}

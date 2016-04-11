@@ -1,7 +1,6 @@
 package managedBeans;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -32,8 +31,6 @@ public class OffersManagedBean {
 	private String destinationname;
 	private String startingPoint;
 	private List<Tim7Offer> list;
-	
-	private DataManagedBean dmb;
 	
 	public OffersManagedBean() {
 		
