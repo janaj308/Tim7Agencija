@@ -9,15 +9,23 @@
 <h:body>
 	<f:view>
 		<h:form>
-			<h:panelGrid columns="2" id="postOfferPanel">
 			
+			<h:panelGrid columns="5" id="destPanel">
 				<h:outputText value="Destination:"/>
 		        <p:selectOneMenu id="destination" value="#{offersManagedBean.offer.tim7Destination}">
 		 			<f:converter converterId="destinationConverter" />
 		 			<f:selectItems value="#{dataManagedBean.allDestinations}" var="d" 
 		 			itemLabel="#{d.destinationname}" itemValue="#{d}" />
 		 		</p:selectOneMenu>
-			
+		 		
+		 		<h:outputText value="Add new destination:"/>
+		 		<h:inputText  value="#{offersManagedBean.dest.destinationname}"/>
+		 		<h:commandButton action="#{offersManagedBean.addDestination}" value="Save" update="destination"/>
+		 		<h:outputText value="#{offersManagedBean.feedbackD}"  />
+		 		
+		 	</h:panelGrid>
+		 	
+			<h:panelGrid columns="2" id="postOfferPanel">
 				<h:outputText value="Starting point:"/>
 				<h:inputText  value="#{offersManagedBean.offer.startingpoint}"/>
 				
@@ -37,7 +45,7 @@
 				<h:inputText  value="#{offersManagedBean.offer.description}"/>
 									
 				<h:commandButton action="#{offersManagedBean.postOffer}" value="Save" />
-				<h:outputText value="#{offersManagedBean.feedback}"  />		
+				<h:outputText value="#{offersManagedBean.feedbackO}"  />		
 			</h:panelGrid>		
 		</h:form>
 	</f:view>
