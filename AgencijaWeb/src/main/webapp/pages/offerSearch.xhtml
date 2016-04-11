@@ -7,7 +7,6 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <h:head>
-	<title>Search offers</title>
 </h:head>
 <h:body>
 	<f:view>
@@ -16,19 +15,19 @@
 			<h:panelGrid columns="2" id="searchOfferPanel">
 			
 				<h:outputText value="Destinacija putovanja: "/>
-				<h:inputText  value="#{offersManagedBean.destinationName}"/>
+				<h:inputText  value="#{OffersManagedBean.destinationname}"/>
 				
 				<h:outputText value="Pocetno mesto: "/>
-				<h:inputText  value="#{offersManagedBean.startingPoint}"/>
+				<h:inputText  value="#{OffersManagedBean.startingPoint}"/>
 				
 				<h:outputText value="Najniza cena: "/>
-				<h:inputText  value="#{offersManagedBean.priceLow}"/>
+				<h:inputText  value="#{OffersManagedBean.priceLow}"/>
 				
 				<h:outputText value="Najveca cena: "/>
-				<h:inputText  value="#{offersManagedBean.priceHigh}"/>				
+				<h:inputText  value="#{OffersManagedBean.priceHigh}"/>				
 									
-				<h:commandButton action="#{offersManagedBean.searchOffers}" value="Pretrazi" render="searchOfferPanel" execute="@this"/>
-				<h:outputText value="#{//odgovor u vidu stringa iz managed beana}"  />		
+				<h:commandButton action="#{OffersManagedBean.searchOffers}" value="Pretrazi" render="searchOfferPanel" execute="@this"/>
+				<h:outputText value="#{OffersManagedBean.feedback}"  />		
 			</h:panelGrid>		
 		</h:form>
 	</f:view>

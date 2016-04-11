@@ -17,9 +17,9 @@ public class OffersManagedBean {
 	private Tim7Offer offer;
 	private OfferManager OM;
 	private String feedback;
-	private int priceLow;
-	private int priceHigh;
-	private String destinationName;
+	private int priceLow=0;
+	private int priceHigh=0;
+	private String destinationname;
 	private String startingPoint;
 	private List<Tim7Offer> list;
 
@@ -39,7 +39,7 @@ public class OffersManagedBean {
 	}
 
 	public void searchOffers(){
-		list=OM.searchOff(destinationName,startingPoint,priceLow,priceHigh);
+		list=OM.searchOff(destinationname,startingPoint,priceLow,priceHigh);
 	}
 	
 
