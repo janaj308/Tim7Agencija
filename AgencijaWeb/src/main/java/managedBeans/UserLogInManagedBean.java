@@ -1,7 +1,8 @@
 package managedBeans;
 
-import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.RequestScoped;
 import javax.persistence.EntityManager;
 
 import managers.JPAUtil;
@@ -22,7 +23,7 @@ import model.Tim7User;
 //************************
 
 @ManagedBean (name="UserLogInManagedBean")
-@ApplicationScoped
+@RequestScoped
 public class UserLogInManagedBean {
 
 	private Tim7User user;
@@ -33,6 +34,9 @@ public class UserLogInManagedBean {
 	private String password;
 	
 	private String feedback;
+	
+	@ManagedProperty(value="#{loggedUserManagedBean}")
+	private LoggedUserManagedBean loggedUserManagedBean;
 	
 	public UserLogInManagedBean() {
 		
@@ -45,18 +49,13 @@ public class UserLogInManagedBean {
 	public String logInUser(){
 		user = UM.logInUser(em, userName, password);
 		if(user == null){
-			feedback = "Pogreasan username / password";
+			feedback = "Incorrect username / password";
 			return "";
 		}else{
-			feedback = "Uspesno je ulogovan "+ user.getUserfirstname();
+			feedback = "Logged in: "+ user.getUserfirstname();
+			loggedUserManagedBean.setUser(user);
 			return "index";
 		}
-	}
-	
-	public String loadLogin() {
-		
-		return "/pages/UserLogin";
-		
 	}
 
 	public String getUserName() {
@@ -89,6 +88,14 @@ public class UserLogInManagedBean {
 
 	public void setUser(Tim7User user) {
 		this.user = user;
+	}
+
+	public LoggedUserManagedBean getLoggedUserManagedBean() {
+		return loggedUserManagedBean;
+	}
+
+	public void setLoggedUserManagedBean(LoggedUserManagedBean loggedUserManagedBean) {
+		this.loggedUserManagedBean = loggedUserManagedBean;
 	}
 	
 }

@@ -45,20 +45,14 @@ public class UserRegistrationManagedBean {
 		Integer userID = UM.saveNewUser(em, user);
 		
 		if(userID == null){
-			feedback = "User nije sacuvano.";		
+			feedback = "Error during registration";		
 		}else if(userID == -1){
-			feedback = "User vec postoji " + user.getUsername();
+			feedback = "Username already exists: " + user.getUsername();
 		}else if(userID == -2){
-			feedback = "Email vec postoji " + user.getUseremail();
+			feedback = "Email already exists: " + user.getUseremail();
 		}else{
-			feedback = "User je uspesno sacuvan, ID je "+userID;
+			feedback = "Successful registration!";
 		}
-	}
-	
-	public String loadRegistration() {
-		
-		return "/pages/RegistrationUser";
-		
 	}
 
 	public Tim7User getUser() {

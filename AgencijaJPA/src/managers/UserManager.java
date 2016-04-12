@@ -44,6 +44,8 @@ public class UserManager {
 			e.printStackTrace();
 			return null;
 			
+		}finally{
+			em.close();
 		}
 	}
 	

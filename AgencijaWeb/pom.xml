@@ -17,6 +17,11 @@
 		<version>2.2.10</version>
 	</dependency>
 	<dependency>
+		<groupId>com.sun.faces</groupId>
+		<artifactId>jsf-api</artifactId>
+		<version>2.2.13</version>
+	</dependency>
+	<dependency>
 		<groupId>AgencijaJPA</groupId>
   		<artifactId>AgencijaJPA</artifactId>
   		<version>0.0.1-SNAPSHOT</version>	
@@ -25,7 +30,7 @@
 		<groupId>org.primefaces</groupId>
 		<artifactId>primefaces</artifactId>
 		<version>5.2</version>
-	</dependency>
+	</dependency> 
   </dependencies>
   <build>
 	  <plugins>

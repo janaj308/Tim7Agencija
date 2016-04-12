@@ -87,7 +87,7 @@ public class OfferManager {
 	
 	public List<Tim7Destination> getAllDestinations(){
 		try{
-			TypedQuery<Tim7Destination> tq = JPAUtil.getEntityManager().createQuery("select d from Tim7Destination d", Tim7Destination.class);
+			TypedQuery<Tim7Destination> tq = JPAUtil.getEntityManager().createQuery("select d from Tim7Destination d sort by d.destinationname", Tim7Destination.class);
 			return tq.getResultList();
 		}catch(Exception e){
 			e.printStackTrace();
@@ -96,8 +96,8 @@ public class OfferManager {
 	}
 	
 	public boolean addNewDestination(Tim7Destination dest){
+		EntityManager em = JPAUtil.getEntityManager();
 		try{
-			EntityManager em = JPAUtil.getEntityManager();
     		em.getTransaction().begin();
     		em.persist(dest);
     		em.getTransaction().commit();
@@ -105,6 +105,8 @@ public class OfferManager {
 		}catch(Exception e){
 			e.printStackTrace();
 			return false;
+		}finally{
+			em.close();
 		}
 		
 	}
@@ -162,8 +164,8 @@ public class OfferManager {
 	}
 	
 	public boolean postOffer(Tim7Offer of){
+		EntityManager em = JPAUtil.getEntityManager();
 		try{
-			EntityManager em = JPAUtil.getEntityManager();
     		em.getTransaction().begin();
     		em.persist(of);
     		em.getTransaction().commit();
@@ -172,6 +174,8 @@ public class OfferManager {
     	}catch(Exception e){
     		e.printStackTrace();
     		return false;
+    	}finally{
+    		em.close();
     	}
 
 	}

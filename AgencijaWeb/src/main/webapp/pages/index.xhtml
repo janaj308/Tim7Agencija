@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+</h:head>
+<h:body>
+	<f:view>
+		<h:form>
+			<p:outputPanel style="margin-top: 30px; text-align:center">
+				<h:outputText value="Travel company" style="font-size: 2.0em; font-weight: bold; color: #004080" />
+			</p:outputPanel>
+			
+			<p:menu style="margin: 30px auto 20px auto">
+			
+				<p:menuitem value="Browse Offers" outcome="/pages/viewOffers" />
+				<p:menuitem value="Find Offers" outcome="/pages/offerSearch" />
+				<p:menuitem value="Post New Offer" outcome="/pages/postOffer" rendered="#{loggedUserManagedBean.user != null}" />
+				<p:separator style="margin-top: 5px"/>
+				<p:menuitem>
+					<p:outputPanel style="margin-top: 10px; text-align: center" rendered="#{loggedUserManagedBean.user != null}">
+						<h:outputText value="Logged in as: #{loggedUserManagedBean.user.username}" />
+					</p:outputPanel>
+					<h:panelGrid columns="2" style="margin: 10px auto 0px auto" rendered="#{loggedUserManagedBean.user == null}">
+						<p:button value="Login" outcome="/pages/UserLogin" />
+						<p:button value="Register" outcome="/pages/RegistrationUser" />
+					</h:panelGrid>
+				</p:menuitem>
+			
+			</p:menu>
+			<!-- <h:panelGrid columns="2" id="MainPagePanel">
+				
+				<h:outputText value="Username"/>
+				<h:outputText  value="#{UserLogInManagedBean.user.username}"/>				
+				
+				<h:outputText value="First Name"/>
+				<h:outputText  value="#{UserLogInManagedBean.user.userfirstname}"/>
+				
+				<h:outputText value="Last Name"/>
+				<h:outputText  value="#{UserLogInManagedBean.user.userlastname}"/>		
+							
+				<h:outputText value="Rating"/>
+				<h:outputText  value="#{UserLogInManagedBean.user.rating}"/>		
+			</h:panelGrid> -->
+		</h:form>
+	</f:view>
+</h:body>
+</html>

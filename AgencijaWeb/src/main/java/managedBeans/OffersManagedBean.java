@@ -22,8 +22,8 @@ public class OffersManagedBean {
 	private OfferManager OM;
 	private String feedbackO;
 	private String feedbackD;
-	@ManagedProperty(value = "#{UserLogInManagedBean}")
-	UserLogInManagedBean loginManagedBean;
+	@ManagedProperty(value = "#{loggedUserManagedBean}")
+	LoggedUserManagedBean loggedUserManagedBean;
 	private Tim7User loggedUser;
 	
 	private float priceLow;
@@ -47,7 +47,7 @@ public class OffersManagedBean {
 	@PostConstruct
 	private void init() {
 		
-		loggedUser = loginManagedBean.getUser();
+		loggedUser = loggedUserManagedBean.getUser();
 		
 	}
 
@@ -84,10 +84,9 @@ public class OffersManagedBean {
 		}
 		list = OM.searchOff(destinationname, startingPoint, priceLow, priceHigh);
 		System.out.println(list.isEmpty());
-		return "/pages/offerFiltered";		
+		return "/pages/offerFiltered";	
 	}
 	
-
 	public float getPriceLow() {
 		return priceLow;
 	}
@@ -128,24 +127,6 @@ public class OffersManagedBean {
 		this.list = list;
 	}
 
-	public String loadOffer() {
-
-		return "/pages/offerDetails";
-
-	}
-	
-	public String loadOfferBrowse() {
-		
-		return "/pages/viewOffers";
-		
-	}
-	
-	public String loadOfferPost() {
-		
-		return "/pages/postOffer";
-		
-	}
-
 	public Tim7Offer getChosenOffer() {
 		return chosenOffer;
 	}
@@ -179,20 +160,28 @@ public class OffersManagedBean {
 		this.offer = offer;
 	}
 
-	public UserLogInManagedBean getLoginManagedBean() {
-		return loginManagedBean;
-	}
-
-	public void setLoginManagedBean(UserLogInManagedBean loginManagedBean) {
-		this.loginManagedBean = loginManagedBean;
-	}
-
 	public Tim7Destination getDest() {
 		return dest;
 	}
 
 	public void setDest(Tim7Destination dest) {
 		this.dest = dest;
+	}
+
+	public LoggedUserManagedBean getLoggedUserManagedBean() {
+		return loggedUserManagedBean;
+	}
+
+	public void setLoggedUserManagedBean(LoggedUserManagedBean loggedUserManagedBean) {
+		this.loggedUserManagedBean = loggedUserManagedBean;
+	}
+
+	public Tim7User getLoggedUser() {
+		return loggedUser;
+	}
+
+	public void setLoggedUser(Tim7User loggedUser) {
+		this.loggedUser = loggedUser;
 	}
 	
 }

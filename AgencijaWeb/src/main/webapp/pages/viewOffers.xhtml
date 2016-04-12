@@ -21,7 +21,7 @@
 			<p:dataScroller value="#{dataManagedBean.allOffers}" var="offer" mode="inline" scrollHeight="300" >
 			
 				<p:outputPanel style="margin-top: 10px; margin-bottom: 10px">
-					<h:commandLink action="#{offersManagedBean.loadOffer}" value="#{offer.tim7Destination.destinationname} (#{offer.price})" 
+					<h:commandLink outcome="/pages/offerDetails" value="#{offer.tim7Destination.destinationname} (#{offer.price})" 
 							style="font-weight: bold">
 						<f:setPropertyActionListener target="#{offersManagedBean.chosenOffer}" value="#{offer}" />
 					</h:commandLink>
