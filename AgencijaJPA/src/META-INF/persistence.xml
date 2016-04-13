@@ -10,6 +10,7 @@
 		<class>model.Tim7Thread</class>
 		<class>model.Tim7Traveleroffer</class>
 		<class>model.Tim7User</class>
+		<class>model.Tim7Notification</class>
 		<properties>
          <property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect"/>         
          <property name="javax.persistence.jdbc.url" value="jdbc:mysql://nastava.is.pmf.uns.ac.rs:3306/Pris"/>
