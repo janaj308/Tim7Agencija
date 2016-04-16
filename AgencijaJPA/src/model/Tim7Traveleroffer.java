@@ -20,7 +20,7 @@ public class Tim7Traveleroffer implements Serializable {
 
 	//bi-directional many-to-one association to Tim7Offer
 	@ManyToOne
-	@JoinColumn(name="IDOFFER")
+	@JoinColumn(name="IDOFFER", referencedColumnName="IDOFFER")
 	private Tim7Offer tim7Offer;
 
 	//bi-directional many-to-one association to Tim7User

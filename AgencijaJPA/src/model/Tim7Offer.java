@@ -3,7 +3,6 @@ package model;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 
 /**
@@ -25,6 +24,14 @@ public class Tim7Offer implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date enddate;
 
+	@ManyToOne
+	@JoinColumn(name="IDUSER")
+	private Tim7User tim7User;
+
+	@ManyToOne
+	@JoinColumn(name="IDDESTINATION")
+	private Tim7Destination tim7Destination;
+	
 	private float price;
 
 	@Temporal(TemporalType.DATE)
@@ -35,20 +42,6 @@ public class Tim7Offer implements Serializable {
 	private int travelercurrentcount;
 
 	private int travelernumber;
-
-	//bi-directional many-to-one association to Tim7Destination
-	@ManyToOne
-	@JoinColumn(name="IDDESTINATION")
-	private Tim7Destination tim7Destination;
-
-	//bi-directional many-to-one association to Tim7User
-	@ManyToOne
-	@JoinColumn(name="IDUSER")
-	private Tim7User tim7User;
-
-	//bi-directional many-to-one association to Tim7Traveleroffer
-	@OneToMany(mappedBy="tim7Offer")
-	private List<Tim7Traveleroffer> tim7Traveleroffers;
 
 	public Tim7Offer() {
 	}
@@ -75,6 +68,22 @@ public class Tim7Offer implements Serializable {
 
 	public void setEnddate(Date enddate) {
 		this.enddate = enddate;
+	}
+
+	public Tim7Destination getTim7Destination() {
+		return tim7Destination;
+	}
+
+	public void setTim7Destination(Tim7Destination tim7Destination) {
+		this.tim7Destination = tim7Destination;
+	}
+
+	public Tim7User getTim7User() {
+		return tim7User;
+	}
+
+	public void setTim7User(Tim7User tim7User) {
+		this.tim7User = tim7User;
 	}
 
 	public float getPrice() {
@@ -115,44 +124,6 @@ public class Tim7Offer implements Serializable {
 
 	public void setTravelernumber(int travelernumber) {
 		this.travelernumber = travelernumber;
-	}
-
-	public Tim7Destination getTim7Destination() {
-		return this.tim7Destination;
-	}
-
-	public void setTim7Destination(Tim7Destination tim7Destination) {
-		this.tim7Destination = tim7Destination;
-	}
-
-	public Tim7User getTim7User() {
-		return this.tim7User;
-	}
-
-	public void setTim7User(Tim7User tim7User) {
-		this.tim7User = tim7User;
-	}
-
-	public List<Tim7Traveleroffer> getTim7Traveleroffers() {
-		return this.tim7Traveleroffers;
-	}
-
-	public void setTim7Traveleroffers(List<Tim7Traveleroffer> tim7Traveleroffers) {
-		this.tim7Traveleroffers = tim7Traveleroffers;
-	}
-
-	public Tim7Traveleroffer addTim7Traveleroffer(Tim7Traveleroffer tim7Traveleroffer) {
-		getTim7Traveleroffers().add(tim7Traveleroffer);
-		tim7Traveleroffer.setTim7Offer(this);
-
-		return tim7Traveleroffer;
-	}
-
-	public Tim7Traveleroffer removeTim7Traveleroffer(Tim7Traveleroffer tim7Traveleroffer) {
-		getTim7Traveleroffers().remove(tim7Traveleroffer);
-		tim7Traveleroffer.setTim7Offer(null);
-
-		return tim7Traveleroffer;
 	}
 
 }

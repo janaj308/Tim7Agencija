@@ -16,7 +16,6 @@ import model.Tim7User;
 @SessionScoped
 public class OffersManagedBean {
 
-	private Tim7Offer chosenOffer;
 	private Tim7Offer offer;
 	private Tim7Destination dest;
 	private OfferManager OM;
@@ -126,15 +125,6 @@ public class OffersManagedBean {
 	public void setList(List<Tim7Offer> list) {
 		this.list = list;
 	}
-
-	public Tim7Offer getChosenOffer() {
-		return chosenOffer;
-	}
-
-	public void setChosenOffer(Tim7Offer chosenOffer) {
-		this.chosenOffer = chosenOffer;
-	}
-
 
 	public String getFeedbackO() {
 		return feedbackO;

@@ -8,6 +8,8 @@ import javax.persistence.TypedQuery;
 
 import model.Tim7Destination;
 import model.Tim7Offer;
+import model.Tim7Traveleroffer;
+import model.Tim7User;
 
 public class OfferManager {
 
@@ -87,7 +89,7 @@ public class OfferManager {
 	
 	public List<Tim7Destination> getAllDestinations(){
 		try{
-			TypedQuery<Tim7Destination> tq = JPAUtil.getEntityManager().createQuery("select d from Tim7Destination d sort by d.destinationname", Tim7Destination.class);
+			TypedQuery<Tim7Destination> tq = JPAUtil.getEntityManager().createQuery("select d from Tim7Destination d order by d.destinationname", Tim7Destination.class);
 			return tq.getResultList();
 		}catch(Exception e){
 			e.printStackTrace();
@@ -103,6 +105,7 @@ public class OfferManager {
     		em.getTransaction().commit();
 			return true;
 		}catch(Exception e){
+			em.getTransaction().rollback();
 			e.printStackTrace();
 			return false;
 		}finally{
@@ -172,6 +175,7 @@ public class OfferManager {
     		return true;
     		
     	}catch(Exception e){
+    		em.getTransaction().rollback();
     		e.printStackTrace();
     		return false;
     	}finally{
@@ -179,4 +183,57 @@ public class OfferManager {
     	}
 
 	}
+	
+	public List<Tim7User> getTravelers(int offerId) {
+		
+		try {
+			
+			TypedQuery<Tim7Traveleroffer> tq = JPAUtil.getEntityManager().createQuery("select o from Tim7Traveleroffer o where o.tim7Offer.idoffer = :id", Tim7Traveleroffer.class);
+			tq.setParameter("id", offerId);
+			
+			List<Tim7User> travelers = new ArrayList<>();
+			for (Tim7Traveleroffer o : tq.getResultList()) {
+				
+				travelers.add(o.getTim7User());
+				
+			}
+			
+			return travelers;
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			return new ArrayList<>();
+			
+		}
+		
+	}
+	
+	public void acceptOffer(Tim7User user, Tim7Offer offer) {
+		
+		EntityManager em = JPAUtil.getEntityManager();
+		
+		try {
+			
+			em.getTransaction().begin();
+			Tim7Traveleroffer to = new Tim7Traveleroffer();
+			to.setTim7User(user);
+			to.setTim7Offer(offer);
+			em.merge(offer);
+			em.persist(to);
+			em.getTransaction().commit();
+			
+		} catch (Exception e) {
+			
+			em.getTransaction().rollback();
+			e.printStackTrace();
+			
+		} finally {
+			
+			em.close();
+			
+		}
+		
+	}
+	
 }

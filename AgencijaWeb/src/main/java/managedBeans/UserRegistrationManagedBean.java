@@ -40,7 +40,7 @@ public class UserRegistrationManagedBean {
 		feedback = "";
 	}
 	
-	public void saveUser(){
+	public String saveUser(){
 		
 		Integer userID = UM.saveNewUser(em, user);
 		
@@ -52,7 +52,9 @@ public class UserRegistrationManagedBean {
 			feedback = "Email already exists: " + user.getUseremail();
 		}else{
 			feedback = "Successful registration!";
+			return "/pages/UserLogin";
 		}
+		return "";
 	}
 
 	public Tim7User getUser() {

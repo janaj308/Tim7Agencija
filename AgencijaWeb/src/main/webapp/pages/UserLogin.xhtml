@@ -31,6 +31,12 @@
 					<p:commandButton action="#{UserLogInManagedBean.logInUser}" value="Log In" render="logInUserUserPanel" 
 						execute="@form" update=":loginForm" style="margin-bottom: 5px" />
 					<h:outputText value="#{UserLogInManagedBean.feedback}" style="color: #cc0000" />
+					
+					<p:separator style="margin-top: 10px; margin-bottom: 10px"/>
+					
+					<h:outputText value="No account? Click below to register" />
+				
+					<p:button outcome="/pages/RegistrationUser" value="Register" style="margin-top: 10px" />	
 				</h:panelGrid>
 			</p:panel>
 			

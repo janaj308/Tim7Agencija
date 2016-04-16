@@ -14,35 +14,27 @@ import javax.persistence.*;
 public class Tim7Comment implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int idcomment;
-
 	private String commentinfo;
 
 	private int commentnegativerate;
 
 	private int commentpositiverate;
 
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int idcomment;
+
+	//bi-directional many-to-one association to Tim7Thread
+	@ManyToOne
+	@JoinColumn(name="IDTHREAD", referencedColumnName="IDTHREAD")
+	private Tim7Thread tim7Thread;
+
 	//bi-directional many-to-one association to Tim7User
 	@ManyToOne
 	@JoinColumn(name="IDUSER")
 	private Tim7User tim7User;
 
-	//bi-directional many-to-one association to Tim7Thread
-	@ManyToOne
-	@JoinColumn(name="IDTHREAD")
-	private Tim7Thread tim7Thread;
-
 	public Tim7Comment() {
-	}
-
-	public int getIdcomment() {
-		return this.idcomment;
-	}
-
-	public void setIdcomment(int idcomment) {
-		this.idcomment = idcomment;
 	}
 
 	public String getCommentinfo() {
@@ -69,12 +61,12 @@ public class Tim7Comment implements Serializable {
 		this.commentpositiverate = commentpositiverate;
 	}
 
-	public Tim7User getTim7User() {
-		return this.tim7User;
+	public int getIdcomment() {
+		return this.idcomment;
 	}
 
-	public void setTim7User(Tim7User tim7User) {
-		this.tim7User = tim7User;
+	public void setIdcomment(int idcomment) {
+		this.idcomment = idcomment;
 	}
 
 	public Tim7Thread getTim7Thread() {
@@ -83,6 +75,14 @@ public class Tim7Comment implements Serializable {
 
 	public void setTim7Thread(Tim7Thread tim7Thread) {
 		this.tim7Thread = tim7Thread;
+	}
+
+	public Tim7User getTim7User() {
+		return this.tim7User;
+	}
+
+	public void setTim7User(Tim7User tim7User) {
+		this.tim7User = tim7User;
 	}
 
 }

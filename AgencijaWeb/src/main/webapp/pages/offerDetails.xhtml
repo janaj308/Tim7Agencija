@@ -11,69 +11,88 @@
 </h:head>
 <h:body style="margin: 30px auto 30px auto">
 	<f:view>
-		
-		<p:outputPanel style="margin-bottom: 20px; text-align:center">
+	
+		<p:outputPanel style="margin-top: 30px; margin-bottom: 30px; text-align:center">
 			<p:outputPanel style="margin-bottom: 10px" >
-				<h:outputText value="#{offersManagedBean.chosenOffer.tim7Destination.destinationname}" style="font-size: 1.5em; font-weight:bold" />
+				<h:outputText value="#{offerDetailsManagedBean.offer.tim7Destination.destinationname}" style="font-size: 1.5em; font-weight:bold; color: #004080" />
 			</p:outputPanel>
-			<h:outputText value="#{offersManagedBean.chosenOffer.startdate}" >
+			<h:outputText value="#{offerDetailsManagedBean.offer.startdate}" style="color: #004080">
 				<f:convertDateTime pattern="dd.MM.yyyy" />
 			</h:outputText>
-			<h:outputText value=" - " />
-			<h:outputText value="#{offersManagedBean.chosenOffer.enddate}" >
+			<h:outputText value=" - " style="color: #004080" />
+			<h:outputText value="#{offerDetailsManagedBean.offer.enddate}" style="color: #004080" >
 				<f:convertDateTime pattern="dd.MM.yyyy." />
 			</h:outputText>
 		</p:outputPanel>
 		
 		<h:form style="margin-left: 25px; margin-right: 25px">
 			
-			<p:layout style="min-height: 450px; max-height: 450px">
+			<p:layout style="min-height: 350px">
 				<p:layoutUnit position="center" style="padding: 10px" >
 				
 					<p:outputPanel style="margin-bottom: 5px">
 						<h:outputText value="Price" style="font-weight: bold" />
 					</p:outputPanel>
 					<p:outputPanel>
-						<h:outputText value="#{offersManagedBean.chosenOffer.price}" />
+						<h:outputText value="#{offerDetailsManagedBean.offer.price}" />
 					</p:outputPanel>
 					
 					<p:outputPanel style="margin-top: 25px; margin-bottom: 5px">
 						<h:outputText value="Starting point" style="font-weight: bold" />
 					</p:outputPanel>
 					<p:outputPanel>
-						<h:outputText value="#{offersManagedBean.chosenOffer.startingpoint}" />
+						<h:outputText value="#{offerDetailsManagedBean.offer.startingpoint}" />
 					</p:outputPanel>
 					
 					<p:outputPanel style="margin-top: 25px; margin-bottom: 5px">
 						<h:outputText value="Description" style="font-weight: bold" />
 					</p:outputPanel>
 					<p:outputPanel>
-						<h:outputText value="#{offersManagedBean.chosenOffer.description}" />
+						<h:outputText value="#{offerDetailsManagedBean.offer.description}" />
 					</p:outputPanel>
 					
-					<p:outputPanel style="margin-top: 25px; margin-bottom: 5px">
+					<!-- <p:outputPanel style="margin-top: 25px; margin-bottom: 5px">
 						<h:outputText value="Current traveler count" style="font-weight: bold" />
 					</p:outputPanel>
 					<p:outputPanel>
-						<h:outputText value="#{offersManagedBean.chosenOffer.travelercurrentcount}/#{offersManagedBean.chosenOffer.travelernumber}" />
-					</p:outputPanel>
+						<h:outputText value="#{offerDetailsManagedBean.offer.travelercurrentcount}/#{offerDetailsManagedBean.offer.travelernumber}" />
+					</p:outputPanel> -->
+					
+					<p:separator style="margin-top: 15px; margin-bottom: 15px" />
+					
+					<h:outputText value="Posted by: #{offerDetailsManagedBean.offer.tim7User.username}" style="font-weight: bold" />
 					
 				</p:layoutUnit>
 				
 				<p:layoutUnit position="east" style="min-width: 200px; padding: 10px">
 				
-					<p:outputPanel style="margin-bottom: 5px">
-						<h:outputText value="Posted by: " style="font-weight: bold" />
-					</p:outputPanel>
-					<p:outputPanel style="margin-bottom: 5px">
-						<h:outputText value="#{offersManagedBean.chosenOffer.tim7User.username}" />
-					</p:outputPanel>
-					<p:outputPanel style="margin-bottom: 5px">
-						<h:outputText value="#{offersManagedBean.chosenOffer.tim7User.userfirstname} #{offersManagedBean.chosenOffer.tim7User.userlastname}" />
-					</p:outputPanel>
-					<p:outputPanel>
-						<h:outputText value="#{offersManagedBean.chosenOffer.tim7User.rating}" />
-					</p:outputPanel>
+					<h:outputText value="Available spots: #{offerDetailsManagedBean.offer.travelernumber - offerDetailsManagedBean.offer.travelercurrentcount}" id="spotNo" />
+					
+					<br />
+					<p:spacer height="15" />
+					<br />
+					
+					<p:dataList value="#{offerDetailsManagedBean.travelers}" var="traveler" type="ordered" 
+						rendered="#{not empty offerDetailsManagedBean.travelers}" id="travelerList" >
+						<f:facet name="header">
+							Travelers
+						</f:facet>
+						#{traveler.username}
+					</p:dataList>
+					
+					<h:outputText value="No travelers accepted yet" style="font-weight: bold" rendered="#{empty offerDetailsManagedBean.travelers}" />
+				
+					<p:separator style="margin-top: 15px; margin-bottom: 15px" />
+					
+					<h:panelGrid columns="1" style="margin-left: auto; margin-right: auto" rendered="#{loggedUserManagedBean.user == null}">
+						<p:commandButton action="#{UserLogInManagedBean.loadLogin}" value="Login" >
+							<f:setPropertyActionListener value="#{true}" target="#{offerDetailsManagedBean.fromOffer}" />
+						</p:commandButton>
+					</h:panelGrid>
+					
+					<h:panelGrid columns="1" style="margin-left: auto; margin-right: auto" rendered="#{loggedUserManagedBean.user != null}">
+						<p:commandButton value="Accept" action="#{offerDetailsManagedBean.acceptOffer}" update="travelerList spotNo" />
+					</h:panelGrid>
 				
 				</p:layoutUnit>
 			</p:layout>

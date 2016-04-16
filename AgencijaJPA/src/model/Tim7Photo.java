@@ -24,7 +24,7 @@ public class Tim7Photo implements Serializable {
 
 	//bi-directional many-to-one association to Tim7Destination
 	@ManyToOne
-	@JoinColumn(name="IDDESTINATION")
+	@JoinColumn(name="IDDESTINATION", referencedColumnName="IDDESTINATION")
 	private Tim7Destination tim7Destination;
 
 	//bi-directional many-to-one association to Tim7User

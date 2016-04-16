@@ -37,6 +37,8 @@ public class UserLogInManagedBean {
 	
 	@ManagedProperty(value="#{loggedUserManagedBean}")
 	private LoggedUserManagedBean loggedUserManagedBean;
+	@ManagedProperty(value="#{offerDetailsManagedBean}")
+	private OfferDetailsManagedBean offerDetailsManagedBean;
 	
 	public UserLogInManagedBean() {
 		
@@ -54,8 +56,25 @@ public class UserLogInManagedBean {
 		}else{
 			feedback = "Logged in: "+ user.getUserfirstname();
 			loggedUserManagedBean.setUser(user);
-			return "index";
+			
+			if (offerDetailsManagedBean.isFromOffer()) {
+				return "/pages/offerDetails";
+			}
+			return "/pages/index";
 		}
+	}
+	
+	public String logOutUser() {
+		
+		loggedUserManagedBean.setUser(null);
+		return "/pages/index?faces-redirect=true";
+		
+	}
+	
+	public String loadLogin() {
+		
+		return "/pages/UserLogin?faces-redirect=true";
+		
 	}
 
 	public String getUserName() {
@@ -96,6 +115,14 @@ public class UserLogInManagedBean {
 
 	public void setLoggedUserManagedBean(LoggedUserManagedBean loggedUserManagedBean) {
 		this.loggedUserManagedBean = loggedUserManagedBean;
+	}
+
+	public OfferDetailsManagedBean getOfferDetailsManagedBean() {
+		return offerDetailsManagedBean;
+	}
+
+	public void setOfferDetailsManagedBean(OfferDetailsManagedBean offerDetailsManagedBean) {
+		this.offerDetailsManagedBean = offerDetailsManagedBean;
 	}
 	
 }
