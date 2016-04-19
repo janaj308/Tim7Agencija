@@ -58,9 +58,9 @@ public class UserLogInManagedBean {
 			loggedUserManagedBean.setUser(user);
 			
 			if (offerDetailsManagedBean.isFromOffer()) {
-				return "/pages/offerDetails";
+				return "/pages/offerDetails?faces-redirect=true";
 			}
-			return "/pages/index";
+			return "/pages/index?faces-redirect=true";
 		}
 	}
 	

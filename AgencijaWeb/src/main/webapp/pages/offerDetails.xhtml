@@ -77,7 +77,8 @@
 						<f:facet name="header">
 							Travelers
 						</f:facet>
-						#{traveler.username}
+						<h:outputText value="#{traveler.username}" style="font-weight: bold" rendered="#{traveler.iduser == loggedUserManagedBean.user.iduser}" />
+						<h:outputText value="#{traveler.username}" rendered="#{traveler.iduser != loggedUserManagedBean.user.iduser}" />
 					</p:dataList>
 					
 					<h:outputText value="No travelers accepted yet" style="font-weight: bold" rendered="#{empty offerDetailsManagedBean.travelers}" />
@@ -90,7 +91,7 @@
 						</p:commandButton>
 					</h:panelGrid>
 					
-					<h:panelGrid columns="1" style="margin-left: auto; margin-right: auto" rendered="#{loggedUserManagedBean.user != null}">
+					<h:panelGrid columns="1" style="margin-left: auto; margin-right: auto" rendered="#{loggedUserManagedBean.user != null and !offerDetailsManagedBean.accepted}">
 						<p:commandButton value="Accept" action="#{offerDetailsManagedBean.acceptOffer}" update="travelerList spotNo" />
 					</h:panelGrid>
 				

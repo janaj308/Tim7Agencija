@@ -109,6 +109,8 @@ public class UserManager {
 			e.printStackTrace();
 			System.out.println("Ne postoji takav userName");
 			return null;			
-		}		
+		}finally{
+			em.close();
+		}
 	}
 }

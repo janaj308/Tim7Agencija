@@ -15,15 +15,21 @@ public class OfferManager {
 
 	public List<Tim7Offer> getAllOffers() {
 		
+		EntityManager em = JPAUtil.getEntityManager();
+		
 		try {
 			
-			TypedQuery<Tim7Offer> tq = JPAUtil.getEntityManager().createQuery("select o from Tim7Offer o", Tim7Offer.class);
+			TypedQuery<Tim7Offer> tq = em.createQuery("select o from Tim7Offer o", Tim7Offer.class);
 			return tq.getResultList();
 			
 		} catch (Exception e) {
 			
 			e.printStackTrace();
 			return new ArrayList<>();
+			
+		} finally {
+			
+			em.close();
 			
 		}
 		
@@ -186,9 +192,11 @@ public class OfferManager {
 	
 	public List<Tim7User> getTravelers(int offerId) {
 		
+		EntityManager em = JPAUtil.getEntityManager();
+		
 		try {
 			
-			TypedQuery<Tim7Traveleroffer> tq = JPAUtil.getEntityManager().createQuery("select o from Tim7Traveleroffer o where o.tim7Offer.idoffer = :id", Tim7Traveleroffer.class);
+			TypedQuery<Tim7Traveleroffer> tq = em.createQuery("select o from Tim7Traveleroffer o where o.tim7Offer.idoffer = :id", Tim7Traveleroffer.class);
 			tq.setParameter("id", offerId);
 			
 			List<Tim7User> travelers = new ArrayList<>();
@@ -204,6 +212,10 @@ public class OfferManager {
 			
 			e.printStackTrace();
 			return new ArrayList<>();
+			
+		} finally {
+			
+			em.close();
 			
 		}
 		
@@ -225,7 +237,6 @@ public class OfferManager {
 			
 		} catch (Exception e) {
 			
-			em.getTransaction().rollback();
 			e.printStackTrace();
 			
 		} finally {
