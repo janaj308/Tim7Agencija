@@ -1,8 +1,12 @@
 package managers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
+import model.Tim7Comment;
 import model.Tim7User;
 
 //Crated by 
@@ -113,4 +117,41 @@ public class UserManager {
 			em.close();
 		}
 	}
+	
+	public void setRating(Tim7User user, int r, String comm, Tim7User userby){
+		EntityManager em = JPAUtil.getEntityManager();
+		try{
+			if (user.getRating()==0.0f){
+				user.setRating(r);
+			}else{
+				user.setRating((user.getRating()+r)/2.0f);
+			}
+			Tim7Comment c= new Tim7Comment();
+			c.setCommentcontent(comm);
+			c.setUserby(userby);
+			c.setUserto(user);
+			em.getTransaction().begin();
+			em.merge(user);
+			em.persist(c);
+			em.getTransaction().commit();
+		}catch(Exception e){
+			e.printStackTrace();
+			em.getTransaction().rollback();
+		}finally{
+			em.close();
+		}
+    }
+	
+	public List<Tim7Comment> getCommentsForUser(int id){
+		EntityManager em = JPAUtil.getEntityManager();
+		try{
+			TypedQuery<Tim7Comment> tq = em.createQuery("select c from Tim7Comment c where c.userto.iduser =:id", Tim7Comment.class);
+			tq.setParameter("id", id);
+			return tq.getResultList();
+		}catch(Exception e){
+			e.printStackTrace();
+			return new ArrayList<>();
+		}
+	}
+
 }
