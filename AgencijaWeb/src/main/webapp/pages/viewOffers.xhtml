@@ -16,34 +16,46 @@
 			<h:outputText value="Offers" style="font-size: 1.5em; font-weight: bold; color: #004080;" />
 		</p:outputPanel>
 		
-		<h:form style="margin-left: 20px; margin-right: 20px">
+		<p:layout style="min-height: 350px">
 		
-			<p:dataScroller value="#{dataManagedBean.allOffers}" var="offer" mode="inline" scrollHeight="300" >
+			<p:layoutUnit position="center" style="padding: 10px" >
+				<h:form style="margin-left: 20px; margin-right: 20px">
+				
+					<p:dataScroller value="#{dataManagedBean.allOffers}" var="offer" mode="inline" scrollHeight="300" >
+					
+						<p:outputPanel style="margin-top: 10px; margin-bottom: 10px">
+							<h:commandLink action="#{offerDetailsManagedBean.loadOffer(offer)}" value="#{offer.tim7Destination.destinationname} (#{offer.price})" 
+									style="font-weight: bold">
+								<!-- <f:setPropertyActionListener target="#{offerDetailsManagedBean.offer}" value="#{offer}" /> -->
+							</h:commandLink>
+						</p:outputPanel>
+						<p:outputPanel style="margin-bottom: 5px">
+							<h:outputText value="From: " />
+							<h:outputText value="#{offer.startdate}" >
+								<f:convertDateTime pattern="dd.MM.yyyy" />
+							</h:outputText>
+						</p:outputPanel>
+						<p:outputPanel style="margin-bottom: 5px">
+							<h:outputText value="To: " />
+							<h:outputText value="#{offer.enddate}" >
+								<f:convertDateTime pattern="dd.MM.yyyy" />
+							</h:outputText>
+						</p:outputPanel>
+						<p:outputPanel>	
+							<h:outputText value="Posted by: #{offer.tim7User.username}" />
+						</p:outputPanel>
+					</p:dataScroller>
+				
+				</h:form>
+			</p:layoutUnit>
 			
-				<p:outputPanel style="margin-top: 10px; margin-bottom: 10px">
-					<h:commandLink action="#{offerDetailsManagedBean.loadOffer(offer)}" value="#{offer.tim7Destination.destinationname} (#{offer.price})" 
-							style="font-weight: bold">
-						<!-- <f:setPropertyActionListener target="#{offerDetailsManagedBean.offer}" value="#{offer}" /> -->
-					</h:commandLink>
-				</p:outputPanel>
-				<p:outputPanel style="margin-bottom: 5px">
-					<h:outputText value="From: " />
-					<h:outputText value="#{offer.startdate}" >
-						<f:convertDateTime pattern="dd.MM.yyyy" />
-					</h:outputText>
-				</p:outputPanel>
-				<p:outputPanel style="margin-bottom: 5px">
-					<h:outputText value="To: " />
-					<h:outputText value="#{offer.enddate}" >
-						<f:convertDateTime pattern="dd.MM.yyyy" />
-					</h:outputText>
-				</p:outputPanel>
-				<p:outputPanel>	
-					<h:outputText value="Posted by: #{offer.tim7User.username}" />
-				</p:outputPanel>
-			</p:dataScroller>
-		
-		</h:form>
+			<p:layoutUnit position="east" style="padding: 10px">
+				
+				<!-- OFFER RECOMMENDATIONS (NATALIJA) -->
+			
+			</p:layoutUnit>
+			
+		</p:layout>
 		
 	</f:view>
 </h:body>
