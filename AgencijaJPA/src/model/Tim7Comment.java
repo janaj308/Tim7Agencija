@@ -14,51 +14,23 @@ import javax.persistence.*;
 public class Tim7Comment implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private String commentinfo;
-
-	private int commentnegativerate;
-
-	private int commentpositiverate;
-
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int idcomment;
 
-	//bi-directional many-to-one association to Tim7Thread
-	@ManyToOne
-	@JoinColumn(name="IDTHREAD", referencedColumnName="IDTHREAD")
-	private Tim7Thread tim7Thread;
+	private String commentcontent;
 
-	//bi-directional many-to-one association to Tim7User
+	private int idthread;
+
 	@ManyToOne
-	@JoinColumn(name="IDUSER")
-	private Tim7User tim7User;
+	@JoinColumn(name="IDUSERBY")
+	private Tim7User userby;
+	
+	@ManyToOne
+	@JoinColumn(name="IDUSERTO")
+	private Tim7User userto;
 
 	public Tim7Comment() {
-	}
-
-	public String getCommentinfo() {
-		return this.commentinfo;
-	}
-
-	public void setCommentinfo(String commentinfo) {
-		this.commentinfo = commentinfo;
-	}
-
-	public int getCommentnegativerate() {
-		return this.commentnegativerate;
-	}
-
-	public void setCommentnegativerate(int commentnegativerate) {
-		this.commentnegativerate = commentnegativerate;
-	}
-
-	public int getCommentpositiverate() {
-		return this.commentpositiverate;
-	}
-
-	public void setCommentpositiverate(int commentpositiverate) {
-		this.commentpositiverate = commentpositiverate;
 	}
 
 	public int getIdcomment() {
@@ -69,20 +41,38 @@ public class Tim7Comment implements Serializable {
 		this.idcomment = idcomment;
 	}
 
-	public Tim7Thread getTim7Thread() {
-		return this.tim7Thread;
+	public String getCommentcontent() {
+		return this.commentcontent;
 	}
 
-	public void setTim7Thread(Tim7Thread tim7Thread) {
-		this.tim7Thread = tim7Thread;
+	public void setCommentcontent(String commentcontent) {
+		this.commentcontent = commentcontent;
 	}
 
-	public Tim7User getTim7User() {
-		return this.tim7User;
+	public int getIdthread() {
+		return this.idthread;
 	}
 
-	public void setTim7User(Tim7User tim7User) {
-		this.tim7User = tim7User;
+	public void setIdthread(int idthread) {
+		this.idthread = idthread;
 	}
+
+	public Tim7User getUserby() {
+		return userby;
+	}
+
+	public void setUserby(Tim7User userby) {
+		this.userby = userby;
+	}
+
+	public Tim7User getUserto() {
+		return userto;
+	}
+
+	public void setUserto(Tim7User userto) {
+		this.userto = userto;
+	}
+
+
 
 }
