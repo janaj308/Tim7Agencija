@@ -20,11 +20,6 @@ public class Tim7Comment implements Serializable {
 
 	private String commentcontent;
 
-<<<<<<< HEAD
-=======
-	private int idthread;
-
->>>>>>> branch 'master' of https://github.com/janaj308/Tim7Agencija
 	@ManyToOne
 	@JoinColumn(name="IDUSERBY")
 	private Tim7User userby;
@@ -52,32 +47,6 @@ public class Tim7Comment implements Serializable {
 		this.commentcontent = commentcontent;
 	}
 
-<<<<<<< HEAD
-	public Tim7User getUserby() {
-		return userby;
-=======
-	public int getIdthread() {
-		return this.idthread;
->>>>>>> branch 'master' of https://github.com/janaj308/Tim7Agencija
-	}
-
-<<<<<<< HEAD
-	public void setUserby(Tim7User userby) {
-		this.userby = userby;
-	}
-
-	public Tim7User getUserto() {
-		return userto;
-	}
-
-	public void setUserto(Tim7User userto) {
-		this.userto = userto;
-=======
-	public void setIdthread(int idthread) {
-		this.idthread = idthread;
->>>>>>> branch 'master' of https://github.com/janaj308/Tim7Agencija
-	}
-
 	public Tim7User getUserby() {
 		return userby;
 	}
@@ -93,7 +62,5 @@ public class Tim7Comment implements Serializable {
 	public void setUserto(Tim7User userto) {
 		this.userto = userto;
 	}
-
-
 
 }
