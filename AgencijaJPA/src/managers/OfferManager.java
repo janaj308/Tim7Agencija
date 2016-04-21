@@ -44,7 +44,6 @@ public class OfferManager {
 					max=o.getPrice();
 				}
 			}
-			System.out.println(max);
 			return max;
 		}catch(Exception e){
 			e.printStackTrace();

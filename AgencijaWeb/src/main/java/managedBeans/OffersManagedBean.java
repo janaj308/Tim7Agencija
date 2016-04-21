@@ -1,6 +1,5 @@
 package managedBeans;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -10,7 +9,6 @@ import javax.faces.bean.SessionScoped;
 import managers.OfferManager;
 import model.Tim7Destination;
 import model.Tim7Offer;
-import model.Tim7User;
 
 @ManagedBean
 @SessionScoped
@@ -23,7 +21,6 @@ public class OffersManagedBean {
 	private String feedbackD;
 	@ManagedProperty(value = "#{loggedUserManagedBean}")
 	LoggedUserManagedBean loggedUserManagedBean;
-	private Tim7User loggedUser;
 	
 	private float priceLow;
 	private float priceHigh;
@@ -42,28 +39,24 @@ public class OffersManagedBean {
 		priceHigh=OM.getMaxPrice();
 		dest= new Tim7Destination();
 	}
-	
-	@PostConstruct
-	private void init() {
-		
-		loggedUser = loggedUserManagedBean.getUser();
-		
-	}
 
 	public void postOffer() {
 		
-		offer.setTim7User(loggedUser);
+		offer.setTim7User(loggedUserManagedBean.getUser());
 		boolean posted = OM.postOffer(offer);
 		
-		if (posted)
-			feedbackO = "Offer is posted.";
-		else
-			feedbackO="Offer is not posted. Try again!";
+		if (posted) {
+			feedbackO = "Offer was successfully posted";
+			offer = new Tim7Offer();
+		} else
+			feedbackO="There was an error while posting the offer. Try again!";
 	}
 	
 	public void addDestination(){
 		
 		boolean added= OM.addNewDestination(dest);
+		
+		dest = new Tim7Destination();
 		
 		if (added){
 			feedbackD = "Destination is added";
@@ -164,14 +157,6 @@ public class OffersManagedBean {
 
 	public void setLoggedUserManagedBean(LoggedUserManagedBean loggedUserManagedBean) {
 		this.loggedUserManagedBean = loggedUserManagedBean;
-	}
-
-	public Tim7User getLoggedUser() {
-		return loggedUser;
-	}
-
-	public void setLoggedUser(Tim7User loggedUser) {
-		this.loggedUser = loggedUser;
 	}
 	
 }

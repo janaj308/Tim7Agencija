@@ -8,46 +8,74 @@
 </h:head>
 <h:body>
 	<f:view>
-		<h:form>
+		<p:outputPanel style="margin-top: 30px; text-align:center">
+			<h:outputText value="Post Offer" style="font-size: 2.0em; font-weight: bold; color: #004080" />
+		</p:outputPanel>
+		
+		<h:form id="main">
 			
-			<h:panelGrid columns="5" id="destPanel">
-				<h:outputText value="Destination:"/>
-		        <p:selectOneMenu id="destination" value="#{offersManagedBean.offer.tim7Destination}">
-		 			<f:converter converterId="destinationConverter" />
-		 			<f:selectItems value="#{dataManagedBean.allDestinations}" var="d" 
-		 			itemLabel="#{d.destinationname}" itemValue="#{d}" />
-		 		</p:selectOneMenu>
-		 		
-		 		<h:outputText value="Add new destination:"/>
-		 		<h:inputText  value="#{offersManagedBean.dest.destinationname}"/>
-		 		<h:commandButton action="#{offersManagedBean.addDestination}" actionListener="#{dataManagedBean.reloadDestinations}" value="Save" update=":destPanel:destination" />
-		 		<h:outputText value="#{offersManagedBean.feedbackD}"  />
-		 		
-		 	</h:panelGrid>
-		 	
-			<h:panelGrid columns="2" id="postOfferPanel">
-				<h:outputText value="Starting point:"/>
-				<h:inputText  value="#{offersManagedBean.offer.startingpoint}"/>
+			<p:panel style="margin-top: 30px">
+				<h:panelGrid columns="3" style="margin: 15px auto 0px auto">
+					<h:outputText value="Destination:"/>
+			        <p:selectOneMenu id="destinations" value="#{offersManagedBean.offer.tim7Destination}">
+			 			<f:converter converterId="destinationConverter" />
+			 			<f:selectItems value="#{dataManagedBean.allDestinations}" var="d" 
+			 				itemLabel="#{d.destinationname}" itemValue="#{d}" />
+			 		</p:selectOneMenu>
+			 		<p:commandButton value="Add destination" update=":dialogForm:addDestination" oncomplete="PF('dialog').show()" />
+			 		
+			 	</h:panelGrid>
+			 	
+				<h:panelGrid columns="2" id="postOfferPanel" style="margin: 15px auto 0px auto">
+					<h:outputText value="Starting point:" />
+					<p:inputText value="#{offersManagedBean.offer.startingpoint}" />
+					
+					<h:outputText value="Start date:"/>
+	        		<p:calendar id="startD" value="#{offersManagedBean.offer.startdate}" pattern="dd-MM-yyyy" />
+					
+					<h:outputText value="End date:"/>
+					<p:calendar id="endD" value="#{offersManagedBean.offer.enddate}" pattern="dd-MM-yyyy" />			
+					
+					<h:outputText value="Price:"/>
+					<p:inputText  value="#{offersManagedBean.offer.price}"/>
+					
+					<h:outputText value="Traveler number:"/>
+					<p:inputText  value="#{offersManagedBean.offer.travelernumber}"/>
+					
+					<h:outputText value="Description:"/>
+					<p:inputTextarea rows="8" cols="25" value="#{offersManagedBean.offer.description}"/>	
+				</h:panelGrid>
 				
-				<h:outputText value="Start date:"/>
-        		<p:calendar id="startD" value="#{offersManagedBean.offer.startdate}" pattern="dd-MM-yyyy" />
+				<h:panelGrid columns="1" style="margin-left: auto; margin-right: auto">
+					<p:commandButton action="#{offersManagedBean.postOffer}" value="Post" update=":main"/>
+				</h:panelGrid>
+				<h:panelGrid columns="1" style="margin-left: auto; margin-right: auto">
+					<h:outputText value="#{offersManagedBean.feedbackO}" />
+				</h:panelGrid>
 				
-				<h:outputText value="End date:"/>
-				<p:calendar id="endD" value="#{offersManagedBean.offer.enddate}" pattern="dd-MM-yyyy" />			
-				
-				<h:outputText value="Price:"/>
-				<h:inputText  value="#{offersManagedBean.offer.price}"/>
-				
-				<h:outputText value="Traveler number:"/>
-				<h:inputText  value="#{offersManagedBean.offer.travelernumber}"/>
-				
-				<h:outputText value="Description:"/>
-				<h:inputText  value="#{offersManagedBean.offer.description}"/>
-									
-				<h:commandButton action="#{offersManagedBean.postOffer}" value="Save" />
-				<h:outputText value="#{offersManagedBean.feedbackO}"  />		
-			</h:panelGrid>		
+			</p:panel>
+			
 		</h:form>
+		
+		<h:form id="dialogForm">
+			
+			<p:dialog id="addDestination" widgetVar="dialog" modal="true" showEffect="fade" hideEffect="fade" 
+				resizable="false" header="Add destination">
+				<h:panelGrid columns="2">
+					
+					<h:outputText value="Destination name: " />
+					<p:inputText value="#{offersManagedBean.dest.destinationname}" />
+					
+				</h:panelGrid>
+				
+				<h:panelGrid columns="1" style="margin-left: auto; margin-right: auto">
+					<p:commandButton action="#{offersManagedBean.addDestination}" oncomplete="PF('dialog').hide()"
+						value="Save" update=":main:destinations" />
+				</h:panelGrid>
+			</p:dialog>
+			
+		</h:form>
+		
 	</f:view>
 </h:body>
 </html>
