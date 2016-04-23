@@ -1,5 +1,6 @@
 package managers;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +8,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import model.Tim7Comment;
+import model.Tim7Notification;
+import model.Tim7Offer;
 import model.Tim7User;
 
 //Crated by 
@@ -153,5 +156,114 @@ public class UserManager {
 			return new ArrayList<>();
 		}
 	}
+	
+	public void sendNotification(Tim7User traveler, Tim7Offer offer) {
+		
+		EntityManager em = JPAUtil.getEntityManager();
+		
+		try {
+			
+			Tim7Notification notification = new Tim7Notification();
+			notification.setNotificationmessage(traveler.getUsername() + " has accepted your offer: " + offer.getTim7Destination().getDestinationname() 
+					+ " ("+ new SimpleDateFormat("dd.MM.yyyy").format(offer.getStartdate()) + ")");
+			notification.setTim7User(offer.getTim7User());
+			
+			em.getTransaction().begin();
+			em.persist(notification);
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			em.getTransaction().rollback();
+			
+		} finally {
+			
+			em.close();
+			
+		}
+		
+	}
 
+	
+	public List<Tim7Notification> getNewNotifications(Tim7User user) {
+		
+		try {
+			
+			if (user != null) {
+				
+				TypedQuery<Tim7Notification> tq 
+					= JPAUtil.getEntityManager().createQuery("select n from Tim7Notification n where n.tim7User.iduser = :id and n.seen = :s", Tim7Notification.class);
+				tq.setParameter("id", user.getIduser());
+				tq.setParameter("s", (short)0);
+				
+				return tq.getResultList();
+				
+			} else {
+				return new ArrayList<>();
+			}
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			return new ArrayList<>();
+			
+		}
+		
+	}
+	
+	public List<Tim7Notification> getAllNotifications(Tim7User user) {
+		
+		try {
+			
+			if (user != null) {
+				
+				TypedQuery<Tim7Notification> tq 
+					= JPAUtil.getEntityManager().createQuery("select n from Tim7Notification n where n.tim7User.iduser = :id order by n.seen asc, n.idnotification desc", Tim7Notification.class);
+				tq.setParameter("id", user.getIduser());
+				
+				return tq.getResultList();
+			
+			} else {
+				
+				return new ArrayList<>();
+				
+			}
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			return new ArrayList<>();
+			
+		}
+		
+	}
+	
+	public void checkAsSeen(List<Tim7Notification> ns) {
+		
+		EntityManager em = JPAUtil.getEntityManager();
+		
+		try {
+			
+			em.getTransaction().begin();
+			
+			for (Tim7Notification n : ns) {
+				n.setSeen((byte)1);
+				em.merge(n);
+			}
+			
+			em.getTransaction().commit();
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			em.getTransaction().rollback();
+			
+		} finally {
+			
+			em.close();
+			
+		}
+		
+	}
+	
 }

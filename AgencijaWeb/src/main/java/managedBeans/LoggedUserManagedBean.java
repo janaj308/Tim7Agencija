@@ -10,6 +10,7 @@ import model.Tim7User;
 public class LoggedUserManagedBean {
 
 	private Tim7User user;
+	private String fromPage;
 
 	public Tim7User getUser() {
 		return user;
@@ -17,6 +18,14 @@ public class LoggedUserManagedBean {
 
 	public void setUser(Tim7User user) {
 		this.user = user;
+	}
+
+	public String getFromPage() {
+		return fromPage;
+	}
+
+	public void setFromPage(String fromPage) {
+		this.fromPage = fromPage;
 	}
 	
 }

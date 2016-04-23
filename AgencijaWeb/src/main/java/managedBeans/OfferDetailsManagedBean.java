@@ -7,6 +7,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
 import managers.OfferManager;
+import managers.UserManager;
 import model.Tim7Offer;
 import model.Tim7User;
 
@@ -18,7 +19,6 @@ public class OfferDetailsManagedBean {
 	@ManagedProperty(value = "#{loggedUserManagedBean}")
 	LoggedUserManagedBean loggedUserManagedBean;
 	private List<Tim7User> travelers;
-	private boolean fromOffer;
 	private boolean accepted;
 	
 	public String loadOffer(Tim7Offer offer) {
@@ -50,6 +50,11 @@ public class OfferDetailsManagedBean {
 		travelers.clear();
 		travelers = om.getTravelers(offer.getIdoffer());
 		
+		UserManager um = new UserManager();
+		um.sendNotification(loggedUserManagedBean.getUser(), offer);
+		
+		accepted = true;
+		
 	}
 
 	public Tim7Offer getOffer() {
@@ -74,14 +79,6 @@ public class OfferDetailsManagedBean {
 
 	public void setTravelers(List<Tim7User> travelers) {
 		this.travelers = travelers;
-	}
-
-	public boolean isFromOffer() {
-		return fromOffer;
-	}
-
-	public void setFromOffer(boolean fromOffer) {
-		this.fromOffer = fromOffer;
 	}
 
 	public boolean isAccepted() {

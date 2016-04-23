@@ -57,10 +57,7 @@ public class UserLogInManagedBean {
 			feedback = "Logged in: "+ user.getUserfirstname();
 			loggedUserManagedBean.setUser(user);
 			
-			if (offerDetailsManagedBean.isFromOffer()) {
-				return "/pages/offerDetails?faces-redirect=true";
-			}
-			return "/pages/index?faces-redirect=true";
+			return loggedUserManagedBean.getFromPage() + "?faces-redirect=true";
 		}
 	}
 	

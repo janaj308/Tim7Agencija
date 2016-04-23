@@ -4,13 +4,77 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"  
     xmlns:f="http://java.sun.com/jsf/core"  
-    xmlns:p="http://primefaces.org/ui">
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 <h:head>
 	<title>About Offer</title>
 </h:head>
-<h:body style="margin: 30px auto 30px auto">
+<h:body>
 	<f:view>
+	
+		<h:form id="notificationForm">
+		
+			<p:toolbar id="toolbar">
+				<f:facet name="left">
+        			<p:button value="Home" icon="ui-icon-home" outcome="/pages/index" />
+        			
+        			<p:commandButton id="notifications" type="button" rendered="#{loggedUserManagedBean.user != null}" >
+        				<c:if test="#{not empty notificationsManagedBean.newNotifications}" >
+        					<f:attribute name="icon" value="ui-icon-notice" />
+        				</c:if>
+        				<c:if test="#{empty notificationsManagedBean.newNotifications}">
+        					<f:attribute name="icon" value="ui-icon-comment" />
+        				</c:if>
+        			</p:commandButton>
+        			<p:overlayPanel id="notificationPanel" for="notifications" hideEffect="fade" dynamic="true" >
+        			
+        				<h:outputText value="No new notifications" rendered="#{empty notificationsManagedBean.newNotifications}" 
+        					id="noNot" />
+        					
+        				<p:dataScroller value="#{notificationsManagedBean.newNotifications}" var="n" id="scroller" 
+        					rendered="#{not empty notificationsManagedBean.newNotifications}">
+        				
+	        				<p:outputPanel style="padding: 8px">
+	        					<h:commandLink action="#{offerDetailsManagedBean.loadOffer(n.tim7Offer)}" value="#{n.notificationmessage}"
+	       							style="color:black; text-decoration: none" />
+	       					</p:outputPanel>
+       								
+        					<!-- <p:outputPanel style="padding: 8px; background: #66c2ff" rendered="#{n.seen == 0}">
+        						<h:commandLink action="#{offerDetailsManagedBean.loadOffer(n.tim7Offer)}" value="#{n.notificationmessage}"
+       								style="color:black; text-decoration: none" />
+        					</p:outputPanel>
+        					
+        					<p:outputPanel style="padding: 8px" rendered="#{n.seen == 1}">
+        						<h:commandLink action="#{offerDetailsManagedBean.loadOffer(n.tim7Offer)}" value="#{n.notificationmessage}"
+       								style="color:black; text-decoration: none" />
+        					</p:outputPanel> -->
+        					
+        				</p:dataScroller>
+        				
+        				<h:panelGrid columns="2" style="margin: 10px auto 0px auto">
+   							<p:commandButton update="notificationForm" 
+   								onclick="#{notificationsManagedBean.checkAsSeen()}" 
+   								value="Mark all as seen" ajax="false" />
+   							<p:commandButton value="See all notifications" oncomplete="PF('dialog').show()" />
+       					</h:panelGrid>
+        			</p:overlayPanel>
+				</f:facet>
+				
+				<f:facet name="right">
+					<p:commandButton value="Logout" action="#{UserLogInManagedBean.logOutUser()}" 
+						rendered="#{loggedUserManagedBean.user != null}"/>
+					
+					<p:commandButton value="Login" action="#{UserLogInManagedBean.loadLogin}" rendered="#{loggedUserManagedBean.user == null}">
+						<f:setPropertyActionListener value="#{'/pages/offerDetails'}" target="#{loggedUserManagedBean.fromPage}" />
+					</p:commandButton>
+					<p:button value="Register" outcome="/pages/RegistrationUser" rendered="#{loggedUserManagedBean.user == null}" />
+				</f:facet>
+			</p:toolbar>
+			
+			<p:sticky target="toolbar" />
+			
+		</h:form>
 	
 		<p:outputPanel style="margin-top: 30px; margin-bottom: 30px; text-align:center">
 			<p:outputPanel style="margin-bottom: 10px" >
@@ -81,7 +145,7 @@
 						<h:outputText value="#{traveler.username}" rendered="#{traveler.iduser != loggedUserManagedBean.user.iduser}" />
 					</p:dataList>
 					
-					<h:outputText value="No travelers accepted yet" style="font-weight: bold" rendered="#{empty offerDetailsManagedBean.travelers}" />
+					<h:outputText id="noTravelers" value="No travelers accepted yet" style="font-weight: bold" rendered="#{empty offerDetailsManagedBean.travelers}" />
 				
 					<p:separator style="margin-top: 15px; margin-bottom: 15px" />
 					
@@ -91,13 +155,36 @@
 						</p:commandButton>
 					</h:panelGrid>
 					
-					<h:panelGrid columns="1" style="margin-left: auto; margin-right: auto" rendered="#{loggedUserManagedBean.user != null and !offerDetailsManagedBean.accepted}">
-						<p:commandButton value="Accept" action="#{offerDetailsManagedBean.acceptOffer}" update="travelerList spotNo" />
+					<h:panelGrid id="acceptBtn" columns="1" style="margin-left: auto; margin-right: auto" 
+						rendered="#{loggedUserManagedBean.user != null and !offerDetailsManagedBean.accepted}">
+						<p:commandButton value="Accept" action="#{offerDetailsManagedBean.acceptOffer}" 
+							update="spotNo travelerList noTravelers acceptBtn" ajax="false" />
 					</h:panelGrid>
 				
 				</p:layoutUnit>
 			</p:layout>
 			
+		</h:form>
+		
+		<h:form id="dialogForm">
+		
+			<p:dialog id="allNotifications" widgetVar="dialog" modal="true" showEffect="fade" hideEffect="fade" 
+				resizable="false" header="All notifications">
+				
+				<h:outputText value="No notifications" rendered="#{empty notificationsManagedBean.allNotifications}" />
+				
+				<p:dataScroller value="#{notificationsManagedBean.allNotifications}" var="n" id="scroller" 
+   					rendered="#{not empty notificationsManagedBean.allNotifications}">
+   					
+   					<p:outputPanel style="padding: 8px">
+   						<h:commandLink action="#{offerDetailsManagedBean.loadOffer(n.tim7Offer)}" value="#{n.notificationmessage}"
+							style="color:black; text-decoration: none" />
+   					</p:outputPanel>
+        					
+				</p:dataScroller>
+				
+			</p:dialog>
+		
 		</h:form>
 		
 	</f:view>

@@ -18,12 +18,17 @@ public class Tim7Notification implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int idnotification;
 
-	private String notificationmessage;
+	@ManyToOne
+	@JoinColumn(name="IDOFFER")
+	private Tim7Offer tim7Offer;
 
-	//bi-directional many-to-one association to Tim7User
 	@ManyToOne
 	@JoinColumn(name="IDUSER")
 	private Tim7User tim7User;
+
+	private String notificationmessage;
+
+	private byte seen;
 
 	public Tim7Notification() {
 	}
@@ -36,6 +41,22 @@ public class Tim7Notification implements Serializable {
 		this.idnotification = idnotification;
 	}
 
+	public Tim7Offer getTim7Offer() {
+		return tim7Offer;
+	}
+
+	public void setTim7Offer(Tim7Offer tim7Offer) {
+		this.tim7Offer = tim7Offer;
+	}
+
+	public Tim7User getTim7User() {
+		return tim7User;
+	}
+
+	public void setTim7User(Tim7User tim7User) {
+		this.tim7User = tim7User;
+	}
+
 	public String getNotificationmessage() {
 		return this.notificationmessage;
 	}
@@ -44,12 +65,12 @@ public class Tim7Notification implements Serializable {
 		this.notificationmessage = notificationmessage;
 	}
 
-	public Tim7User getTim7User() {
-		return this.tim7User;
+	public byte getSeen() {
+		return this.seen;
 	}
 
-	public void setTim7User(Tim7User tim7User) {
-		this.tim7User = tim7User;
+	public void setSeen(byte seen) {
+		this.seen = seen;
 	}
 
 }
