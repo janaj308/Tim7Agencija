@@ -113,10 +113,22 @@
 				</h:form>
 			</p:layoutUnit>
 			
-			<p:layoutUnit position="east" style="padding: 10px">
+			<p:layoutUnit position="east" style="padding: 10px" rendered="#{loggedUserManagedBean.user != null and not empty dataManagedBean.recommendedOffers}">
 				
 				<!-- OFFER RECOMMENDATIONS - (NATALIJA) -->
-			
+				<h:form style="margin-left: 20px; margin-right: 20px">
+				
+					<p:dataScroller value="#{dataManagedBean.recommendedOffers}" var="offer" mode="inline" scrollHeight="300" >
+					
+						<p:outputPanel style="margin-top: 10px; margin-bottom: 10px">
+							<h:commandLink action="#{offerDetailsManagedBean.loadOffer(offer)}" value="#{offer.tim7Destination.destinationname} (#{offer.price})" 
+									style="font-weight: bold">
+								<!-- <f:setPropertyActionListener target="#{offerDetailsManagedBean.offer}" value="#{offer}" /> -->
+							</h:commandLink>
+						</p:outputPanel>
+					</p:dataScroller>
+				
+				</h:form>
 			</p:layoutUnit>
 			
 		</p:layout>

@@ -124,7 +124,10 @@
 					
 					<p:separator style="margin-top: 15px; margin-bottom: 15px" />
 					
-					<h:outputText value="Posted by: #{offerDetailsManagedBean.offer.tim7User.username}" style="font-weight: bold" />
+					<h:commandLink value="Posted by: #{offerDetailsManagedBean.offer.tim7User.username}" style="font-weight: bold" 
+						action="#{userProfileManagedBean.loadProfile(offerDetailsManagedBean.offer.tim7User)}">
+						<!-- <f:setPropertyActionListener value="#{offerDetailsManagedBean.offer.tim7User}" target="#{userProfileManagedBean.user}" />  -->
+					</h:commandLink>
 					
 				</p:layoutUnit>
 				

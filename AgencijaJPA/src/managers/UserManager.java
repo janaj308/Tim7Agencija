@@ -167,9 +167,11 @@ public class UserManager {
 			notification.setNotificationmessage(traveler.getUsername() + " has accepted your offer: " + offer.getTim7Destination().getDestinationname() 
 					+ " ("+ new SimpleDateFormat("dd.MM.yyyy").format(offer.getStartdate()) + ")");
 			notification.setTim7User(offer.getTim7User());
+			notification.setTim7Offer(offer);
 			
 			em.getTransaction().begin();
 			em.persist(notification);
+			em.getTransaction().commit();
 			
 		} catch (Exception e) {
 			
@@ -192,9 +194,9 @@ public class UserManager {
 			if (user != null) {
 				
 				TypedQuery<Tim7Notification> tq 
-					= JPAUtil.getEntityManager().createQuery("select n from Tim7Notification n where n.tim7User.iduser = :id and n.seen = :s", Tim7Notification.class);
+					= JPAUtil.getEntityManager().createQuery("select n from Tim7Notification n where n.tim7User.iduser = :id and n.seen = :s order by n.seen asc, n.idnotification desc", Tim7Notification.class);
 				tq.setParameter("id", user.getIduser());
-				tq.setParameter("s", (short)0);
+				tq.setParameter("s", (byte)0);
 				
 				return tq.getResultList();
 				
@@ -218,7 +220,7 @@ public class UserManager {
 			if (user != null) {
 				
 				TypedQuery<Tim7Notification> tq 
-					= JPAUtil.getEntityManager().createQuery("select n from Tim7Notification n where n.tim7User.iduser = :id order by n.seen asc, n.idnotification desc", Tim7Notification.class);
+					= JPAUtil.getEntityManager().createQuery("select n from Tim7Notification n where n.tim7User.iduser = :id order by n.idnotification desc", Tim7Notification.class);
 				tq.setParameter("id", user.getIduser());
 				
 				return tq.getResultList();

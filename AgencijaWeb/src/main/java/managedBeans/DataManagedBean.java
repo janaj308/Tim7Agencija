@@ -2,6 +2,7 @@ package managedBeans;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
@@ -9,7 +10,6 @@ import javax.faces.bean.RequestScoped;
 import managers.OfferManager;
 import model.Tim7Destination;
 import model.Tim7Offer;
-import model.Tim7User;
 
 @ManagedBean
 @RequestScoped
@@ -18,11 +18,11 @@ public class DataManagedBean {
 	@ManagedProperty(value = "#{loggedUserManagedBean}")
 	LoggedUserManagedBean loggedUserManagedBean;
 	
-	private List<Tim7Offer> allOffers = new OfferManager().getAllOffers();
+	private List<Tim7Offer> allOffers;
 	
-	private List<Tim7Offer> recommendedOffers= new OfferManager().getOffersByAge(loggedUserManagedBean.getUser().getDateofbirth());
+	private List<Tim7Offer> recommendedOffers;
 	
-	private List<Tim7Destination> allDestinations= new OfferManager().getAllDestinations();
+	private List<Tim7Destination> allDestinations;
 	
 	public void reloadDestinations() {
 		
@@ -30,7 +30,15 @@ public class DataManagedBean {
 		
 	}
 	
-
+	@PostConstruct
+	public void post() {
+		
+		OfferManager om = new OfferManager();
+		allOffers = om.getAllOffers();
+		recommendedOffers = om.getOffersByAge(loggedUserManagedBean.getUser().getDateofbirth());
+		allDestinations = om.getAllDestinations();
+		
+	}
 	
 	public LoggedUserManagedBean getLoggedUserManagedBean() {
 		return loggedUserManagedBean;

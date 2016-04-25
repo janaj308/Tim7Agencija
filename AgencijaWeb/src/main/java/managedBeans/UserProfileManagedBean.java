@@ -25,10 +25,18 @@ public class UserProfileManagedBean {
 	private List<Tim7Comment> comments;
 	
 	public UserProfileManagedBean(){
-		EntityManager em = JPAUtil.getEntityManager();
-		user= em.find(Tim7User.class, 1);
+		//EntityManager em = JPAUtil.getEntityManager();
+		//user= em.find(Tim7User.class, 1);
 		rating=1;
-		comments= new UserManager().getCommentsForUser(user.getIduser());
+	}
+	
+	public String loadProfile(Tim7User user) {
+		
+		this.user = user;
+		comments = new UserManager().getCommentsForUser(user.getIduser());
+		
+		return "/pages/userProfile?faces-redirect=true";
+		
 	}
 	
 	public void rate(){
@@ -36,50 +44,34 @@ public class UserProfileManagedBean {
 		UserManager um= new UserManager();
 		um.setRating(user, rating, comm, loggedUserManagedBean.getUser());
 	}
-
-	
 	
 	public List<Tim7Comment> getComments() {
 		return comments;
 	}
 
-
-
 	public void setComments(List<Tim7Comment> comments) {
 		this.comments = comments;
 	}
-
-
 
 	public int getRating() {
 		return rating;
 	}
 
-
-
 	public void setRating(int rating) {
 		this.rating = rating;
 	}
-
-
 
 	public Tim7User getUser() {
 		return user;
 	}
 
-
 	public void setUser(Tim7User user) {
 		this.user = user;
 	}
 
-
-
-
 	public String getComm() {
 		return comm;
 	}
-
-
 
 	public void setComm(String comm) {
 		this.comm = comm;
@@ -92,9 +84,5 @@ public class UserProfileManagedBean {
 	public void setLoggedUserManagedBean(LoggedUserManagedBean loggedUserManagedBean) {
 		this.loggedUserManagedBean = loggedUserManagedBean;
 	}
-
-
-	
-	
 	
 }

@@ -38,31 +38,39 @@ public class OfferManager {
 	}
 
 	public List<Tim7Offer> getOffersByAge(Date birth) {
-
-		EntityManager em = JPAUtil.getEntityManager();
-
-		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			String b= sdf.format(birth);
-			String year= b.substring(0, 4);
-			int yearFrom= Integer.parseInt(year)-2;
-			int yearTo= Integer.parseInt(year)+2;
-			Date from = sdf.parse(yearFrom + "-01-01");
-			Date to = sdf.parse(yearTo + "-12-31");
-			TypedQuery<Tim7Offer> tq = em.createQuery("select o from Tim7Offer o where o.tim7User.dateofbirth between :from and :to ", Tim7Offer.class);
-			tq.setParameter("from", from);
-			tq.setParameter("to", to);
-			return tq.getResultList();
-
-		} catch (Exception e) {
-
-			e.printStackTrace();
+		
+		if (birth != null) {
+		
+			EntityManager em = JPAUtil.getEntityManager();
+	
+			try {
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				String b= sdf.format(birth);
+				String year= b.substring(0, 4);
+				int yearFrom= Integer.parseInt(year)-2;
+				int yearTo= Integer.parseInt(year)+2;
+				Date from = sdf.parse(yearFrom + "-01-01");
+				Date to = sdf.parse(yearTo + "-12-31");
+				TypedQuery<Tim7Offer> tq = em.createQuery("select o from Tim7Offer o where o.tim7User.dateofbirth between :from and :to ", Tim7Offer.class);
+				tq.setParameter("from", from);
+				tq.setParameter("to", to);
+				return tq.getResultList();
+	
+			} catch (Exception e) {
+	
+				e.printStackTrace();
+				return new ArrayList<>();
+	
+			} finally {
+	
+				em.close();
+	
+			}
+		}
+		else {
+			
 			return new ArrayList<>();
-
-		} finally {
-
-			em.close();
-
+			
 		}
 
 	}
