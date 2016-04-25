@@ -57,6 +57,17 @@ public class UserManager {
 	}
 	
 	
+	public Tim7User getOneUser(){
+		try{
+			EntityManager em=JPAUtil.getEntityManager();
+			TypedQuery<Tim7User> tq=em.createQuery("select u from Tim7User u where u.iduser=1",Tim7User.class);
+			return tq.getSingleResult();
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	// Svaki user name treba da bude unikatan
 	public boolean testUserNameValidity(EntityManager em, String userName){
 		try{

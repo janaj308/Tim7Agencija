@@ -18,7 +18,7 @@ public class Tim7Photo implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int idphoto;
 
-	private byte photoinfo;
+	private byte[] photoinfo;
 
 	private String photoname;
 
@@ -43,11 +43,11 @@ public class Tim7Photo implements Serializable {
 		this.idphoto = idphoto;
 	}
 
-	public byte getPhotoinfo() {
+	public byte[] getPhotoinfo() {
 		return this.photoinfo;
 	}
 
-	public void setPhotoinfo(byte photoinfo) {
+	public void setPhotoinfo(byte[] photoinfo) {
 		this.photoinfo = photoinfo;
 	}
 
