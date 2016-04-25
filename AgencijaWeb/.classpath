@@ -24,7 +24,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v8.0"/>
-	<classpathentry kind="lib" path="C:/Users/Jana Jurica/Documents/Fax/IV godina/PRIS/rocket-1.0.10.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Istvan/Downloads/rocket-1.0.10.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/rocket-1.0.10.jar"/>
 	<classpathentry excluding="**" kind="src" output="target/classes" path="src/main/resources">
 		<attributes>

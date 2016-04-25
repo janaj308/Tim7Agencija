@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+</h:head>
+<h:body>
+	<f:view>
+		<h:form id="recivedMessageForm">
+			<p:outputPanel style="margin-top: 30px; margin-bottom: 30px; text-align:center">
+				<h:outputText value="Inbox" style="font-size: 1.5em; font-weight: bold; color: #004080;" />
+			</p:outputPanel>
+		
+			<p:layout style="min-height: 350px">
+		
+				<p:layoutUnit position="center" style="padding: 10px" >
+					<h:form style="margin-left: 20px; margin-right: 20px">
+					
+						<p:dataScroller value="#{dataManagedBean.allMessageSent}" var="smes" mode="inline" scrollHeight="300" >	
+						
+							<p:outputPanel style="margin-bottom: 5px">
+								<h:outputText value="To: " />
+								<h:outputText value="#{smes.iduserreceiver}" >									
+								</h:outputText>
+							</p:outputPanel>
+							<p:outputPanel style="margin-bottom: 5px">
+								<h:outputText value="Content: " />
+								<h:outputText value="#{smes.messagesentcontent}" >									
+								</h:outputText>
+							</p:outputPanel>							
+						</p:dataScroller>
+				
+					</h:form>
+				</p:layoutUnit>
+			</p:layout>
+		</h:form>
+	</f:view>
+</h:body>
+</html>
+

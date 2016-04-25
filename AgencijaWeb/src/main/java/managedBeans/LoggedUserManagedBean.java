@@ -5,7 +5,7 @@ import javax.faces.bean.ManagedBean;
 
 import model.Tim7User;
 
-@ManagedBean
+@ManagedBean (name="loggedUserManagedBean")
 @ApplicationScoped
 public class LoggedUserManagedBean {
 

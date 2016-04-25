@@ -27,6 +27,7 @@
 				<h:outputText  value="#{userProfileManagedBean.user.rating}"/>
 					
 			</h:panelGrid>
+			<h:commandButton  value="Private Message" style="margin-top: 10px" action="#{massageManagedBean.loadReciver(userProfileManagedBean.user)}"/>
 			
 			 <p:dataList value="#{userProfileManagedBean.comments}" var="comm" >
 		        <f:facet name="header">
