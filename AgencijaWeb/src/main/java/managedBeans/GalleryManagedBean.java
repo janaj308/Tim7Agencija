@@ -54,6 +54,14 @@ public class GalleryManagedBean {
 		}
 	}
 	
+	public List<BufferedImage> getSlike() {
+		return slike;
+	}
+
+	public void setSlike(List<BufferedImage> slike) {
+		this.slike = slike;
+	}
+
 	public Tim7Destination getDestin() {
 		return destin;
 	}
