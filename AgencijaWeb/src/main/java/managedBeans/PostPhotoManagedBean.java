@@ -1,9 +1,12 @@
 package managedBeans;
 
+import java.awt.Image;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
@@ -27,11 +30,15 @@ public class PostPhotoManagedBean {
 	private Tim7Photo photo;
 	private PhotoManager pm;
 	private UserManager um;
-
-	public PostPhotoManagedBean() {
+	//@ManagedProperty(value = "#{loggedUserManagedBean}")
+	//LoggedUserManagedBean loggedUserManagedBean;
+	
+	@PostConstruct
+	public void init() {
 		OfferManager om = new OfferManager();
 		pm=new PhotoManager();
 		um=new UserManager();
+		photo=new Tim7Photo();
 		file = null;
 		allDestinations=om.getAllDestinations();
 	}
@@ -46,17 +53,13 @@ public class PostPhotoManagedBean {
 
 	public void upload() {
 		if (file != null) {
-			FacesMessage message = new FacesMessage("Succesful", file.getFileName() + " is uploaded.");
-			FacesContext.getCurrentInstance().addMessage(null, message);
 			byte[] image=handleFileUpload(file);
-			photo.setTim7Destination(destin);
 			photo.setTim7User(um.getOneUser());
 			photo.setPhotoinfo(image);
 			
 			pm.savePhoto(photo);
 		} else {
-			FacesMessage message = new FacesMessage("Not succesful, file does not exist.");
-			FacesContext.getCurrentInstance().addMessage(null, message);
+			//as
 		}
 	}
 	
@@ -79,6 +82,14 @@ public class PostPhotoManagedBean {
 
 	public void setAllDestinations(List<Tim7Destination> allDestinations) {
 		this.allDestinations = allDestinations;
+	}
+
+	public Tim7Photo getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(Tim7Photo photo) {
+		this.photo = photo;
 	}
 
 	

@@ -6,5 +6,15 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
+	
+<h:outputText value="Destination:"/>
+			        <h:selectOneMenu id="destinations" value="#{postPhotoManagedBean.photo.tim7Destination}">
+			 			<f:converter converterId="destForPhotoConverter" />
+			 			<f:selectItems value="#{postPhotoManagedBean.allDestinations}" var="d" 
+			 				itemLabel="#{d.destinationname}" itemValue="#{d}" />
+			 		</h:selectOneMenu>
 
+	
+	
+			 		
 </html>

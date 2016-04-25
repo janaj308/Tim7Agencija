@@ -13,6 +13,7 @@ public class PhotoManager {
 	public void savePhoto(Tim7Photo photo){
 		try{
 			EntityManager em=JPAUtil.getEntityManager();
+			em.getTransaction().begin();
 			em.persist(photo);
 			em.getTransaction().commit();
 			em.close();

@@ -9,16 +9,16 @@
 
 <h:form enctype="multipart/form-data">
     <h:outputText value="Destination:"/>
-			        <h:selectOneMenu id="destinations" value="#{postPhotoManagedBean.destin}">
+			        <h:selectOneMenu id="destinations" value="#{postPhotoManagedBean.photo.tim7Destination}">
 			 			<f:converter converterId="destForPhotoConverter" />
 			 			<f:selectItems value="#{postPhotoManagedBean.allDestinations}" var="d" 
 			 				itemLabel="#{d.destinationname}" itemValue="#{d}" />
 			 		</h:selectOneMenu>
  	<br/>
  	<br/>
-    <p:fileUpload label="Choose photo: " value="#{postPhotoManagedBean.file}" mode="simple" skinSimple="true"/>
+    <p:fileUpload label="Choose photo: " value="#{postPhotoManagedBean.file}" mode="simple" skinSimple="true" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>
  	<p:separator />
     <p:commandButton value="Submit" ajax="false" actionListener="#{postPhotoManagedBean.upload}" disabled="false" />
-    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+    <!-- <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" /> -->
 </h:form>
 </html>
