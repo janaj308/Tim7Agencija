@@ -1,5 +1,7 @@
 package managers;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
@@ -21,6 +23,18 @@ public class PhotoManager {
 			e.printStackTrace();
 		}
 	
+	}
+	
+	public List<Tim7Photo> getAllPhotos(){
+		try {
+			EntityManager em=JPAUtil.getEntityManager();
+			TypedQuery<Tim7Photo> tq=em.createQuery("select p from Tim7Photo",Tim7Photo.class);
+			return tq.getResultList();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	public Tim7Destination getOneDestination(){
