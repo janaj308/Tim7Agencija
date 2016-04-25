@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Offers</title>
+</h:head>
+<h:body style="margin: 30px auto 30px auto">
+	<f:view>
+		
+		<p:outputPanel style="margin-top: 30px; margin-bottom: 30px; text-align:center">
+			<h:outputText value="Offers" style="font-size: 1.5em; font-weight: bold; color: #004080;" />
+		</p:outputPanel>
+		
+		<h:form style="margin-left: 20px; margin-right: 20px">
+		
+			<p:dataScroller value="#{dataManagedBean.allOffers}" var="offer" mode="inline" scrollHeight="300" >
+			
+				<p:outputPanel style="margin-top: 10px; margin-bottom: 10px">
+					<h:commandLink action="#{offerDetailsManagedBean.loadOffer(offer)}" value="#{offer.tim7Destination.destinationname} (#{offer.price})" 
+							style="font-weight: bold">
+						<!-- <f:setPropertyActionListener target="#{offerDetailsManagedBean.offer}" value="#{offer}" /> -->
+					</h:commandLink>
+				</p:outputPanel>
+				<p:outputPanel style="margin-bottom: 5px">
+					<h:outputText value="From: " />
+					<h:outputText value="#{offer.startdate}" >
+						<f:convertDateTime pattern="dd.MM.yyyy" />
+					</h:outputText>
+				</p:outputPanel>
+				<p:outputPanel style="margin-bottom: 5px">
+					<h:outputText value="To: " />
+					<h:outputText value="#{offer.enddate}" >
+						<f:convertDateTime pattern="dd.MM.yyyy" />
+					</h:outputText>
+				</p:outputPanel>
+				<p:outputPanel>	
+					<h:outputText value="Posted by: #{offer.tim7User.username}" />
+				</p:outputPanel>
+			</p:dataScroller>
+		
+		</h:form>
+		
+	</f:view>
+</h:body>
+</html>
