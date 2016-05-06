@@ -50,7 +50,7 @@
 				</f:facet>
 				
 				<f:facet name="right">
-					<p:commandButton value="Logout" action="#{UserLogInManagedBean.logOutUser()}" />
+					<p:commandButton value="Profile" icon="ui-icon-person" action="#{userProfileManagedBean.loadProfile(loggedUserManagedBean.user)}" />
 				</f:facet>
 			</p:toolbar>
 			

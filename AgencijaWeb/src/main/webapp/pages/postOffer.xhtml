@@ -36,16 +36,6 @@
 	        					<h:commandLink action="#{offerDetailsManagedBean.loadOffer(n.tim7Offer)}" value="#{n.notificationmessage}"
 	       							style="color:black; text-decoration: none" />
 	       					</p:outputPanel>
-       								
-        					<!-- <p:outputPanel style="padding: 8px; background: #66c2ff" rendered="#{n.seen == 0}">
-        						<h:commandLink action="#{offerDetailsManagedBean.loadOffer(n.tim7Offer)}" value="#{n.notificationmessage}"
-       								style="color:black; text-decoration: none" />
-        					</p:outputPanel>
-        					
-        					<p:outputPanel style="padding: 8px" rendered="#{n.seen == 1}">
-        						<h:commandLink action="#{offerDetailsManagedBean.loadOffer(n.tim7Offer)}" value="#{n.notificationmessage}"
-       								style="color:black; text-decoration: none" />
-        					</p:outputPanel> -->
         					
         				</p:dataScroller>
         				
@@ -59,6 +49,8 @@
 				</f:facet>
 				
 				<f:facet name="right">
+					<p:commandButton value="Profile" icon="ui-icon-person" action="#{userProfileManagedBean.loadProfile(loggedUserManagedBean.user)}" 
+						rendered="#{loggedUserManagedBean.user != null}" />
 					<p:commandButton value="Logout" action="#{UserLogInManagedBean.logOutUser()}" 
 						rendered="#{loggedUserManagedBean.user != null}"/>
 					

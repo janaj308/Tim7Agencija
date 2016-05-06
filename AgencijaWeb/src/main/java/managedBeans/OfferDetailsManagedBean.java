@@ -17,7 +17,7 @@ public class OfferDetailsManagedBean {
 	
 	private Tim7Offer offer;
 	@ManagedProperty(value = "#{loggedUserManagedBean}")
-	LoggedUserManagedBean loggedUserManagedBean;
+	private LoggedUserManagedBean loggedUserManagedBean;
 	private List<Tim7User> travelers;
 	private boolean accepted;
 	

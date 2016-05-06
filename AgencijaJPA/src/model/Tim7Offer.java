@@ -3,6 +3,7 @@ package model;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -25,13 +26,13 @@ public class Tim7Offer implements Serializable {
 	private Date enddate;
 
 	@ManyToOne
+	@JoinColumn(name="IDDESTINATION")
+	private Tim7Destination tim7Destination;
+
+	@ManyToOne
 	@JoinColumn(name="IDUSER")
 	private Tim7User tim7User;
 
-	@ManyToOne
-	@JoinColumn(name="IDDESTINATION")
-	private Tim7Destination tim7Destination;
-	
 	private float price;
 
 	@Temporal(TemporalType.DATE)
@@ -42,6 +43,10 @@ public class Tim7Offer implements Serializable {
 	private int travelercurrentcount;
 
 	private int travelernumber;
+
+	//bi-directional many-to-one association to Tim7Comment
+	@OneToMany(mappedBy="tim7Offer")
+	private List<Tim7Comment> tim7Comments;
 
 	public Tim7Offer() {
 	}
@@ -124,6 +129,28 @@ public class Tim7Offer implements Serializable {
 
 	public void setTravelernumber(int travelernumber) {
 		this.travelernumber = travelernumber;
+	}
+
+	public List<Tim7Comment> getTim7Comments() {
+		return this.tim7Comments;
+	}
+
+	public void setTim7Comments(List<Tim7Comment> tim7Comments) {
+		this.tim7Comments = tim7Comments;
+	}
+
+	public Tim7Comment addTim7Comment(Tim7Comment tim7Comment) {
+		getTim7Comments().add(tim7Comment);
+		tim7Comment.setTim7Offer(this);
+
+		return tim7Comment;
+	}
+
+	public Tim7Comment removeTim7Comment(Tim7Comment tim7Comment) {
+		getTim7Comments().remove(tim7Comment);
+		tim7Comment.setTim7Offer(null);
+
+		return tim7Comment;
 	}
 
 }

@@ -21,12 +21,17 @@ public class Tim7Comment implements Serializable {
 	private String commentcontent;
 
 	@ManyToOne
-	@JoinColumn(name="IDUSERBY")
-	private Tim7User userby;
-	
-	@ManyToOne
 	@JoinColumn(name="IDUSERTO")
 	private Tim7User userto;
+	
+	@ManyToOne
+	@JoinColumn(name="IDUSERBY")
+	private Tim7User userby;
+
+	//bi-directional many-to-one association to Tim7Offer
+	@ManyToOne
+	@JoinColumn(name="IDOFFER")
+	private Tim7Offer tim7Offer;
 
 	public Tim7Comment() {
 	}
@@ -47,6 +52,14 @@ public class Tim7Comment implements Serializable {
 		this.commentcontent = commentcontent;
 	}
 
+	public Tim7User getUserto() {
+		return userto;
+	}
+
+	public void setUserto(Tim7User userto) {
+		this.userto = userto;
+	}
+
 	public Tim7User getUserby() {
 		return userby;
 	}
@@ -55,12 +68,12 @@ public class Tim7Comment implements Serializable {
 		this.userby = userby;
 	}
 
-	public Tim7User getUserto() {
-		return userto;
+	public Tim7Offer getTim7Offer() {
+		return this.tim7Offer;
 	}
 
-	public void setUserto(Tim7User userto) {
-		this.userto = userto;
+	public void setTim7Offer(Tim7Offer tim7Offer) {
+		this.tim7Offer = tim7Offer;
 	}
 
 }

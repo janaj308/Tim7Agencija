@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
+import model.Tim7Comment;
 import model.Tim7Destination;
 import model.Tim7Offer;
 import model.Tim7Traveleroffer;
@@ -320,4 +321,43 @@ public class OfferManager {
 
 	}
 
+	public boolean canBeRated(Tim7Offer offer, Tim7User user) {
+		
+		try {
+			
+			boolean result;
+			
+			TypedQuery<Tim7Traveleroffer> tq1 = JPAUtil.getEntityManager().createQuery("select to from Tim7Traveleroffer to where to.tim7Offer.idoffer = :o and to.tim7User.iduser = :u", Tim7Traveleroffer.class);
+			tq1.setParameter("o", offer.getIdoffer());
+			tq1.setParameter("u", user.getIduser());
+			
+			try {
+				
+				tq1.getSingleResult();
+				result = true;
+				
+			} catch (Exception e) { return false; }
+			
+			TypedQuery<Tim7Comment> tq2 = JPAUtil.getEntityManager().createQuery("select c from Tim7Comment c where c.tim7Offer.idoffer = :o and c.userby = :u", Tim7Comment.class);
+			tq2.setParameter("o", offer.getIdoffer());
+			tq2.setParameter("u", user.getIduser());
+			
+			try {
+				
+				tq2.getSingleResult();
+				result = false;
+				
+			} catch (Exception e) { result = true; }
+			
+			return result;
+			
+		} catch (Exception e) {
+		
+			e.printStackTrace();
+			return false;
+			
+		}
+		
+	}
+	
 }

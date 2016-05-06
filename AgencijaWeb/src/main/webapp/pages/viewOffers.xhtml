@@ -53,6 +53,8 @@
 				</f:facet>
 				
 				<f:facet name="right">
+					<p:commandButton value="Profile" icon="ui-icon-person" action="#{userProfileManagedBean.loadProfile(loggedUserManagedBean.user)}" 
+						rendered="#{loggedUserManagedBean.user != null}" />
 					<p:commandButton value="Logout" action="#{UserLogInManagedBean.logOutUser()}" 
 						rendered="#{loggedUserManagedBean.user != null}"/>
 					

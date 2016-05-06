@@ -144,7 +144,7 @@ public class UserManager {
 		}
 	}
 	
-	public void setRating(Tim7User user, int r, String comm, Tim7User userby){
+	public void setRating(Tim7Offer offer, Tim7User user, int r, String comm, Tim7User userby){
 		EntityManager em = JPAUtil.getEntityManager();
 		try{
 			if (user.getRating()==0.0f){
@@ -156,6 +156,7 @@ public class UserManager {
 			c.setCommentcontent(comm);
 			c.setUserby(userby);
 			c.setUserto(user);
+			c.setTim7Offer(offer);
 			em.getTransaction().begin();
 			em.merge(user);
 			em.persist(c);

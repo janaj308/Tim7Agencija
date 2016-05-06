@@ -39,16 +39,6 @@
 	        					<h:commandLink action="#{offerDetailsManagedBean.loadOffer(n.tim7Offer)}" value="#{n.notificationmessage}"
 	       							style="color:black; text-decoration: none" />
 	       					</p:outputPanel>
-       								
-        					<!-- <p:outputPanel style="padding: 8px; background: #66c2ff" rendered="#{n.seen == 0}">
-        						<h:commandLink action="#{offerDetailsManagedBean.loadOffer(n.tim7Offer)}" value="#{n.notificationmessage}"
-       								style="color:black; text-decoration: none" />
-        					</p:outputPanel>
-        					
-        					<p:outputPanel style="padding: 8px" rendered="#{n.seen == 1}">
-        						<h:commandLink action="#{offerDetailsManagedBean.loadOffer(n.tim7Offer)}" value="#{n.notificationmessage}"
-       								style="color:black; text-decoration: none" />
-        					</p:outputPanel> -->
         					
         				</p:dataScroller>
         				
@@ -172,6 +162,16 @@
 						<p:commandButton value="Accept" action="#{offerDetailsManagedBean.acceptOffer}" 
 							update="spotNo travelerList noTravelers acceptBtn" ajax="false" />
 					</h:panelGrid>
+				
+				</p:layoutUnit>
+				
+				<p:layoutUnit position="south" style="margin-left: auto; margin-right: auto; padding: 10px" rendered="#{ratingManagedBean.canRate()}">
+				
+					<p:inputTextarea rows="5" cols="50" value="#{ratingManagedBean.comm}"/>
+					<h:panelGrid columns="2" id="ratingPanel">
+		        		<p:spinner id="rat" value="#{ratingManagedBean.rating}" min="1" max="5" />
+		        		<p:commandButton action="#{ratingManagedBean.rate()}" value="Submit"  />	
+		        	</h:panelGrid>
 				
 				</p:layoutUnit>
 			</p:layout>
