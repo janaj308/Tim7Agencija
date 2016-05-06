@@ -24,6 +24,7 @@ public class OffersManagedBean {
 	
 	private float priceLow;
 	private float priceHigh;
+	private float maxPrice;
 	private String destinationname;
 	private String startingPoint;
 	private List<Tim7Offer> list;
@@ -37,6 +38,7 @@ public class OffersManagedBean {
 		destinationname=null;
 		startingPoint=null;
 		priceHigh=OM.getMaxPrice();
+		maxPrice = priceHigh;
 		dest= new Tim7Destination();
 	}
 
@@ -75,7 +77,6 @@ public class OffersManagedBean {
 			startingPoint=null;
 		}
 		list = OM.searchOff(destinationname, startingPoint, priceLow, priceHigh);
-		System.out.println(list.isEmpty());
 		return "/pages/offerFiltered";	
 	}
 	
@@ -93,6 +94,14 @@ public class OffersManagedBean {
 
 	public void setPriceHigh(float priceHigh) {
 		this.priceHigh = priceHigh;
+	}
+
+	public float getMaxPrice() {
+		return maxPrice;
+	}
+
+	public void setMaxPrice(float maxPrice) {
+		this.maxPrice = maxPrice;
 	}
 
 	public String getDestinationname() {

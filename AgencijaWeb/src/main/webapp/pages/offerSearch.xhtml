@@ -4,32 +4,111 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 <h:head>
 </h:head>
 <body> 
 	<f:view>
+	
+		<h:form id="notificationForm">
+		
+			<p:toolbar id="toolbar">
+				<f:facet name="left">
+        			<p:button value="Home" icon="ui-icon-home" outcome="/pages/index" />
+        			
+        			<p:commandButton id="notifications" type="button" rendered="#{loggedUserManagedBean.user != null}" >
+        				<c:if test="#{not empty notificationsManagedBean.newNotifications}" >
+        					<f:attribute name="icon" value="ui-icon-notice" />
+        				</c:if>
+        				<c:if test="#{empty notificationsManagedBean.newNotifications}">
+        					<f:attribute name="icon" value="ui-icon-comment" />
+        				</c:if>
+        			</p:commandButton>
+        			<p:overlayPanel id="notificationPanel" for="notifications" hideEffect="fade" dynamic="true" >
+        			
+        				<h:outputText value="No new notifications" rendered="#{empty notificationsManagedBean.newNotifications}" 
+        					id="noNot" />
+        					
+        				<p:dataScroller value="#{notificationsManagedBean.newNotifications}" var="n" id="scroller" 
+        					rendered="#{not empty notificationsManagedBean.newNotifications}">
+        				
+	        				<p:outputPanel style="padding: 8px">
+	        					<h:commandLink action="#{offerDetailsManagedBean.loadOffer(n.tim7Offer)}" value="#{n.notificationmessage}"
+	       							style="color:black; text-decoration: none" />
+	       					</p:outputPanel>
+        					
+        				</p:dataScroller>
+        				
+        				<h:panelGrid columns="2" style="margin: 10px auto 0px auto">
+   							<p:commandButton update="notificationForm" 
+   								onclick="#{notificationsManagedBean.checkAsSeen()}" 
+   								value="Mark all as seen" ajax="false"
+   								disabled="#{empty notificationsManagedBean.newNotifications}" />
+   							<p:commandButton value="See all notifications" oncomplete="PF('dialog').show()" />
+       					</h:panelGrid>
+        			</p:overlayPanel>
+				</f:facet>
+				
+				<f:facet name="right">
+					<p:commandButton value="Profile" icon="ui-icon-person" action="#{userProfileManagedBean.loadProfile(loggedUserManagedBean.user)}" 
+						rendered="#{loggedUserManagedBean.user != null}" />
+					<p:commandButton value="Logout" action="#{UserLogInManagedBean.logOutUser()}" 
+						rendered="#{loggedUserManagedBean.user != null}"/>
+					
+					<p:commandButton value="Login" action="#{UserLogInManagedBean.loadLogin}" rendered="#{loggedUserManagedBean.user == null}" >
+						<f:setPropertyActionListener value="#{'/pages/viewOffers'}" target="#{loggedUserManagedBean.fromPage}" />
+					</p:commandButton>
+					<p:button value="Register" outcome="/pages/RegistrationUser" rendered="#{loggedUserManagedBean.user == null}" />
+				</f:facet>
+			</p:toolbar>
+			
+			<p:sticky target="toolbar" />
+			
+		</h:form>
+	
+		<p:outputPanel style="margin-top: 30px; margin-bottom: 30px; text-align:center">
+			<h:outputText value="Find offers" style="font-size: 1.5em; font-weight: bold; color: #004080;" />
+		</p:outputPanel>
+	
 		<h:form>
-			<h1>Search offers</h1>
-			<h:panelGrid columns="2" id="searchOfferPanel">
-
-				<h:outputText value="Destinacija putovanja: " />
-				<h:inputText value="#{offersManagedBean.destinationname}" />
-
-				<h:outputText value="Pocetno mesto: " />
-				<h:inputText value="#{offersManagedBean.startingPoint}" />
-
-				<h:outputText value="Najniza cena: " />
-				<h:inputText value="#{offersManagedBean.priceLow}" />
-
-				<h:outputText value="Najveca cena: " />
-				<h:inputText value="#{offersManagedBean.priceHigh}" />
-
-				<h:commandButton action="#{offersManagedBean.searchOffers()}"
-					value="Pretrazi" render="searchOfferPanel" execute="@form" />
-
-			</h:panelGrid>
+			
+			<p:panel style="margin-top: 30px; margin-bottom: 20px">
+				<h:panelGrid columns="2" id="searchOfferPanel" style="margin: 15px auto 0px auto">
+	
+					<h:outputText value="Destination: " />
+					<p:inputText value="#{offersManagedBean.destinationname}" />
+	
+					<h:outputText value="Starting point: " />
+					<p:inputText value="#{offersManagedBean.startingPoint}" />
+	
+					<h:outputText value="Price range: " />
+					<p:slider for="minPrice,maxPrice" display="currentPrice" range="true" 
+						displayTemplate="Between {min} and {max}" style="width: 220px" maxValue="#{offersManagedBean.maxPrice}" />
+					
+					<h:inputHidden id="minPrice" value="#{offersManagedBean.priceLow}" />
+					<h:inputHidden id="maxPrice" value="#{offersManagedBean.priceHigh}" />
+	
+					<!-- <h:outputText value="Najniza cena: " />
+					<h:inputText value="#{offersManagedBean.priceLow}" />
+	
+					<h:outputText value="Najveca cena: " />
+					<h:inputText value="#{offersManagedBean.priceHigh}" /> -->
+					
+				</h:panelGrid>
+				
+				<h:panelGrid columns="1" style="margin-left: auto; margin-right: auto">
+					<h:outputText id="currentPrice" value="Between #{offersManagedBean.priceLow} and #{offersManagedBean.priceHigh}"
+						colspan="2" />
+				</h:panelGrid>
+				
+				<h:panelGrid columns="1" style="margin: 10px auto 0px auto">
+					<p:commandButton action="#{offersManagedBean.searchOffers()}"
+						value="Find" render="searchOfferPanel" execute="@form" />
+				</h:panelGrid>
+			</p:panel>
 		</h:form>
 	</f:view>
 </body>

@@ -4,26 +4,83 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"  
     xmlns:f="http://java.sun.com/jsf/core"  
-    xmlns:p="http://primefaces.org/ui">
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 <h:head> 
 	<title>Offers</title>
 </h:head>
-<h:body style="margin: 30px auto 30px auto">
+<h:body>
 	<f:view>
 		
-		<p:outputPanel style="margin-bottom: 20px; text-align:center">
-			<h:outputText value="Offers" style="font-size: 1.5em; font-weight: bold" />
+		<h:form id="notificationForm">
+		
+			<p:toolbar id="toolbar">
+				<f:facet name="left">
+        			<p:button value="Home" icon="ui-icon-home" outcome="/pages/index" />
+        			
+        			<p:commandButton id="notifications" type="button" rendered="#{loggedUserManagedBean.user != null}" >
+        				<c:if test="#{not empty notificationsManagedBean.newNotifications}" >
+        					<f:attribute name="icon" value="ui-icon-notice" />
+        				</c:if>
+        				<c:if test="#{empty notificationsManagedBean.newNotifications}">
+        					<f:attribute name="icon" value="ui-icon-comment" />
+        				</c:if>
+        			</p:commandButton>
+        			<p:overlayPanel id="notificationPanel" for="notifications" hideEffect="fade" dynamic="true" >
+        			
+        				<h:outputText value="No new notifications" rendered="#{empty notificationsManagedBean.newNotifications}" 
+        					id="noNot" />
+        					
+        				<p:dataScroller value="#{notificationsManagedBean.newNotifications}" var="n" id="scroller" 
+        					rendered="#{not empty notificationsManagedBean.newNotifications}">
+        				
+	        				<p:outputPanel style="padding: 8px">
+	        					<h:commandLink action="#{offerDetailsManagedBean.loadOffer(n.tim7Offer)}" value="#{n.notificationmessage}"
+	       							style="color:black; text-decoration: none" />
+	       					</p:outputPanel>
+        					
+        				</p:dataScroller>
+        				
+        				<h:panelGrid columns="2" style="margin: 10px auto 0px auto">
+   							<p:commandButton update="notificationForm" 
+   								onclick="#{notificationsManagedBean.checkAsSeen()}" 
+   								value="Mark all as seen" ajax="false"
+   								disabled="#{empty notificationsManagedBean.newNotifications}" />
+   							<p:commandButton value="See all notifications" oncomplete="PF('dialog').show()" />
+       					</h:panelGrid>
+        			</p:overlayPanel>
+				</f:facet>
+				
+				<f:facet name="right">
+					<p:commandButton value="Profile" icon="ui-icon-person" action="#{userProfileManagedBean.loadProfile(loggedUserManagedBean.user)}" 
+						rendered="#{loggedUserManagedBean.user != null}" />
+					<p:commandButton value="Logout" action="#{UserLogInManagedBean.logOutUser()}" 
+						rendered="#{loggedUserManagedBean.user != null}"/>
+					
+					<p:commandButton value="Login" action="#{UserLogInManagedBean.loadLogin}" rendered="#{loggedUserManagedBean.user == null}" >
+						<f:setPropertyActionListener value="#{'/pages/viewOffers'}" target="#{loggedUserManagedBean.fromPage}" />
+					</p:commandButton>
+					<p:button value="Register" outcome="/pages/RegistrationUser" rendered="#{loggedUserManagedBean.user == null}" />
+				</f:facet>
+			</p:toolbar>
+			
+			<p:sticky target="toolbar" />
+			
+		</h:form>
+		
+		<p:outputPanel style="margin-top: 30px; margin-bottom: 30px; text-align:center">
+			<h:outputText value="Search results" style="font-size: 1.5em; font-weight: bold; color: #004080;" />
 		</p:outputPanel>
 		
-		<h:form style="margin-left: 20px; margin-right: 20px">
+		<h:form>
 		
-			<p:dataScroller value="#{offersManagedBean.list}" var="offer" mode="inline" scrollHeight="300" >
+			<p:dataScroller value="#{offersManagedBean.list}" var="offer" mode="inline" scrollHeight="300" 
+				rendered="#{not empty offersManagedBean.list}">
 			
 				<p:outputPanel style="margin-top: 10px; margin-bottom: 10px">
-					<h:commandLink action="#{offersManagedBean.loadOffer}" value="#{offer.tim7Destination.destinationname} (#{offer.price})" 
+					<h:commandLink action="#{offerDetailsManagedBean.loadOffer(offer)}" value="#{offer.tim7Destination.destinationname} (#{offer.price})" 
 							style="font-weight: bold">
-						<f:setPropertyActionListener target="#{offersManagedBean.chosenOffer}" value="#{offer}" />
 					</h:commandLink>
 				</p:outputPanel>
 				<p:outputPanel style="margin-bottom: 5px">
@@ -44,6 +101,10 @@
 			</p:dataScroller>
 		
 		</h:form>
+		
+		<p:outputPanel style="margin-top: 30px; margin-bottom: 30px; text-align:center">
+			<h:outputText value="No results" rendered="#{empty offersManagedBean.list}" style="font-size: 1.5em"/>
+		</p:outputPanel>
 		
 	</f:view>
 </h:body>
