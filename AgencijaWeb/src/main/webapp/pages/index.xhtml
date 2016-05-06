@@ -13,11 +13,10 @@
 	<f:view>
 		<h:form id="notificationForm">
 		
-			<p:toolbar id="toolbar">
+			<p:toolbar id="toolbar" rendered="#{loggedUserManagedBean.user != null}">
 				<f:facet name="left">
-        			<p:button value="Home" icon="ui-icon-home" outcome="/pages/index" />
         			
-        			<p:commandButton id="notifications" type="button" rendered="#{loggedUserManagedBean.user != null}" >
+        			<p:commandButton id="notifications" type="button" >
         				<c:if test="#{not empty notificationsManagedBean.newNotifications}" >
         					<f:attribute name="icon" value="ui-icon-notice" />
         				</c:if>
@@ -43,20 +42,15 @@
         				<h:panelGrid columns="2" style="margin: 10px auto 0px auto">
    							<p:commandButton update="notificationForm" 
    								onclick="#{notificationsManagedBean.checkAsSeen()}" 
-   								value="Mark all as seen" ajax="false" />
+   								value="Mark all as seen" ajax="false" 
+   								disabled="#{empty notificationsManagedBean.newNotifications}" />
    							<p:commandButton value="See all notifications" oncomplete="PF('dialog').show()" />
        					</h:panelGrid>
         			</p:overlayPanel>
 				</f:facet>
 				
 				<f:facet name="right">
-					<p:commandButton value="Logout" action="#{UserLogInManagedBean.logOutUser()}" 
-						rendered="#{loggedUserManagedBean.user != null}"/>
-					
-					<p:commandButton value="Login" action="#{UserLogInManagedBean.loadLogin}" rendered="#{loggedUserManagedBean.user == null}" >
-						<f:setPropertyActionListener value="#{'/pages/index'}" target="#{loggedUserManagedBean.fromPage}" />
-					</p:commandButton>
-					<p:button value="Register" outcome="/pages/RegistrationUser" rendered="#{loggedUserManagedBean.user == null}" />
+					<p:commandButton value="Logout" action="#{UserLogInManagedBean.logOutUser()}" />
 				</f:facet>
 			</p:toolbar>
 			
@@ -85,7 +79,7 @@
 						<p:commandButton action="#{UserLogInManagedBean.logOutUser()}" value="Logout" style="margin-top: 10px" />
 					</p:outputPanel>
 					<h:panelGrid columns="2" style="margin: 10px auto 0px auto" rendered="#{loggedUserManagedBean.user == null}">
-						<p:commandButton value="Login" action="#{UserLogInManagedBean.loadLogin}" >
+						<p:commandButton value="Login" action="#{UserLogInManagedBean.loadLogin()}" >
 							<f:setPropertyActionListener value="#{'/pages/index'}" target="#{loggedUserManagedBean.fromPage}" />
 						</p:commandButton>
 						<p:button value="Register" outcome="/pages/RegistrationUser" />

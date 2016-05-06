@@ -39,23 +39,14 @@
 	        					<h:commandLink action="#{offerDetailsManagedBean.loadOffer(n.tim7Offer)}" value="#{n.notificationmessage}"
 	       							style="color:black; text-decoration: none" />
 	       					</p:outputPanel>
-       								
-        					<!-- <p:outputPanel style="padding: 8px; background: #66c2ff" rendered="#{n.seen == 0}">
-        						<h:commandLink action="#{offerDetailsManagedBean.loadOffer(n.tim7Offer)}" value="#{n.notificationmessage}"
-       								style="color:black; text-decoration: none" />
-        					</p:outputPanel>
-        					
-        					<p:outputPanel style="padding: 8px" rendered="#{n.seen == 1}">
-        						<h:commandLink action="#{offerDetailsManagedBean.loadOffer(n.tim7Offer)}" value="#{n.notificationmessage}"
-       								style="color:black; text-decoration: none" />
-        					</p:outputPanel> -->
         					
         				</p:dataScroller>
         				
         				<h:panelGrid columns="2" style="margin: 10px auto 0px auto">
    							<p:commandButton update="notificationForm" 
    								onclick="#{notificationsManagedBean.checkAsSeen()}" 
-   								value="Mark all as seen" ajax="false" />
+   								value="Mark all as seen" ajax="false"
+   								disabled="#{empty notificationsManagedBean.newNotifications}" />
    							<p:commandButton value="See all notifications" oncomplete="PF('dialog').show()" />
        					</h:panelGrid>
         			</p:overlayPanel>
@@ -85,13 +76,13 @@
 			<p:layoutUnit position="center" style="padding: 10px" >
 				<h:form style="margin-left: 20px; margin-right: 20px">
 				
-					<p:dataScroller value="#{dataManagedBean.allOffers}" var="offer" mode="inline" scrollHeight="300" >
+					<h:outputText value="No offers are currently available" rendered="#{empty dataManagedBean.allActiveOffers}"/>
+				
+					<p:dataScroller value="#{dataManagedBean.allActiveOffers}" var="offer" mode="inline" scrollHeight="300" >
 					
 						<p:outputPanel style="margin-top: 10px; margin-bottom: 10px">
 							<h:commandLink action="#{offerDetailsManagedBean.loadOffer(offer)}" value="#{offer.tim7Destination.destinationname} (#{offer.price})" 
-									style="font-weight: bold">
-								<!-- <f:setPropertyActionListener target="#{offerDetailsManagedBean.offer}" value="#{offer}" /> -->
-							</h:commandLink>
+									style="font-weight: bold" />
 						</p:outputPanel>
 						<p:outputPanel style="margin-bottom: 5px">
 							<h:outputText value="From: " />
@@ -115,7 +106,6 @@
 			
 			<p:layoutUnit position="east" style="padding: 10px" rendered="#{loggedUserManagedBean.user != null and not empty dataManagedBean.recommendedOffers}">
 				
-				<!-- OFFER RECOMMENDATIONS - (NATALIJA) -->
 				<h:form style="margin-left: 20px; margin-right: 20px">
 				
 					<p:dataScroller value="#{dataManagedBean.recommendedOffers}" var="offer" mode="inline" scrollHeight="300" >
@@ -123,7 +113,6 @@
 						<p:outputPanel style="margin-top: 10px; margin-bottom: 10px">
 							<h:commandLink action="#{offerDetailsManagedBean.loadOffer(offer)}" value="#{offer.tim7Destination.destinationname} (#{offer.price})" 
 									style="font-weight: bold">
-								<!-- <f:setPropertyActionListener target="#{offerDetailsManagedBean.offer}" value="#{offer}" /> -->
 							</h:commandLink>
 						</p:outputPanel>
 					</p:dataScroller>

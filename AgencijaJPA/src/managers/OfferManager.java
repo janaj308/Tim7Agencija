@@ -36,6 +36,29 @@ public class OfferManager {
 		}
 
 	}
+	
+	public List<Tim7Offer> getAllActiveOffers() {
+
+		EntityManager em = JPAUtil.getEntityManager();
+
+		try {
+
+			TypedQuery<Tim7Offer> tq = em.createQuery("select o from Tim7Offer o where o.startdate > :d", Tim7Offer.class);
+			tq.setParameter("d", new Date());
+			return tq.getResultList();
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			return new ArrayList<>();
+
+		} finally {
+
+			em.close();
+
+		}
+
+	}
 
 	public List<Tim7Offer> getOffersByAge(Date birth) {
 		
@@ -51,9 +74,10 @@ public class OfferManager {
 				int yearTo= Integer.parseInt(year)+2;
 				Date from = sdf.parse(yearFrom + "-01-01");
 				Date to = sdf.parse(yearTo + "-12-31");
-				TypedQuery<Tim7Offer> tq = em.createQuery("select o from Tim7Offer o where o.tim7User.dateofbirth between :from and :to ", Tim7Offer.class);
+				TypedQuery<Tim7Offer> tq = em.createQuery("select o from Tim7Offer o where o.tim7User.dateofbirth between :from and :to and o.startdate > :d", Tim7Offer.class);
 				tq.setParameter("from", from);
 				tq.setParameter("to", to);
+				tq.setParameter("d", new Date());
 				return tq.getResultList();
 	
 			} catch (Exception e) {

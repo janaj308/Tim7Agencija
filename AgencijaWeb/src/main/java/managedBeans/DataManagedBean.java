@@ -21,7 +21,7 @@ public class DataManagedBean {
 	@ManagedProperty(value = "#{loggedUserManagedBean}")
 	LoggedUserManagedBean loggedUserManagedBean;
 	
-	private List<Tim7Offer> allOffers;
+	private List<Tim7Offer> allActiveOffers;
 	
 	private List<Tim7Offer> recommendedOffers;
 	
@@ -50,7 +50,7 @@ public class DataManagedBean {
 		OfferManager om = new OfferManager();
 		MessagingManager mm = new MessagingManager();
 		
-		allOffers = om.getAllOffers();		
+		allActiveOffers = om.getAllActiveOffers();		
 		allDestinations = om.getAllDestinations();
 		try{
 			recommendedOffers = om.getOffersByAge(loggedUserManagedBean.getUser().getDateofbirth());
@@ -83,12 +83,12 @@ public class DataManagedBean {
 
 
 
-	public List<Tim7Offer> getAllOffers() {
-		return allOffers;
+	public List<Tim7Offer> getAllActiveOffers() {
+		return allActiveOffers;
 	}
 
-	public void setAllOffers(List<Tim7Offer> allOffers) {
-		this.allOffers = allOffers;
+	public void setAllActiveOffers(List<Tim7Offer> allActiveOffers) {
+		this.allActiveOffers = allActiveOffers;
 	}
 
 	public List<Tim7Destination> getAllDestinations() {
