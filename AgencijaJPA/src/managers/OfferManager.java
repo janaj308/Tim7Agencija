@@ -338,7 +338,7 @@ public class OfferManager {
 				
 			} catch (Exception e) { return false; }
 			
-			TypedQuery<Tim7Comment> tq2 = JPAUtil.getEntityManager().createQuery("select c from Tim7Comment c where c.tim7Offer.idoffer = :o and c.userby = :u", Tim7Comment.class);
+			TypedQuery<Tim7Comment> tq2 = JPAUtil.getEntityManager().createQuery("select c from Tim7Comment c where c.tim7Offer.idoffer = :o and c.userby.iduser = :u", Tim7Comment.class);
 			tq2.setParameter("o", offer.getIdoffer());
 			tq2.setParameter("u", user.getIduser());
 			

@@ -297,7 +297,7 @@ public class UserManager {
 		
 		try {
 			
-			TypedQuery<Tim7Offer> tq = JPAUtil.getEntityManager().createQuery("select o from Tim7Offer o join Tim7Traveleroffer t where o.enddate < :d and to.tim7Offer.idoffer = o.idoffer and to.tim7User.iduser = :u", Tim7Offer.class);
+			TypedQuery<Tim7Offer> tq = JPAUtil.getEntityManager().createQuery("select o from Tim7Offer o, Tim7Traveleroffer t where o.enddate < :d and t.tim7Offer.idoffer = o.idoffer and t.tim7User.iduser = :u", Tim7Offer.class);
 			tq.setParameter("d", new Date());
 			tq.setParameter("u", user.getIduser());
 			
