@@ -1,25 +1,22 @@
 package managedBeans;
 
-import java.awt.Image;
+import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
 
-import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
 import managers.OfferManager;
 import managers.PhotoManager;
-import managers.UserManager;
 import model.Tim7Destination;
-import model.Tim7Offer;
 import model.Tim7Photo;
-import model.Tim7User;
 
 @ManagedBean
 @SessionScoped
@@ -27,22 +24,36 @@ public class PostPhotoManagedBean {
 	private UploadedFile file;
 	private Tim7Destination destin;
 	private List<Tim7Destination> allDestinations;
+	private List<StreamedContent> destinationPhotos;
 	private Tim7Photo photo;
 	private PhotoManager pm;
-	private UserManager um;
-	//@ManagedProperty(value = "#{loggedUserManagedBean}")
-	//LoggedUserManagedBean loggedUserManagedBean;
+	@ManagedProperty(value="#{loggedUserManagedBean}")
+	private LoggedUserManagedBean loggedUserManagedBean;
 	
 	@PostConstruct
 	public void init() {
 		OfferManager om = new OfferManager();
 		pm=new PhotoManager();
-		um=new UserManager();
 		photo=new Tim7Photo();
 		file = null;
 		allDestinations=om.getAllDestinations();
+		destinationPhotos = new ArrayList<>();
 	}
 
+	public void loadPhotos(Tim7Destination d) {
+		
+		//GET PHOTOS FOR DESTINATION
+		destinationPhotos = new ArrayList<>();
+		List<Tim7Photo> photos = pm.getPhotosForDestination(d);
+		
+		for (Tim7Photo p : photos) {
+			
+			destinationPhotos.add(new DefaultStreamedContent(new ByteArrayInputStream(p.getPhotoinfo()), "image/jpeg"));
+			
+		}
+		
+	}
+	
 	public UploadedFile getFile() {
 		return file;
 	}
@@ -54,7 +65,7 @@ public class PostPhotoManagedBean {
 	public void upload() {
 		if (file != null) {
 			byte[] image=handleFileUpload(file);
-			photo.setTim7User(um.getOneUser());
+			photo.setTim7User(loggedUserManagedBean.getUser());
 			photo.setPhotoinfo(image);
 			
 			pm.savePhoto(photo);
@@ -84,6 +95,14 @@ public class PostPhotoManagedBean {
 		this.allDestinations = allDestinations;
 	}
 
+	public List<StreamedContent> getDestinationPhotos() {
+		return destinationPhotos;
+	}
+
+	public void setDestinationPhotos(List<StreamedContent> destinationPhotos) {
+		this.destinationPhotos = destinationPhotos;
+	}
+
 	public Tim7Photo getPhoto() {
 		return photo;
 	}
@@ -92,6 +111,12 @@ public class PostPhotoManagedBean {
 		this.photo = photo;
 	}
 
-	
+	public LoggedUserManagedBean getLoggedUserManagedBean() {
+		return loggedUserManagedBean;
+	}
+
+	public void setLoggedUserManagedBean(LoggedUserManagedBean loggedUserManagedBean) {
+		this.loggedUserManagedBean = loggedUserManagedBean;
+	}
 
 }

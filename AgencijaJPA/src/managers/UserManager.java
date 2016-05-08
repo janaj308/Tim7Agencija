@@ -2,6 +2,7 @@ package managers;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -287,6 +288,25 @@ public class UserManager {
 		} finally {
 			
 			em.close();
+			
+		}
+		
+	}
+	
+	public List<Tim7Offer> getFinishedAcceptedOffers(Tim7User user) {
+		
+		try {
+			
+			TypedQuery<Tim7Offer> tq = JPAUtil.getEntityManager().createQuery("select o from Tim7Offer o join Tim7Traveleroffer t where o.enddate < :d and to.tim7Offer.idoffer = o.idoffer and to.tim7User.iduser = :u", Tim7Offer.class);
+			tq.setParameter("d", new Date());
+			tq.setParameter("u", user.getIduser());
+			
+			return tq.getResultList();
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			return new ArrayList<>();
 			
 		}
 		

@@ -111,7 +111,6 @@
 				<h:form style="margin-left: 20px; margin-right: 20px">
 				
 					<p:dataScroller value="#{dataManagedBean.recommendedOffers}" var="offer" mode="inline" scrollHeight="300" >
-					
 						<p:outputPanel style="margin-top: 10px; margin-bottom: 10px">
 							<h:commandLink action="#{offerDetailsManagedBean.loadOffer(offer)}" value="#{offer.tim7Destination.destinationname} (#{offer.price})" 
 									style="font-weight: bold">

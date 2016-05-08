@@ -74,28 +74,59 @@
 		
 		<h:form>
 		
-			<p:panel style="margin-top: 30px; margin-bottom: 20px">
-				<h:panelGrid columns="2" id="profilePanel" style="margin: 15px auto 0px auto">
-				
-					<h:outputText value="First Name: "/>
-					<h:outputText  value="#{userProfileManagedBean.user.userfirstname}"/>
-							
-					<h:outputText value="Last Name: "/>
-					<h:outputText  value="#{userProfileManagedBean.user.userlastname}"/>
+			<p:layout style="min-height: 350px">
+				<p:layoutUnit position="center" style="margin-top: 30px; margin-bottom: 20px; padding: 10px">
+					<h:panelGrid columns="2" id="profilePanel" style="margin: 15px auto 0px auto">
 					
-					<h:outputText value="Date of birth: "/>
-					<h:outputText value="#{userProfileManagedBean.user.dateofbirth}">
-						<f:convertDateTime pattern="dd.MM.yyyy" />
-					</h:outputText>
-					
-					<h:outputText value="Email: "/>
-					<h:outputText  value="#{userProfileManagedBean.user.useremail}"/>
-					
-					<h:outputText value="Rating: "/>
-					<h:outputText  value="#{userProfileManagedBean.user.rating}"/>
+						<h:outputText value="First Name: "/>
+						<h:outputText  value="#{userProfileManagedBean.user.userfirstname}"/>
+								
+						<h:outputText value="Last Name: "/>
+						<h:outputText  value="#{userProfileManagedBean.user.userlastname}"/>
 						
-				</h:panelGrid>
-			</p:panel>
+						<h:outputText value="Date of birth: "/>
+						<h:outputText value="#{userProfileManagedBean.user.dateofbirth}">
+							<f:convertDateTime pattern="dd.MM.yyyy" />
+						</h:outputText>
+						
+						<h:outputText value="Email: "/>
+						<h:outputText  value="#{userProfileManagedBean.user.useremail}"/>
+						
+						<h:outputText value="Rating: "/>
+						<h:outputText  value="#{userProfileManagedBean.user.rating}"/>
+							
+					</h:panelGrid>
+					
+					<!-- VISITED DESTINATIONS (NATALIJA) -->
+					
+				</p:layoutUnit>
+				
+				<p:layoutUnit position="east" rendered="#{not empty userProfileManagedBean.finishedOffers}">
+					
+					<p:dataScroller value="#{userProfileManagedBean.finishedOffers}" var="offer" mode="inline" scrollHeight="300" >
+					
+						<f:facet name="header">
+				            Finished offers
+				       </f:facet>
+				       
+						<p:outputPanel style="margin-top: 10px; margin-bottom: 10px">
+							<h:commandLink action="#{offerDetailsManagedBean.loadOffer(offer)}" value="#{offer.tim7Destination.destinationname}" 
+									style="font-weight: bold">
+							</h:commandLink>
+							<br />
+							<h:outputText value="#{offer.startdate}" >
+								<f:convertDateTime pattern="dd.MM.yyyy" />
+							</h:outputText>
+							<h:outputText value=" - " style="color: #004080" />
+							<h:outputText value="#{offerDetailsManagedBean.offer.enddate}" >
+								<f:convertDateTime pattern="dd.MM.yyyy." />
+							</h:outputText>
+						</p:outputPanel>
+					
+					</p:dataScroller>
+					
+				</p:layoutUnit>
+			</p:layout>
 			
 			<p:dataList value="#{userProfileManagedBean.comments}" var="comm" rendered="#{not empty userProfileManagedBean.comments}">
 		       <f:facet name="header">
