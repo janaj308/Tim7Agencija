@@ -69,9 +69,9 @@
 				<p:menuitem value="Browse Offers" outcome="/pages/viewOffers" />
 				<p:menuitem value="Find Offers" outcome="/pages/offerSearch" />
 				<p:menuitem value="Post New Offer" outcome="/pages/postOffer" rendered="#{loggedUserManagedBean.user != null}" />
-				<p:menuitem value="Destination photos" outcome="/pages/postPhoto" />
-				<p:menuitem value="View Sent Messages" outcome="/pages/sentMessages" rendered="#{loggedUserManagedBean.user != null}" />
+				<p:menuitem value="Destination photos" outcome="/pages/postPhoto" />				
 				<p:menuitem value="View Inbox" outcome="/pages/postal" rendered="#{loggedUserManagedBean.user != null}" />
+				<p:menuitem value="PopularDestination" outcome="/pages/popularDestinations" rendered="#{loggedUserManagedBean.user != null and loggedUserManagedBean.user.role == 'admin'}" />
 				<p:separator style="margin-top: 5px"/>
 				<p:menuitem>
 					<p:outputPanel style="margin-top: 10px; text-align: center" rendered="#{loggedUserManagedBean.user != null}">

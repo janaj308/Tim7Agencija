@@ -24,6 +24,8 @@ public class Tim7User implements Serializable {
 
 	private float rating;
 
+	private String role;
+
 	private String useremail;
 
 	private String userfirstname;
@@ -59,6 +61,14 @@ public class Tim7User implements Serializable {
 
 	public void setRating(float rating) {
 		this.rating = rating;
+	}
+
+	public String getRole() {
+		return this.role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 	public String getUseremail() {

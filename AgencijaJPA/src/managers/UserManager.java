@@ -42,7 +42,8 @@ public class UserManager {
 			
 			em.getTransaction().begin();
 			// Kod svakog novog korisnika na pocetku je rateing 0
-			user.setRating(0);				
+			user.setRating(0);
+			user.setRole("user");
 			em.persist(user);			
 			em.getTransaction().commit();
 			return user.getIduser();
