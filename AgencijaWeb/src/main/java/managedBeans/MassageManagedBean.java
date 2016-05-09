@@ -9,34 +9,43 @@ import javax.persistence.EntityManager;
 
 import managers.JPAUtil;
 import managers.MessagingManager;
+import managers.UserManager;
 import model.Tim7Messagereceived;
 import model.Tim7Messagesent;
 import model.Tim7User;
 
 @ManagedBean (name="massageManagedBean")
-@SessionScoped
+@RequestScoped
 public class MassageManagedBean {
 	
 	private EntityManager em;
 	private MessagingManager MM;
+	private UserManager UM;
 	
 	Tim7Messagesent newSentM;	
 	Tim7Messagereceived newReceM;	
 	
 	Tim7User sender;
 	Tim7User reciver;
+	Tim7User temp;
 	
 	@ManagedProperty(value="#{loggedUserManagedBean}")
 	private LoggedUserManagedBean loggedUserManagedBean;
+	
+	@ManagedProperty(value="#{userProfileManagedBean}")
+	private UserProfileManagedBean upM;
 	
 	String content;
 	
 	boolean ok;
 	String feedback;
 	
+	String reciverUserName;
+	
 	public MassageManagedBean(){
 		
 		MM = new MessagingManager();
+		UM = new UserManager();
 		em = JPAUtil.getEntityManager();
 		content="";
 		feedback="";		
@@ -45,6 +54,7 @@ public class MassageManagedBean {
 	@PostConstruct
 	public void post() {
 		sender = loggedUserManagedBean.getUser();
+		reciver = loggedUserManagedBean.getTempUser();
 		newSentM = new Tim7Messagesent();
 		newReceM = new Tim7Messagereceived();
 		
@@ -62,15 +72,25 @@ public class MassageManagedBean {
 		
 		ok = MM.createNewMassage(sender, reciver, newSentM, newReceM);
 		if(ok){
-			feedback="Poruka uspesno poslata";
+			feedback="Poruka uspesno poslata";			
 		}else{
 			feedback="Poruka NIJE poslata";
 		}
 	}
 	
+	public void createNewMessagePersonal(){
+		temp = UM.getUserByUsername(reciverUserName);
+		if(temp != null){
+			reciver = temp;
+			createNewMassage();
+		}else{
+			feedback="Pogresan username";
+		}
+	}
+	
 	public String loadReciver(Tim7User reciver){
-		System.out.println("dobio sam nesto");
-		this.reciver = reciver;
+//		System.out.println("dobio sam nesto " + upM.getUser().getUsername());
+		loggedUserManagedBean.setTempUser(upM.getUser());			
 		return "/pages/newMessage?faces-redirect=true";
 	}
 	
@@ -128,6 +148,22 @@ public class MassageManagedBean {
 
 	public void setFeedback(String feedback) {
 		this.feedback = feedback;
+	}
+
+	public String getReciverUserName() {
+		return reciverUserName;
+	}
+
+	public void setReciverUserName(String reciverUserName) {
+		this.reciverUserName = reciverUserName;
+	}
+
+	public UserProfileManagedBean getUpM() {
+		return upM;
+	}
+
+	public void setUpM(UserProfileManagedBean upM) {
+		this.upM = upM;
 	}
 	
 	

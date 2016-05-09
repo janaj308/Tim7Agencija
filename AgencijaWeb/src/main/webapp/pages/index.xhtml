@@ -71,7 +71,7 @@
 				<p:menuitem value="Post New Offer" outcome="/pages/postOffer" rendered="#{loggedUserManagedBean.user != null}" />
 				<p:menuitem value="Destination photos" outcome="/pages/postPhoto" />
 				<p:menuitem value="View Sent Messages" outcome="/pages/sentMessages" rendered="#{loggedUserManagedBean.user != null}" />
-				<p:menuitem value="View Inbox" outcome="/pages/recivedMessages" rendered="#{loggedUserManagedBean.user != null}" />
+				<p:menuitem value="View Inbox" outcome="/pages/postal" rendered="#{loggedUserManagedBean.user != null}" />
 				<p:separator style="margin-top: 5px"/>
 				<p:menuitem>
 					<p:outputPanel style="margin-top: 10px; text-align: center" rendered="#{loggedUserManagedBean.user != null}">

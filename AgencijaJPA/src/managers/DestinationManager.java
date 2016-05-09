@@ -22,19 +22,19 @@ public class DestinationManager {
 	}
 	
 	public void selectionSort(List<Tim7Destination> l){
-		for (int i=0;i<l.size()-1;i++){
-			int maxIndex=i;
-			for(int j=i+1;j<l.size();j++){
-				if(l.get(i).getPopularity()<l.get(j).getPopularity()){
-					maxIndex=j;
-				}
-			}
-			if (maxIndex!=i){
-				Tim7Destination d=l.get(i);
-				l.set(i, l.get(maxIndex));
-				l.set(maxIndex,d );
-			}
-		}
+//		for (int i=0;i<l.size()-1;i++){
+//			int maxIndex=i;
+//			for(int j=i+1;j<l.size();j++){
+//				if(l.get(i).getPopularity()<l.get(j).getPopularity()){
+//					maxIndex=j;
+//				}
+//			}
+//			if (maxIndex!=i){
+//				Tim7Destination d=l.get(i);
+//				l.set(i, l.get(maxIndex));
+//				l.set(maxIndex,d );
+//			}
+//		}
 	}
 	
 	

@@ -67,13 +67,25 @@ public class UserManager {
 			e.printStackTrace();
 			return null;
 		}
-	}
+	}	
 	
 	public Tim7User getUserById(int idUser){
 		try{
 			EntityManager em = JPAUtil.getEntityManager();
-			TypedQuery<Tim7User> tq=em.createQuery("select u from Tim7User u where u..iduser =:iduser",Tim7User.class);
+			TypedQuery<Tim7User> tq=em.createQuery("select u from Tim7User u where u.iduser =:iduser",Tim7User.class);
 			tq.setParameter("iduser", idUser);
+			return tq.getSingleResult();
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public Tim7User getUserByUsername(String username){
+		try{
+			EntityManager em = JPAUtil.getEntityManager();
+			TypedQuery<Tim7User> tq=em.createQuery("select u from Tim7User u where u.username =:username",Tim7User.class);
+			tq.setParameter("username", username);
 			return tq.getSingleResult();
 		}catch(Exception e){
 			e.printStackTrace();

@@ -12,7 +12,7 @@ import model.Tim7Comment;
 import model.Tim7Offer;
 import model.Tim7User;
 
-@ManagedBean
+@ManagedBean (name="userProfileManagedBean")
 @SessionScoped
 public class UserProfileManagedBean {
 
