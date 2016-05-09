@@ -6,14 +6,29 @@ import java.util.List;
 import javax.persistence.TypedQuery;
 
 import model.Tim7Destination;
+import model.Tim7Offer;
 
 public class DestinationManager {
 
 	public List<Tim7Destination> getPopularDestinations(){
 		try {
-			TypedQuery<Tim7Destination> tq=JPAUtil.getEntityManager().createQuery("select d from Tim7Destination where d.popularity>5",Tim7Destination.class);
-			List<Tim7Destination> l=tq.getResultList();
-			return tq.getResultList();
+			TypedQuery<Tim7Destination> dest=JPAUtil.getEntityManager().createQuery("select d from Tim7Destination d",Tim7Destination.class);
+			TypedQuery<Tim7Offer> off=JPAUtil.getEntityManager().createQuery("select o from Tim7Offer o",Tim7Offer.class);
+			List<Tim7Destination> listDest=dest.getResultList();
+			List<Tim7Offer> listOffer=off.getResultList();
+			List<Tim7Destination> result=new ArrayList<>();
+			for (Tim7Destination d:listDest){
+				int counter=0;
+				for(Tim7Offer o:listOffer){
+					if (o.getTim7Destination().getIddestination()==d.getIddestination()){
+						counter++;
+					}
+				}
+				if (counter>2){
+					result.add(d);
+				}
+			}
+			return result;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -35,6 +50,14 @@ public class DestinationManager {
 //				l.set(maxIndex,d );
 //			}
 //		}
+	}
+	
+	public static void main(String args[]){
+		DestinationManager dm=new DestinationManager();
+		List<Tim7Destination> d=dm.getPopularDestinations();
+		for (Tim7Destination d1:d){
+			System.out.println(d1.getDestinationname());
+		}
 	}
 	
 	
