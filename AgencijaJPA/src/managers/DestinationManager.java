@@ -1,12 +1,14 @@
 package managers;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.TypedQuery;
 
 import model.Tim7Destination;
 import model.Tim7Offer;
+import model.Tim7User;
 
 public class DestinationManager {
 
@@ -33,6 +35,22 @@ public class DestinationManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return new ArrayList<Tim7Destination>();
+		}
+	}
+	
+	public List<Tim7Destination> getVisitedDestinations(Tim7User user){
+		try {
+			
+			TypedQuery<Tim7Destination> dest=JPAUtil.getEntityManager().createQuery("select distinct d from Tim7Destination d, Tim7Traveleroffer t, Tim7Offer o where t.tim7Offer.idoffer=o.idoffer and t.tim7User.iduser=:user and o.tim7Destination.iddestination=d.iddestination and o.enddate < :date ",Tim7Destination.class);
+			dest.setParameter("user", user.getIduser());
+			dest.setParameter("date", new Date());
+			return dest.getResultList();  
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			return new ArrayList<Tim7Destination>();
+			
 		}
 	}
 	

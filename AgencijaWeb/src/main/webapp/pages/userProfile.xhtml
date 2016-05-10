@@ -98,6 +98,19 @@
 					</h:panelGrid>
 					
 					<!-- VISITED DESTINATIONS (NATALIJA) -->
+					<p:dataScroller value="#{userProfileManagedBean.visitedDestinations}" var="dest" mode="inline" scrollHeight="300" >
+					
+						<f:facet name="header">
+				            Visited destinations
+				       </f:facet>
+				       
+					   <h:panelGrid columns="1">
+							<h:outputText style="font-weight: bold" />
+				         	<h:outputText value="#{dest.destinationname}" />
+				       </h:panelGrid>
+				       
+					</p:dataScroller>
+					
 					
 				</p:layoutUnit>
 				
