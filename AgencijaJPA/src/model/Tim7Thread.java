@@ -19,15 +19,13 @@ public class Tim7Thread implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int idthread;
 
-	private int iduser;
+	@ManyToOne
+	@JoinColumn(name="IDUSER")
+	private Tim7User tim7User;
 
-	private Timestamp threadlastposted;
+	private Timestamp threadcreatedtime;
 
 	private String threadname;
-
-	private int threadnumofview;
-
-	private Timestamp threadposted;
 
 	public Tim7Thread() {
 	}
@@ -40,20 +38,20 @@ public class Tim7Thread implements Serializable {
 		this.idthread = idthread;
 	}
 
-	public int getIduser() {
-		return this.iduser;
+	public Tim7User getTim7User() {
+		return tim7User;
 	}
 
-	public void setIduser(int iduser) {
-		this.iduser = iduser;
+	public void setTim7User(Tim7User tim7User) {
+		this.tim7User = tim7User;
 	}
 
-	public Timestamp getThreadlastposted() {
-		return this.threadlastposted;
+	public Timestamp getThreadcreatedtime() {
+		return this.threadcreatedtime;
 	}
 
-	public void setThreadlastposted(Timestamp threadlastposted) {
-		this.threadlastposted = threadlastposted;
+	public void setThreadcreatedtime(Timestamp threadcreatedtime) {
+		this.threadcreatedtime = threadcreatedtime;
 	}
 
 	public String getThreadname() {
@@ -62,22 +60,6 @@ public class Tim7Thread implements Serializable {
 
 	public void setThreadname(String threadname) {
 		this.threadname = threadname;
-	}
-
-	public int getThreadnumofview() {
-		return this.threadnumofview;
-	}
-
-	public void setThreadnumofview(int threadnumofview) {
-		this.threadnumofview = threadnumofview;
-	}
-
-	public Timestamp getThreadposted() {
-		return this.threadposted;
-	}
-
-	public void setThreadposted(Timestamp threadposted) {
-		this.threadposted = threadposted;
 	}
 
 }
