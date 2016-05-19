@@ -15,28 +15,6 @@ import model.Tim7Traveleroffer;
 import model.Tim7User;
 
 public class OfferManager {
-
-	public List<Tim7Offer> getAllOffers() {
-
-		EntityManager em = JPAUtil.getEntityManager();
-
-		try {
-
-			TypedQuery<Tim7Offer> tq = em.createQuery("select o from Tim7Offer o", Tim7Offer.class);
-			return tq.getResultList();
-
-		} catch (Exception e) {
-
-			e.printStackTrace();
-			return new ArrayList<>();
-
-		} finally {
-
-			em.close();
-
-		}
-
-	}
 	
 	public List<Tim7Offer> getAllActiveOffers() {
 
@@ -102,7 +80,7 @@ public class OfferManager {
 
 	public float getMaxPrice() {
 		try {
-			List<Tim7Offer> l = getAllOffers();
+			List<Tim7Offer> l = getAllActiveOffers();
 			float max = 0;
 			for (Tim7Offer o : l) {
 				if (o.getPrice() > max) {
@@ -119,9 +97,10 @@ public class OfferManager {
 	public List<Tim7Offer> getOfferForDestination(String name) {
 		try {
 			TypedQuery<Tim7Offer> tq = JPAUtil.getEntityManager().createQuery(
-					"select o from Tim7Offer o join fetch o.tim7Destination d where " + "d.destinationname=:destName",
+					"select o from Tim7Offer o join fetch o.tim7Destination d where d.destinationname=:destName and o.startdate > :date",
 					Tim7Offer.class);
 			tq.setParameter("destName", name);
+			tq.setParameter("date", new Date());
 			return tq.getResultList();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -132,8 +111,9 @@ public class OfferManager {
 	public List<Tim7Offer> getOfferForStartingPoint(String start) {
 		try {
 			TypedQuery<Tim7Offer> tq = JPAUtil.getEntityManager()
-					.createQuery("select o from Tim7Offer o where o.startingpoint=:start", Tim7Offer.class);
+					.createQuery("select o from Tim7Offer o where o.startingpoint=:start and o.startdate > :date", Tim7Offer.class);
 			tq.setParameter("start", start);
+			tq.setParameter("date", new Date());
 			return tq.getResultList();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -144,20 +124,15 @@ public class OfferManager {
 	public List<Tim7Offer> getOfferForPriceRange(float priceLow, float priceHigh) {
 		try {
 			TypedQuery<Tim7Offer> tq = JPAUtil.getEntityManager().createQuery(
-					"select o from Tim7Offer o where o.price between :priceS and :priceF", Tim7Offer.class);
+					"select o from Tim7Offer o where o.price between :priceS and :priceF and o.startdate > :date", Tim7Offer.class);
 			tq.setParameter("priceS", priceLow);
 			tq.setParameter("priceF", priceHigh);
+			tq.setParameter("date", new Date());
 			return tq.getResultList();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ArrayList<>();
 		}
-	}
-
-	public Tim7Offer findOffer(int offerId) {
-
-		return JPAUtil.getEntityManager().find(Tim7Offer.class, offerId);
-
 	}
 
 	public List<Tim7Destination> getAllDestinations() {
@@ -203,39 +178,44 @@ public class OfferManager {
 			if (destName != null && startPoint != null && priceHigh == 0.0 && priceLow == 0.0) {
 				TypedQuery<Tim7Offer> tq = JPAUtil.getEntityManager()
 						.createQuery("select o from Tim7Offer o join fetch o.tim7Destination d where "
-								+ "d.destinationname=:destName and o.startingpoint=:start", Tim7Offer.class);
+								+ "d.destinationname=:destName and o.startingpoint=:start and o.startdate > :date", Tim7Offer.class);
 				tq.setParameter("destName", destName);
 				tq.setParameter("start", startPoint);
+				tq.setParameter("date", new Date());
 				return tq.getResultList();
 			}
 			if (destName != null && startPoint == null && priceHigh != 0.0 && priceHigh > priceLow) {
 				TypedQuery<Tim7Offer> tq = JPAUtil.getEntityManager().createQuery(
 						"select o from Tim7Offer o join fetch o.tim7Destination d where "
-								+ "d.destinationname=:destName and o.price between :priceL and :priceH",
+								+ "d.destinationname=:destName and o.price between :priceL and :priceH and o.startdate > :date",
 						Tim7Offer.class);
 				tq.setParameter("destName", destName);
 				tq.setParameter("priceL", priceLow);
 				tq.setParameter("priceH", priceHigh);
+				tq.setParameter("date", new Date());
 				return tq.getResultList();
 			}
 			if (destName == null && startPoint != null && priceHigh != 0.0 && priceHigh > priceLow) {
 				System.out.println("Pokrenuo sam ovo");
 				TypedQuery<Tim7Offer> tq = JPAUtil.getEntityManager().createQuery("select o from Tim7Offer o where "
-						+ "o.startingpoint=:start and o.price between :priceL and :priceH", Tim7Offer.class);
+						+ "o.startingpoint=:start and o.price between :priceL and :priceH and o.startdate > :date", Tim7Offer.class);
 				tq.setParameter("start", startPoint);
 				tq.setParameter("priceL", priceLow);
 				tq.setParameter("priceH", priceHigh);
+				tq.setParameter("date", new Date());
 				return tq.getResultList();
 			}
 			if (destName != null && startPoint != null && priceHigh != 0 && priceHigh > priceLow) {
 				TypedQuery<Tim7Offer> tq = JPAUtil.getEntityManager().createQuery(
 						"select o from Tim7Offer o join fetch o.tim7Destination d where "
-								+ "d.destinationname=:destName and o.startingpoint=:start and o.price between :priceL and :priceH",
+								+ "d.destinationname=:destName and o.startingpoint=:start and o.price between :priceL and :priceH "
+								+ "and o.startdate > :date",
 						Tim7Offer.class);
 				tq.setParameter("destName", destName);
 				tq.setParameter("start", startPoint);
 				tq.setParameter("priceL", priceLow);
 				tq.setParameter("priceH", priceHigh);
+				tq.setParameter("date", new Date());
 				return tq.getResultList();
 			}
 			return new ArrayList<>();

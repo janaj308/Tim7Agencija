@@ -11,6 +11,7 @@
 	<title>Offers</title>
 </h:head>
 <h:body>
+	<h:outputStylesheet name="css/style.css" />
 	<f:view>
 		
 		<h:form id="notificationForm">
@@ -73,14 +74,54 @@
 			<h:outputText value="Offers" style="font-size: 1.5em; font-weight: bold; color: #004080;" />
 		</p:outputPanel>
 		
-		<p:layout style="min-height: 350px">
+		<!-- FILTER -->
+		<h:form>
+			<p:accordionPanel activeIndex="-1" style="margin-bottom: 10px">
+				<p:tab title="Filter offers">
+					
+					<h:panelGrid columns="2" style="margin: 15px auto 0px auto">
 		
-			<p:layoutUnit position="center" style="padding: 10px" >
-				<h:form style="margin-left: 20px; margin-right: 20px">
+						<h:outputText value="Destination: " id="destin" />
+						<p:inputText value="#{offersManagedBean.destinationname}" />
+		
+						<h:outputText value="Starting point: " />
+						<p:inputText value="#{offersManagedBean.startingPoint}" />
+		
+						<h:outputText value="Price range: " />
+						<p:slider for="minPrice,maxPrice" display="currentPrice" range="true" 
+							displayTemplate="Between {min} and {max}" style="width: 220px" maxValue="#{offersManagedBean.maxPrice}" />
+						
+						<h:inputHidden id="minPrice" value="#{offersManagedBean.priceLow}" />
+						<h:inputHidden id="maxPrice" value="#{offersManagedBean.priceHigh}" />
+						
+					</h:panelGrid>
+					
+					<h:panelGrid columns="1" style="margin-left: auto; margin-right: auto">
+						<h:outputText id="currentPrice" value="Between #{offersManagedBean.priceLow} and #{offersManagedBean.priceHigh}"
+							colspan="2" />
+					</h:panelGrid>
+					
+					<h:panelGrid columns="1" style="margin: 10px auto 0px auto">
+						<p:commandButton action="#{offersManagedBean.searchOffers()}"
+							value="Find" render="searchOfferPanel" execute="@form" update=":centerForm:results :centerForm:noResults"/>
+						<p:commandLink action="#{offersManagedBean.resetFilter()}" value="Reset filter" 
+							update=":centerForm:results :centerForm:noResults"/>
+					</h:panelGrid>
 				
-					<h:outputText value="No offers are currently available" rendered="#{empty dataManagedBean.allActiveOffers}"/>
+				</p:tab>
+			</p:accordionPanel>
+		</h:form>
+		
+		<p:layout style="min-height: 350px">
+
+			<p:layoutUnit position="center">
+				<h:form id="centerForm">
 				
-					<p:dataScroller value="#{dataManagedBean.allActiveOffers}" var="offer" mode="inline" scrollHeight="300" >
+					<h:outputText value="No offers are currently available" 
+						rendered="#{empty offersManagedBean.searchResults and not offersManagedBean.searched}"/>
+				
+					<p:dataScroller value="#{offersManagedBean.searchResults}" var="offer" mode="inline" scrollHeight="320"
+						style="padding: 10px; margin-top: auto; margin-bottom: auto" id="results" >
 					
 						<p:outputPanel style="margin-top: 10px; margin-bottom: 10px">
 							<h:commandLink action="#{offerDetailsManagedBean.loadOffer(offer)}" value="#{offer.tim7Destination.destinationname} (#{offer.price})" 
@@ -102,6 +143,10 @@
 							<h:outputText value="Posted by: #{offer.tim7User.username}" />
 						</p:outputPanel>
 					</p:dataScroller>
+					
+					<p:outputPanel style="margin-top: 30px; margin-bottom: 30px; text-align:center" id="noResults">
+						<h:outputText value="No results" rendered="#{empty offersManagedBean.searchResults and offersManagedBean.searched}" style="font-size: 1.5em"/>
+					</p:outputPanel>
 				
 				</h:form>
 			</p:layoutUnit>

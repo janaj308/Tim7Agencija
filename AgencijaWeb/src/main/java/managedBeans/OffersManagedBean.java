@@ -27,7 +27,8 @@ public class OffersManagedBean {
 	private float maxPrice;
 	private String destinationname;
 	private String startingPoint;
-	private List<Tim7Offer> list;
+	private List<Tim7Offer> searchResults;
+	private boolean searched;
 	
 	public OffersManagedBean() {
 		
@@ -35,11 +36,12 @@ public class OffersManagedBean {
 		OM = new OfferManager();
 		feedbackO = "";
 		feedbackD = "";
-		destinationname=null;
-		startingPoint=null;
+		destinationname="";
+		startingPoint="";
 		priceHigh=OM.getMaxPrice();
 		maxPrice = priceHigh;
 		dest= new Tim7Destination();
+		searchResults = OM.getAllActiveOffers();
 	}
 
 	public void postOffer() {
@@ -68,7 +70,7 @@ public class OffersManagedBean {
 		
 	}
 
-	public String searchOffers(){
+	public void searchOffers(){
 		
 		if (destinationname.equals("")){
 			destinationname=null;
@@ -76,8 +78,18 @@ public class OffersManagedBean {
 		if (startingPoint.equals("")){
 			startingPoint=null;
 		}
-		list = OM.searchOff(destinationname, startingPoint, priceLow, priceHigh);
-		return "/pages/offerFiltered";	
+		searchResults = OM.searchOff(destinationname, startingPoint, priceLow, priceHigh);
+		searched = true;	
+	}
+	
+	public void resetFilter() {
+		
+		destinationname = "";
+		startingPoint = "";
+		priceLow = 0.0f;
+		priceHigh = maxPrice;
+		searchResults = OM.getAllActiveOffers();
+		
 	}
 	
 	public float getPriceLow() {
@@ -120,12 +132,12 @@ public class OffersManagedBean {
 		this.startingPoint = startingPoint;
 	}
 
-	public List<Tim7Offer> getList() {
-		return list;
+	public List<Tim7Offer> getSearchResults() {
+		return searchResults;
 	}
 
-	public void setList(List<Tim7Offer> list) {
-		this.list = list;
+	public void setSearchResults(List<Tim7Offer> searchResults) {
+		this.searchResults = searchResults;
 	}
 
 	public String getFeedbackO() {
@@ -166,6 +178,14 @@ public class OffersManagedBean {
 
 	public void setLoggedUserManagedBean(LoggedUserManagedBean loggedUserManagedBean) {
 		this.loggedUserManagedBean = loggedUserManagedBean;
+	}
+
+	public boolean isSearched() {
+		return searched;
+	}
+
+	public void setSearched(boolean searched) {
+		this.searched = searched;
 	}
 	
 }

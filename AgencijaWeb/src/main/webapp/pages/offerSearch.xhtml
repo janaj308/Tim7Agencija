@@ -10,7 +10,9 @@
 
 <h:head>
 </h:head>
-<body> 
+<h:body> 
+	<h:outputStylesheet name="css/style.css" />
+	
 	<f:view>
 	
 		<h:form id="notificationForm">
@@ -78,7 +80,7 @@
 			<p:panel style="margin-top: 30px; margin-bottom: 20px">
 				<h:panelGrid columns="2" id="searchOfferPanel" style="margin: 15px auto 0px auto">
 	
-					<h:outputText value="Destination: " />
+					<h:outputText value="Destination: " id="destin" />
 					<p:inputText value="#{offersManagedBean.destinationname}" />
 	
 					<h:outputText value="Starting point: " />
@@ -90,12 +92,6 @@
 					
 					<h:inputHidden id="minPrice" value="#{offersManagedBean.priceLow}" />
 					<h:inputHidden id="maxPrice" value="#{offersManagedBean.priceHigh}" />
-	
-					<!-- <h:outputText value="Najniza cena: " />
-					<h:inputText value="#{offersManagedBean.priceLow}" />
-	
-					<h:outputText value="Najveca cena: " />
-					<h:inputText value="#{offersManagedBean.priceHigh}" /> -->
 					
 				</h:panelGrid>
 				
@@ -106,10 +102,42 @@
 				
 				<h:panelGrid columns="1" style="margin: 10px auto 0px auto">
 					<p:commandButton action="#{offersManagedBean.searchOffers()}"
-						value="Find" render="searchOfferPanel" execute="@form" />
+						value="Find" render="searchOfferPanel" execute="@form" update="results noResults"/>
 				</h:panelGrid>
 			</p:panel>
+			
+			<p:spacer height="20px" />
+		
+			<p:dataScroller value="#{offersManagedBean.searchResults}" var="offer" mode="inline" scrollHeight="300" 
+				rendered="#{not empty offersManagedBean.searchResults}" id="results">
+			
+				<p:outputPanel style="margin-top: 10px; margin-bottom: 10px">
+					<h:commandLink action="#{offerDetailsManagedBean.loadOffer(offer)}" value="#{offer.tim7Destination.destinationname} (#{offer.price})" 
+							style="font-weight: bold">
+					</h:commandLink>
+				</p:outputPanel>
+				<p:outputPanel style="margin-bottom: 5px">
+					<h:outputText value="From: " />
+					<h:outputText value="#{offer.startdate}" >
+						<f:convertDateTime pattern="dd.MM.yyyy" />
+					</h:outputText>
+				</p:outputPanel>
+				<p:outputPanel style="margin-bottom: 5px">
+					<h:outputText value="To: " />
+					<h:outputText value="#{offer.enddate}" >
+						<f:convertDateTime pattern="dd.MM.yyyy" />
+					</h:outputText>
+				</p:outputPanel>
+				<p:outputPanel>	
+					<h:outputText value="Posted by: #{offer.tim7User.username}" />
+				</p:outputPanel>
+			</p:dataScroller>
+		
+			<p:outputPanel style="margin-top: 30px; margin-bottom: 30px; text-align:center" id="noResults">
+				<h:outputText value="No results" rendered="#{empty offersManagedBean.searchResults and offersManagedBean.searched}" style="font-size: 1.5em"/>
+			</p:outputPanel>
+			
 		</h:form>
 	</f:view>
-</body>
+</h:body>
 </html>

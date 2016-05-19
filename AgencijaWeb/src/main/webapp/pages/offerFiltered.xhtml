@@ -75,8 +75,8 @@
 		
 		<h:form>
 		
-			<p:dataScroller value="#{offersManagedBean.list}" var="offer" mode="inline" scrollHeight="300" 
-				rendered="#{not empty offersManagedBean.list}">
+			<p:dataScroller value="#{offersManagedBean.searchResults}" var="offer" mode="inline" scrollHeight="300" 
+				rendered="#{not empty offersManagedBean.searchResults}">
 			
 				<p:outputPanel style="margin-top: 10px; margin-bottom: 10px">
 					<h:commandLink action="#{offerDetailsManagedBean.loadOffer(offer)}" value="#{offer.tim7Destination.destinationname} (#{offer.price})" 
@@ -103,7 +103,7 @@
 		</h:form>
 		
 		<p:outputPanel style="margin-top: 30px; margin-bottom: 30px; text-align:center">
-			<h:outputText value="No results" rendered="#{empty offersManagedBean.list}" style="font-size: 1.5em"/>
+			<h:outputText value="No results" rendered="#{empty offersManagedBean.searchResults}" style="font-size: 1.5em"/>
 		</p:outputPanel>
 		
 	</f:view>
