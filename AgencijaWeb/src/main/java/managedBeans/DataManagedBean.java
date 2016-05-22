@@ -41,7 +41,7 @@ public class DataManagedBean {
 		
 	}
 	
-	public void reloadSentMessages(){
+	/*public void reloadSentMessages(){
 		allMessageSent = new MessagingManager().getAllUserSentMessages(loggedUserManagedBean.getUser().getIduser());
 	//	populateUsersForSent();		
 	}
@@ -53,8 +53,8 @@ public class DataManagedBean {
 			allUsersForSentMessages.add(temp);
 		}
 	}
-	public void reloadRecivedMessages(){
-		allMessageRecived = new MessagingManager().getAllUserRecivedMessages(loggedUserManagedBean.getUser().getIduser());
+	public void reloadReceivedMessages(){
+		allMessageRecived = new MessagingManager().getAllUserReceivedMessages(loggedUserManagedBean.getUser().getIduser());
 		//populateUsersForResived();
 	}
 	private void populateUsersForResived(){
@@ -63,7 +63,7 @@ public class DataManagedBean {
 			temp = um.getUserById(a.getIdmessagereceived());
 			allUsersForRecivedMessages.add(temp);
 		}
-	}
+	}*/
 	@PostConstruct
 	public void post() {
 		
@@ -74,9 +74,9 @@ public class DataManagedBean {
 		allDestinations = om.getAllDestinations();
 		try{
 			recommendedOffers = om.getOffersByAge(loggedUserManagedBean.getUser().getDateofbirth());
-			allMessageSent = mm.getAllUserSentMessages(loggedUserManagedBean.getUser().getIduser());
+			//allMessageSent = mm.getAllUserSentMessages(loggedUserManagedBean.getUser().getIduser());
 			//populateUsersForSent();
-			allMessageRecived = mm.getAllUserRecivedMessages(loggedUserManagedBean.getUser().getIduser());
+			//allMessageRecived = mm.getAllUserReceivedMessages(loggedUserManagedBean.getUser().getIduser());
 		//	populateUsersForResived();
 		}catch(Exception e){}
 	}

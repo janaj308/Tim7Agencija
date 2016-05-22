@@ -2,7 +2,7 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.util.Date;
 
 
 /**
@@ -29,7 +29,8 @@ public class Tim7Post implements Serializable {
 
 	private String postcontent;
 
-	private Timestamp posttime;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date posttime;
 
 	public Tim7Post() {
 	}
@@ -66,11 +67,11 @@ public class Tim7Post implements Serializable {
 		this.postcontent = postcontent;
 	}
 
-	public Timestamp getPosttime() {
+	public Date getPosttime() {
 		return this.posttime;
 	}
 
-	public void setPosttime(Timestamp posttime) {
+	public void setPosttime(Date posttime) {
 		this.posttime = posttime;
 	}
 

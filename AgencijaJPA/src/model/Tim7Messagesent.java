@@ -2,6 +2,7 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.util.Date;
 
 
 /**
@@ -18,14 +19,18 @@ public class Tim7Messagesent implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int idmessagesent;
 
-	private int iduserreceiver;
+	@ManyToOne
+	@JoinColumn(name="IDUSERRECEIVER")
+	private Tim7User userReceiver;
+	
+	@ManyToOne
+	@JoinColumn(name="IDUSERSENDER")
+	private Tim7User userSender;
 
 	private String messagesentcontent;
 
-	//bi-directional many-to-one association to Tim7User
-	@ManyToOne
-	@JoinColumn(name="IDUSER")
-	private Tim7User tim7User;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date messagesenttime;
 
 	public Tim7Messagesent() {
 	}
@@ -38,12 +43,20 @@ public class Tim7Messagesent implements Serializable {
 		this.idmessagesent = idmessagesent;
 	}
 
-	public int getIduserreceiver() {
-		return this.iduserreceiver;
+	public Tim7User getUserReceiver() {
+		return userReceiver;
 	}
 
-	public void setIduserreceiver(int iduserreceiver) {
-		this.iduserreceiver = iduserreceiver;
+	public void setUserReceiver(Tim7User userReceiver) {
+		this.userReceiver = userReceiver;
+	}
+
+	public Tim7User getUserSender() {
+		return userSender;
+	}
+
+	public void setUserSender(Tim7User userSender) {
+		this.userSender = userSender;
 	}
 
 	public String getMessagesentcontent() {
@@ -54,12 +67,12 @@ public class Tim7Messagesent implements Serializable {
 		this.messagesentcontent = messagesentcontent;
 	}
 
-	public Tim7User getTim7User() {
-		return this.tim7User;
+	public Date getMessagesenttime() {
+		return this.messagesenttime;
 	}
 
-	public void setTim7User(Tim7User tim7User) {
-		this.tim7User = tim7User;
+	public void setMessagesenttime(Date messagesenttime) {
+		this.messagesenttime = messagesenttime;
 	}
 
 }

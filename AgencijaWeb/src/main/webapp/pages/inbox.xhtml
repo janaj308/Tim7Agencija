@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+	<title>Inbox</title>
+</h:head>
+<h:body>
+	<f:view>
+	
+		<h:form id="notificationForm">
+
+			<p:toolbar id="toolbar">
+				<f:facet name="left">
+					<p:button value="Home" icon="ui-icon-home" outcome="/pages/index" />
+					
+					<p:commandButton id="notifications" type="button" rendered="#{loggedUserManagedBean.user != null}">
+						<c:if
+							test="#{not empty notificationsManagedBean.newNotifications}">
+							<f:attribute name="icon" value="ui-icon-notice" />
+						</c:if>
+						<c:if test="#{empty notificationsManagedBean.newNotifications}">
+							<f:attribute name="icon" value="ui-icon-comment" />
+						</c:if>
+					</p:commandButton>
+					<p:overlayPanel id="notificationPanel" for="notifications"
+						hideEffect="fade" dynamic="true">
+
+						<h:outputText value="No new notifications"
+							rendered="#{empty notificationsManagedBean.newNotifications}"
+							id="noNot" />
+
+						<p:dataScroller
+							value="#{notificationsManagedBean.newNotifications}" var="n"
+							id="scroller"
+							rendered="#{not empty notificationsManagedBean.newNotifications}">
+
+							<p:outputPanel style="padding: 8px">
+								<h:commandLink
+									action="#{offerDetailsManagedBean.loadOffer(n.tim7Offer)}"
+									value="#{n.notificationmessage}"
+									style="color:black; text-decoration: none" />
+							</p:outputPanel>
+
+						</p:dataScroller>
+
+						<h:panelGrid columns="2" style="margin: 10px auto 0px auto">
+							<p:commandButton update="notificationForm"
+								onclick="#{notificationsManagedBean.checkAsSeen()}"
+								value="Mark all as seen" ajax="false"
+								disabled="#{empty notificationsManagedBean.newNotifications}" />
+							<p:commandButton value="See all notifications"
+								oncomplete="PF('dialog').show()" />
+						</h:panelGrid>
+					</p:overlayPanel>
+					
+					<p:button id="messages" rendered="#{loggedUserManagedBean.user != null}" outcome="/pages/inbox">
+						<c:if
+							test="#{not empty notificationsManagedBean.newMessages}">
+							<f:attribute name="icon" value="ui-icon-mail-open" />
+						</c:if>
+						<c:if test="#{empty notificationsManagedBean.newMessages}">
+							<f:attribute name="icon" value="ui-icon-mail-closed" />
+						</c:if>
+					</p:button>
+				</f:facet>
+
+				<f:facet name="right">
+					<h:outputText value="#{loggedUserManagedBean.user.username}" 
+						rendered="#{loggedUserManagedBean.user != null}" />
+					<p:commandButton value="Profile" icon="ui-icon-person" action="#{userProfileManagedBean.loadProfile(loggedUserManagedBean.user)}" 
+						rendered="#{loggedUserManagedBean.user != null}" />
+					<p:commandButton value="Logout" action="#{UserLogInManagedBean.logOutUser()}" 
+						rendered="#{loggedUserManagedBean.user != null}"/>
+					
+					<p:commandButton value="Login" action="#{UserLogInManagedBean.loadLogin}" rendered="#{loggedUserManagedBean.user == null}" >
+						<f:setPropertyActionListener value="#{'/pages/index'}" target="#{loggedUserManagedBean.fromPage}" />
+					</p:commandButton>
+					<p:button value="Register" outcome="/pages/RegistrationUser" rendered="#{loggedUserManagedBean.user == null}" />
+				</f:facet>
+			</p:toolbar>
+
+			<p:sticky target="toolbar" />
+
+		</h:form>
+
+		<h:form id="mainForm">
+			
+			<p:layout style="min-height: 450px; margin-top: 20px">
+			
+				<p:layoutUnit position="west" style="max-width: 150px">
+					<p:dataTable value="#{messagesManagedBean.contacts}" var="contact" selectionMode="single" 
+						selection="#{messagesManagedBean.selectedContact}" rowKey="#{contact.iduser}" >
+						<p:ajax event="rowSelect" listener="#{messagesManagedBean.loadConversation}" 
+							update=":mainForm"/>
+						
+						<p:column>
+							<h:outputText value="#{contact.username}" />
+						</p:column>
+					</p:dataTable>
+				</p:layoutUnit>
+				
+				<p:layoutUnit position="center" id="messages" style="margin: auto auto auto auto">
+					<p:dataScroller value="#{messagesManagedBean.allMessages}" var="m" mode="inline" scrollHeight="320"
+						rendered="#{not empty messagesManagedBean.allMessages}" >
+						<h:panelGrid columns="1" style="margin-left: 0px; margin-right: auto" rendered="#{m.received}">
+							<h:outputText value="#{m.content}" />
+							<h:outputText value="#{m.dateTime}" style="font-size: 0.8em" >
+								<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+							</h:outputText>
+						</h:panelGrid>
+						
+						<h:panelGrid columns="1" style="margin-left: auto; margin-right: 0px" rendered="#{not m.received}">
+							<h:outputText value="#{m.content}" />
+							<h:outputText value="#{m.dateTime}" style="font-size: 0.8em" >
+								<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+							</h:outputText>
+						</h:panelGrid>
+					</p:dataScroller>
+					
+					<h:panelGrid columns="2" rendered="#{not empty messagesManagedBean.allMessages}"
+						style="margin-left: auto; margin-right: auto">
+						<p:inputTextarea rows="3" cols="85" value="#{messagesManagedBean.content}" />
+						<p:commandButton action="#{messagesManagedBean.createNewMessage(messagesManagedBean.selectedContact)}" value="Send" update=":mainForm" />
+					</h:panelGrid>
+					
+					<p:outputPanel rendered="#{empty messagesManagedBean.allMessages}" >
+						<h:outputText value="Choose a conversation" />
+					</p:outputPanel>
+				</p:layoutUnit>
+				
+			</p:layout>
+		</h:form>
+	
+	</f:view>
+</h:body>
+</html>

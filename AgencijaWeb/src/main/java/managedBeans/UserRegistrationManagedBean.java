@@ -42,6 +42,7 @@ public class UserRegistrationManagedBean {
 	
 	public String saveUser(){
 		
+		user.setRole("user");
 		Integer userID = UM.saveNewUser(em, user);
 		
 		if(userID == null){

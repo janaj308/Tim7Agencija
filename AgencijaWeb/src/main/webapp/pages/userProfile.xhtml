@@ -68,7 +68,7 @@
 		<p:outputPanel style="margin-top: 30px; margin-bottom: 30px; text-align:center">
 			<h:panelGrid columns="1" style="margin-left: auto; margin-right: auto">
 				<h:outputText value="#{loggedUserManagedBean.user.username}" style="font-size: 1.5em; font-weight: bold; color: #004080;" />
-				<p:commandButton  value="Private Message" style="margin-top: 10px" action="#{massageManagedBean.loadReciver(userProfileManagedBean.user)}"/>
+				<p:button  value="Private Message" style="margin-top: 10px" outcome="/pages/newMessage" />
 			</h:panelGrid>
 		</p:outputPanel>
 		

@@ -2,6 +2,7 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.util.Date;
 
 
 /**
@@ -18,14 +19,20 @@ public class Tim7Messagereceived implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int idmessagereceived;
 
-	private int idusersender;
+	@ManyToOne
+	@JoinColumn(name="IDUSERRECEIVER")
+	private Tim7User userReceiver;
+	
+	@ManyToOne
+	@JoinColumn(name="IDUSERSENDER")
+	private Tim7User userSender;
 
 	private String messagereceivedcontent;
 
-	//bi-directional many-to-one association to Tim7User
-	@ManyToOne
-	@JoinColumn(name="IDUSER")
-	private Tim7User tim7User;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date messagereceivedtime;
+
+	private byte messageseen;
 
 	public Tim7Messagereceived() {
 	}
@@ -38,12 +45,20 @@ public class Tim7Messagereceived implements Serializable {
 		this.idmessagereceived = idmessagereceived;
 	}
 
-	public int getIdusersender() {
-		return this.idusersender;
+	public Tim7User getUserReceiver() {
+		return userReceiver;
 	}
 
-	public void setIdusersender(int idusersender) {
-		this.idusersender = idusersender;
+	public void setUserReceiver(Tim7User userReceiver) {
+		this.userReceiver = userReceiver;
+	}
+
+	public Tim7User getUserSender() {
+		return userSender;
+	}
+
+	public void setUserSender(Tim7User userSender) {
+		this.userSender = userSender;
 	}
 
 	public String getMessagereceivedcontent() {
@@ -54,12 +69,20 @@ public class Tim7Messagereceived implements Serializable {
 		this.messagereceivedcontent = messagereceivedcontent;
 	}
 
-	public Tim7User getTim7User() {
-		return this.tim7User;
+	public Date getMessagereceivedtime() {
+		return this.messagereceivedtime;
 	}
 
-	public void setTim7User(Tim7User tim7User) {
-		this.tim7User = tim7User;
+	public void setMessagereceivedtime(Date messagereceivedtime) {
+		this.messagereceivedtime = messagereceivedtime;
+	}
+
+	public byte getMessageseen() {
+		return this.messageseen;
+	}
+
+	public void setMessageseen(byte messageseen) {
+		this.messageseen = messageseen;
 	}
 
 }

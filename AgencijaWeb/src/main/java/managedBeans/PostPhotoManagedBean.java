@@ -1,13 +1,16 @@
 package managedBeans;
 
 import java.io.ByteArrayInputStream;
-import java.util.ArrayList;
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
@@ -24,7 +27,8 @@ public class PostPhotoManagedBean {
 	private UploadedFile file;
 	private Tim7Destination destin;
 	private List<Tim7Destination> allDestinations;
-	private List<StreamedContent> destinationPhotos;
+	private List<Tim7Photo> photos;
+	private Map<Integer, Tim7Photo> photoMap;
 	private Tim7Photo photo;
 	private PhotoManager pm;
 	@ManagedProperty(value="#{loggedUserManagedBean}")
@@ -37,20 +41,19 @@ public class PostPhotoManagedBean {
 		photo=new Tim7Photo();
 		file = null;
 		allDestinations=om.getAllDestinations();
-		destinationPhotos = new ArrayList<>();
+		//destinationPhotos = new ArrayList<>();
 	}
 
 	public void loadPhotos(Tim7Destination d) {
 		
 		//GET PHOTOS FOR DESTINATION
-		destinationPhotos = new ArrayList<>();
-		List<Tim7Photo> photos = pm.getPhotosForDestination(d);
+		//destinationPhotos = new ArrayList<>();
+		photos = pm.getPhotosForDestination(d);
 		
-		for (Tim7Photo p : photos) {
-			
-			destinationPhotos.add(new DefaultStreamedContent(new ByteArrayInputStream(p.getPhotoinfo()), "image/jpeg"));
-			
-		}
+		photoMap = new HashMap<>();
+        for (Tim7Photo p : photos) {
+        	photoMap.put(p.getIdphoto(), p);
+        }
 		
 	}
 	
@@ -75,10 +78,34 @@ public class PostPhotoManagedBean {
 	}
 	
 	public byte[] handleFileUpload(UploadedFile file) {
-	      byte[] image=file.getContents();
-	      return image;
-	   }
+		
+      byte[] image=file.getContents();
+      return image;
+      
+   }
 
+    public StreamedContent getDynamicPhoto() {
+        String imageId = FacesContext.getCurrentInstance()
+                                     .getExternalContext()
+                                     .getRequestParameterMap()
+                                     .get("image_id");
+        if (imageId == null) {
+            return getStreamedImage(photos.get(0));
+        }
+        return getStreamedImage(photoMap.get(Integer.parseInt(imageId)));
+    }
+	
+    private StreamedContent getStreamedImage(Tim7Photo photo) {
+        StreamedContent streamedContent = null;
+        try {
+            InputStream inputStream = new ByteArrayInputStream(photo.getPhotoinfo());
+            streamedContent = new DefaultStreamedContent(inputStream, "image/png");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return streamedContent;
+    }
+    
 	public Tim7Destination getDestin() {
 		return destin;
 	}
@@ -95,12 +122,12 @@ public class PostPhotoManagedBean {
 		this.allDestinations = allDestinations;
 	}
 
-	public List<StreamedContent> getDestinationPhotos() {
-		return destinationPhotos;
+	public List<Tim7Photo> getPhotos() {
+		return photos;
 	}
 
-	public void setDestinationPhotos(List<StreamedContent> destinationPhotos) {
-		this.destinationPhotos = destinationPhotos;
+	public void setPhotos(List<Tim7Photo> photos) {
+		this.photos = photos;
 	}
 
 	public Tim7Photo getPhoto() {

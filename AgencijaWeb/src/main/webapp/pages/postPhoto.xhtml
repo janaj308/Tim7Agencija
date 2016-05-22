@@ -83,12 +83,14 @@
 					</p:commandLink>
 				</p:dataScroller>
 				
-				<p:galleria value="#{postPhotoManagedBean.destinationPhotos}" var="p" 
-					rendered="#{not empty postPhotoManagedBean.destinationPhotos}" id="photosContent">
-					<p:graphicImage value="#{p}" />
+				<p:galleria value="#{postPhotoManagedBean.photos}" var="p" id="photosContent"
+					rendered="#{not empty postPhotoManagedBean.photos}" >
+					<p:graphicImage value="#{postPhotoManagedBean.dynamicPhoto}" >
+						<f:param name="image_id" value="#{p.idphoto}" />
+					</p:graphicImage>
 				</p:galleria>
 				
-				<p:panel style="margin-left: auto; margin-right: auto" rendered="#{empty postPhotoManagedBean.destinationPhotos}" >
+				<p:panel style="margin-left: auto; margin-right: auto" rendered="#{empty postPhotoManagedBean.photos}" >
 					<h:outputText value="No images for the selected destination" style="font-weight: bold" />
 				</p:panel>
 		

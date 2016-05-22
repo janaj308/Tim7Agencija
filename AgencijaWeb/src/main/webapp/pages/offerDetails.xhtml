@@ -107,19 +107,10 @@
 						<h:outputText value="#{offerDetailsManagedBean.offer.description}" />
 					</p:outputPanel>
 					
-					<!-- <p:outputPanel style="margin-top: 25px; margin-bottom: 5px">
-						<h:outputText value="Current traveler count" style="font-weight: bold" />
-					</p:outputPanel>
-					<p:outputPanel>
-						<h:outputText value="#{offerDetailsManagedBean.offer.travelercurrentcount}/#{offerDetailsManagedBean.offer.travelernumber}" />
-					</p:outputPanel> -->
-					
 					<p:separator style="margin-top: 15px; margin-bottom: 15px" />
 					
 					<h:commandLink value="Posted by: #{offerDetailsManagedBean.offer.tim7User.username}" style="font-weight: bold" 
-						action="#{userProfileManagedBean.loadProfile(offerDetailsManagedBean.offer.tim7User)}">
-						<!-- <f:setPropertyActionListener value="#{offerDetailsManagedBean.offer.tim7User}" target="#{userProfileManagedBean.user}" />  -->
-					</h:commandLink>
+						action="#{userProfileManagedBean.loadProfile(offerDetailsManagedBean.offer.tim7User)}" />
 					
 				</p:layoutUnit>
 				
@@ -136,9 +127,6 @@
 						<f:facet name="header">
 							Travelers
 						</f:facet>
-						
-						<!-- <h:outputText value="#{traveler.username}" style="font-weight: bold" rendered="#{traveler.iduser == loggedUserManagedBean.user.iduser}" />-->
-						<!-- <h:outputText value="#{traveler.username}" rendered="#{traveler.iduser != loggedUserManagedBean.user.iduser}" /> -->
 						
 						<h:commandLink value="#{traveler.username}" style="font-weight: bold" rendered="#{traveler.iduser == loggedUserManagedBean.user.iduser}"
 						 action="#{userProfileManagedBean.loadProfile(traveler)}" >
@@ -171,7 +159,7 @@
 				
 					<p:inputTextarea rows="5" cols="50" value="#{ratingManagedBean.comm}"/>
 					<h:panelGrid columns="2" id="ratingPanel">
-		        		<p:spinner id="rat" value="#{ratingManagedBean.rating}" min="1" max="5" />
+		        		<p:rating id="rat" value="#{ratingManagedBean.rating}" stars="5" cancel="false" />
 		        		<p:commandButton action="#{ratingManagedBean.rate()}" value="Submit"  />	
 		        	</h:panelGrid>
 				

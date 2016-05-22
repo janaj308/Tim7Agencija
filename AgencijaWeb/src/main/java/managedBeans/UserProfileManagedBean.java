@@ -25,7 +25,7 @@ public class UserProfileManagedBean {
 	private List<Tim7Offer> finishedOffers;
 	private List<Tim7Destination> visitedDestinations;
 	
-public String loadProfile(Tim7User user) {
+	public String loadProfile(Tim7User user) {
 		
 		this.user = user;
 		UserManager um = new UserManager();
@@ -51,9 +51,9 @@ public String loadProfile(Tim7User user) {
 	return visitedDestinations;
 }
 
-public void setVisitedDestinations(List<Tim7Destination> visitedDestinations) {
-	this.visitedDestinations = visitedDestinations;
-}
+	public void setVisitedDestinations(List<Tim7Destination> visitedDestinations) {
+		this.visitedDestinations = visitedDestinations;
+	}
 
 	public List<Tim7Comment> getComments() {
 		return comments;

@@ -22,7 +22,7 @@ public class RatingManagedBean {
 	
 	public RatingManagedBean() {
 		
-		rating = 1;
+		rating = 5;
 		
 	}
 	

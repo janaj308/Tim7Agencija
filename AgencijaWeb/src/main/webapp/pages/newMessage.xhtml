@@ -57,6 +57,7 @@
 			<p:sticky target="toolbar" />
 			
 		</h:form>
+		
 		<h:form id="newMessageForm">
 			<p:outputPanel style="margin-top: 30px; text-align:center">
 				<h:outputText value="Message" style="font-size: 2.0em; font-weight: bold; color: #004080" />
@@ -65,23 +66,20 @@
 			<p:panel style="margin-top: 30px; margin-bottom: 20px">
 				<h:panelGrid columns="2" id="newMessagePanel" style="margin: 15px auto 0px auto" >
 					
-					<h:outputText value="Sender" />
-					<h:outputText  value="#{massageManagedBean.sender.username}"/>				
-					
-					<h:outputText value="Reciver"/>
-					<h:outputText value="#{massageManagedBean.reciver.username}"/>
+					<h:outputText value="To: "/>
+					<h:outputText value="#{userProfileManagedBean.user.username}"/>
 					<h:outputText value="Message"/>
-					 <p:inputTextarea rows="5" cols="50" value="#{massageManagedBean.content}" />
+					<p:inputTextarea rows="5" cols="50" value="#{messagesManagedBean.content}" />
 					
 				</h:panelGrid>				
 				 	
 			</p:panel>
 			<h:panelGrid columns="1" style="margin: 15px auto 0px auto; text-align: center">
 					<h:panelGrid columns="2" style="margin: 10px auto 5px auto">
-						<p:commandButton action="#{massageManagedBean.createNewMassage}" value="Send" 
+						<p:commandButton action="#{messagesManagedBean.createNewMessage(userProfileManagedBean.user)}" value="Send" 
 							render="newMessagePanel" execute="@form" update=":newMessageForm" />						
 					</h:panelGrid>
-					<h:outputText value="#{massageManagedBean.feedback}" style="color: #cc0000" />
+					<h:outputText value="#{messageManagedBean.feedback}" style="color: #cc0000" />
 				</h:panelGrid>
 		</h:form>
 	</f:view>

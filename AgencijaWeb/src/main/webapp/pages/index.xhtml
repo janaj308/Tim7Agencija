@@ -56,9 +56,21 @@
 								oncomplete="PF('dialog').show()" />
 						</h:panelGrid>
 					</p:overlayPanel>
+					
+					<p:button id="messages" rendered="#{loggedUserManagedBean.user != null}" outcome="/pages/inbox">
+						<c:if
+							test="#{not empty notificationsManagedBean.newMessages}">
+							<f:attribute name="icon" value="ui-icon-mail-open" />
+						</c:if>
+						<c:if test="#{empty notificationsManagedBean.newMessages}">
+							<f:attribute name="icon" value="ui-icon-mail-closed" />
+						</c:if>
+					</p:button>
 				</f:facet>
 
 				<f:facet name="right">
+					<h:outputText value="#{loggedUserManagedBean.user.username}" 
+						rendered="#{loggedUserManagedBean.user != null}" />
 					<p:commandButton value="Profile" icon="ui-icon-person" action="#{userProfileManagedBean.loadProfile(loggedUserManagedBean.user)}" 
 						rendered="#{loggedUserManagedBean.user != null}" />
 					<p:commandButton value="Logout" action="#{UserLogInManagedBean.logOutUser()}" 
@@ -84,13 +96,24 @@
 			<p:graphicImage url="/resources/images/logo250.png" />
 		</h:panelGrid>
 	
+		<h:panelGrid columns="1" style="margin: 5px auto 5px auto"
+			rendered="#{loggedUserManagedBean.user != null and loggedUserManagedBean.user.role == 'owner' and not empty popularDestinationsManagedBean.list}">
+			<p:panel>
+				<p:dataTable var="destination" value="#{popularDestinationsManagedBean.list}">
+					<p:column headerText="Popular destinations">
+						<h:outputText value="#{destination.destinationname}" />
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+		</h:panelGrid>
+	
 		<h:form>
 			<p:accordionPanel activeIndex="-1" style="margin-bottom: 10px">
 				<p:tab title="Filter offers">
 					
 					<h:panelGrid columns="2" style="margin: 15px auto 0px auto">
 		
-						<h:outputText value="Destination: " id="destin" />
+						<h:outputText value="Destination: " />
 						<p:inputText value="#{offersManagedBean.destinationname}" />
 		
 						<h:outputText value="Starting point: " />
@@ -106,9 +129,9 @@
 					
 					<h:panelGrid columns="1" style="margin: 10px auto 0px auto">
 						<p:commandButton action="#{offersManagedBean.searchOffers()}"
-							value="Find" render="searchOfferPanel" execute="@form" />
+							value="Find" update=":mainForm" />
 						<p:commandLink action="#{offersManagedBean.resetFilter()}" value="Reset filter" 
-							/>
+							update=":mainForm"/>
 					</h:panelGrid>
 				
 				</p:tab>
@@ -149,8 +172,17 @@
 				<h:outputText value="No results"  style="font-size: 1.5em"/>
 			</p:outputPanel>
 			
-			<h:panelGrid columns="1" style="margin: 10px 0px 20px auto">
+			<h:panelGrid columns="1" style="margin: 10px 0px 20px auto" rendered="#{loggedUserManagedBean.user != null}">
 				<p:button icon="ui-icon-plusthick" value="Post New Offer" outcome="/pages/postOffer" />
+			</h:panelGrid>
+	
+			<h:panelGrid columns="1" style="margin: 5px auto 5px auto">
+				<p:panel>
+					<h:panelGrid columns="2" style="margin-bottom: auto; margin-top: auto">
+						<p:graphicImage url="/resources/images/photos.png"/>
+						<p:link value="Browse destination photos" outcome="/pages/postPhoto" />
+					</h:panelGrid>
+				</p:panel>
 			</h:panelGrid>
 	
 			<p:carousel value="#{dataManagedBean.recommendedOffers}" var="offer" headerText="Recommendations" 
