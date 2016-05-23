@@ -8,8 +8,6 @@ import javax.persistence.TypedQuery;
 
 import model.Tim7Post;
 import model.Tim7Thread;
-import model.Tim7Traveleroffer;
-import model.Tim7User;
 
 public class ForumManager {
 
@@ -34,7 +32,7 @@ public class ForumManager {
 		EntityManager em = JPAUtil.getEntityManager();
 
 		try {
-			TypedQuery<Tim7Thread> tq = em.createQuery("select t from Tim7Thread t ", Tim7Thread.class);
+			TypedQuery<Tim7Thread> tq = em.createQuery("select t from Tim7Thread t order by t.threadname", Tim7Thread.class);
 			return tq.getResultList();
 
 		} catch (Exception e) {
@@ -67,6 +65,29 @@ public class ForumManager {
 			em.close();
 
 		}
+	}
+	
+	public void createThread(Tim7Thread thread) {
+		
+		EntityManager em = JPAUtil.getEntityManager();
+		
+		try {
+			
+			em.getTransaction().begin();
+			em.persist(thread);
+			em.getTransaction().commit();
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			em.getTransaction().rollback();
+			
+		} finally {
+			
+			em.close();
+			
+		}
+		
 	}
 
 }

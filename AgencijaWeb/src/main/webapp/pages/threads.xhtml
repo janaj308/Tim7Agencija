@@ -7,30 +7,140 @@
     xmlns:p="http://primefaces.org/ui"
     xmlns:c="http://java.sun.com/jsp/jstl/core">
 <h:head>
+	<title>Forum</title>
 </h:head>
 <h:body>
 	<f:view>
-		<h:form id="threads">   
-					<p:dataScroller value="#{forumManagedBean.threads}" var="thread" mode="inline" scrollHeight="300" >
+		<h:form id="notificationForm">
+
+			<p:toolbar id="toolbar">
+				<f:facet name="left">
+					<p:splitButton value="Home" icon="ui-icon-home" action="/pages/index?faces-redirect=true" >
+						<p:menuitem value="Photos" outcome="/pages/postPhoto"/>
+						<p:menuitem value="Forum" outcome="/pages/threads" />
+					</p:splitButton>
 					
-						<f:facet name="header">
-				            Threads
-				       </f:facet>
-				       
-						<p:outputPanel style="margin-top: 10px; margin-bottom: 10px">
-							<h:commandLink action="#{forumManagedBean.loadPostsForThread(thread.threadId)}" value="#{thread.threadId}" 
-									style="font-weight: bold">
-							</h:commandLink>
-							<br />
-							<h:outputText value="#{thread.threadname}" >
-							</h:outputText>
-							<h:outputText value=" - " style="color: #004080" />
-							<h:outputText value="#{thread.threadcreatedtime}" >
+					<p:commandButton id="notifications" type="button" rendered="#{loggedUserManagedBean.user != null}">
+						<c:if
+							test="#{not empty notificationsManagedBean.newNotifications}">
+							<f:attribute name="icon" value="ui-icon-notice" />
+						</c:if>
+						<c:if test="#{empty notificationsManagedBean.newNotifications}">
+							<f:attribute name="icon" value="ui-icon-comment" />
+						</c:if>
+					</p:commandButton>
+					<p:overlayPanel id="notificationPanel" for="notifications"
+						hideEffect="fade" dynamic="true">
+
+						<h:outputText value="No new notifications"
+							rendered="#{empty notificationsManagedBean.newNotifications}"
+							id="noNot" />
+
+						<p:dataScroller
+							value="#{notificationsManagedBean.newNotifications}" var="n"
+							id="scroller"
+							rendered="#{not empty notificationsManagedBean.newNotifications}">
+
+							<p:outputPanel style="padding: 8px">
+								<h:commandLink
+									action="#{offerDetailsManagedBean.loadOffer(n.tim7Offer)}"
+									value="#{n.notificationmessage}"
+									style="color:black; text-decoration: none" />
+							</p:outputPanel>
+
+						</p:dataScroller>
+
+						<h:panelGrid columns="2" style="margin: 10px auto 0px auto">
+							<p:commandButton update="notificationForm"
+								onclick="#{notificationsManagedBean.checkAsSeen()}"
+								value="Mark all as seen" ajax="false"
+								disabled="#{empty notificationsManagedBean.newNotifications}" />
+							<p:commandButton value="See all notifications"
+								oncomplete="PF('dialog').show()" />
+						</h:panelGrid>
+					</p:overlayPanel>
+					
+					<p:button id="messages" rendered="#{loggedUserManagedBean.user != null}" outcome="/pages/inbox">
+						<c:if
+							test="#{not empty notificationsManagedBean.newMessages}">
+							<f:attribute name="icon" value="ui-icon-mail-open" />
+						</c:if>
+						<c:if test="#{empty notificationsManagedBean.newMessages}">
+							<f:attribute name="icon" value="ui-icon-mail-closed" />
+						</c:if>
+					</p:button>
+				</f:facet>
+
+				<f:facet name="right">
+					<h:outputText value="#{loggedUserManagedBean.user.username}" 
+						rendered="#{loggedUserManagedBean.user != null}" />
+					<p:commandButton value="Profile" icon="ui-icon-person" action="#{userProfileManagedBean.loadProfile(loggedUserManagedBean.user)}" 
+						rendered="#{loggedUserManagedBean.user != null}" />
+					<p:commandButton value="Logout" action="#{UserLogInManagedBean.logOutUser()}" 
+						rendered="#{loggedUserManagedBean.user != null}"/>
+					
+					<p:commandButton value="Login" action="#{UserLogInManagedBean.loadLogin}" rendered="#{loggedUserManagedBean.user == null}" >
+						<f:setPropertyActionListener value="#{'/pages/threads'}" target="#{loggedUserManagedBean.fromPage}" />
+					</p:commandButton>
+					<p:button value="Register" outcome="/pages/RegistrationUser" rendered="#{loggedUserManagedBean.user == null}" />
+				</f:facet>
+			</p:toolbar>
+
+			<p:sticky target="toolbar" />
+
+		</h:form>
+	
+		<p:outputPanel style="margin-top: 30px; margin-bottom: 20px; text-align:center">
+			<h:outputText value="Travel Company Forum"
+				style="font-size: 2.0em; font-weight: bold; color: #004080" />
+		</p:outputPanel>
+	
+		<h:form id="threads"> 
+			<h:panelGrid columns="1" style="margin: 10px 0px 20px auto" rendered="#{loggedUserManagedBean.user != null}">
+				<p:commandButton icon="ui-icon-plusthick" value="Create New Thread" update=":dialogForm:createThread" 
+					oncomplete="PF('dialog').show()" />
+			</h:panelGrid>
+			
+			<p:dataScroller value="#{forumManagedBean.threads}" var="thread" style="margin-top: 30px">
+				
+				<f:facet name="header">
+		            Threads
+				</f:facet>
+		       
+		       <h:panelGrid columns="1">
+					<p:outputPanel style="margin-top: 10px" >
+						<h:commandLink action="#{forumManagedBean.loadPostsForThread(thread)}" value="#{thread.threadname}" 
+							style="font-weight: bold" />
+					</p:outputPanel>
+					
+					<p:outputPanel style="margin-bottom: 10px" >
+						<h:outputText value="Created: "/>
+							<h:outputText value="#{thread.threadcreatedtime}" style="font-size: 1em" >
 								<f:convertDateTime pattern="dd.MM.yyyy." />
 							</h:outputText>
-						</p:outputPanel>
+					</p:outputPanel>
+				</h:panelGrid>
+				
+			</p:dataScroller>
+		</h:form>
+		
+		<h:form id="dialogForm">
+			
+			<p:dialog id="createThread" widgetVar="dialog" modal="true" showEffect="fade" hideEffect="fade" 
+				resizable="false" header="Create thread">
+				<h:panelGrid columns="2">
 					
-					</p:dataScroller>
+					<h:outputText value="Thread name: " />
+					<p:inputText value="#{forumManagedBean.newThread.threadname}" />
+					
+				</h:panelGrid>
+				
+				<h:panelGrid columns="1" style="margin-left: auto; margin-right: auto">
+					<p:commandButton action="#{forumManagedBean.createThread}" oncomplete="PF('dialog').hide()"
+						value="Save" update=":threads" />
+				</h:panelGrid>
+			</p:dialog>
+			
 		</h:form>
 	</f:view>
 </h:body>

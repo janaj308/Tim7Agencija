@@ -223,7 +223,6 @@ public class UserManager {
 		}
 		
 	}
-
 	
 	public List<Tim7Notification> getNewNotifications(Tim7User user) {
 		

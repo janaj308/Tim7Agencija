@@ -46,7 +46,7 @@ public class DataManagedBean {
 		allActiveOffers = om.getAllActiveOffers();		
 		allDestinations = om.getAllDestinations();
 		try{
-			recommendedOffers = om.getOffersByAge(loggedUserManagedBean.getUser().getDateofbirth());
+			recommendedOffers = om.getOffersByAge(loggedUserManagedBean.getUser().getDateofbirth(), loggedUserManagedBean.getUser().getIduser());
 		}catch(Exception e){}
 	}
 	

@@ -14,41 +14,65 @@
 		
 			<p:toolbar id="toolbar">
 				<f:facet name="left">
-        			<p:button value="Home" icon="ui-icon-home" outcome="/pages/index" />
-        			
-        			<p:commandButton id="notifications" type="button" rendered="#{loggedUserManagedBean.user != null}" >
-        				<c:if test="#{not empty notificationsManagedBean.newNotifications}" >
-        					<f:attribute name="icon" value="ui-icon-notice" />
-        				</c:if>
-        				<c:if test="#{empty notificationsManagedBean.newNotifications}">
-        					<f:attribute name="icon" value="ui-icon-comment" />
-        				</c:if>
-        			</p:commandButton>
-        			<p:overlayPanel id="notificationPanel" for="notifications" hideEffect="fade" dynamic="true" >
-        			
-        				<h:outputText value="No new notifications" rendered="#{empty notificationsManagedBean.newNotifications}" 
-        					id="noNot" />
-        					
-        				<p:dataScroller value="#{notificationsManagedBean.newNotifications}" var="n" id="scroller" 
-        					rendered="#{not empty notificationsManagedBean.newNotifications}">
-        				
-	        				<p:outputPanel style="padding: 8px">
-	        					<h:commandLink action="#{offerDetailsManagedBean.loadOffer(n.tim7Offer)}" value="#{n.notificationmessage}"
-	       							style="color:black; text-decoration: none" />
-	       					</p:outputPanel>
-        					
-        				</p:dataScroller>
-        				
-        				<h:panelGrid columns="2" style="margin: 10px auto 0px auto">
-   							<p:commandButton update="notificationForm" 
-   								onclick="#{notificationsManagedBean.checkAsSeen()}" 
-   								value="Mark all as seen" ajax="false" />
-   							<p:commandButton value="See all notifications" oncomplete="PF('dialog').show()" />
-       					</h:panelGrid>
-        			</p:overlayPanel>
+					<p:splitButton value="Home" icon="ui-icon-home" action="/pages/index?faces-redirect=true" >
+						<p:menuitem value="Photos" outcome="/pages/postPhoto"/>
+						<p:menuitem value="Forum" outcome="/pages/threads" />
+					</p:splitButton>
+					
+					<p:commandButton id="notifications" type="button" rendered="#{loggedUserManagedBean.user != null}">
+						<c:if
+							test="#{not empty notificationsManagedBean.newNotifications}">
+							<f:attribute name="icon" value="ui-icon-notice" />
+						</c:if>
+						<c:if test="#{empty notificationsManagedBean.newNotifications}">
+							<f:attribute name="icon" value="ui-icon-comment" />
+						</c:if>
+					</p:commandButton>
+					<p:overlayPanel id="notificationPanel" for="notifications"
+						hideEffect="fade" dynamic="true">
+
+						<h:outputText value="No new notifications"
+							rendered="#{empty notificationsManagedBean.newNotifications}"
+							id="noNot" />
+
+						<p:dataScroller
+							value="#{notificationsManagedBean.newNotifications}" var="n"
+							id="scroller"
+							rendered="#{not empty notificationsManagedBean.newNotifications}">
+
+							<p:outputPanel style="padding: 8px">
+								<h:commandLink
+									action="#{offerDetailsManagedBean.loadOffer(n.tim7Offer)}"
+									value="#{n.notificationmessage}"
+									style="color:black; text-decoration: none" />
+							</p:outputPanel>
+
+						</p:dataScroller>
+
+						<h:panelGrid columns="2" style="margin: 10px auto 0px auto">
+							<p:commandButton update="notificationForm"
+								onclick="#{notificationsManagedBean.checkAsSeen()}"
+								value="Mark all as seen" ajax="false"
+								disabled="#{empty notificationsManagedBean.newNotifications}" />
+							<p:commandButton value="See all notifications"
+								oncomplete="PF('dialog').show()" />
+						</h:panelGrid>
+					</p:overlayPanel>
+					
+					<p:button id="messages" rendered="#{loggedUserManagedBean.user != null}" outcome="/pages/inbox">
+						<c:if
+							test="#{not empty notificationsManagedBean.newMessages}">
+							<f:attribute name="icon" value="ui-icon-mail-open" />
+						</c:if>
+						<c:if test="#{empty notificationsManagedBean.newMessages}">
+							<f:attribute name="icon" value="ui-icon-mail-closed" />
+						</c:if>
+					</p:button>
 				</f:facet>
-				
+
 				<f:facet name="right">
+					<h:outputText value="#{loggedUserManagedBean.user.username}" 
+						rendered="#{loggedUserManagedBean.user != null}" />
 					<p:commandButton value="Profile" icon="ui-icon-person" action="#{userProfileManagedBean.loadProfile(loggedUserManagedBean.user)}" 
 						rendered="#{loggedUserManagedBean.user != null}" />
 					<p:commandButton value="Logout" action="#{UserLogInManagedBean.logOutUser()}" 

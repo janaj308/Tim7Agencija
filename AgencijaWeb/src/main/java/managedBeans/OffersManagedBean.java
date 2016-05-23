@@ -20,7 +20,9 @@ public class OffersManagedBean {
 	private String feedbackO;
 	private String feedbackD;
 	@ManagedProperty(value = "#{loggedUserManagedBean}")
-	LoggedUserManagedBean loggedUserManagedBean;
+	private LoggedUserManagedBean loggedUserManagedBean;
+	@ManagedProperty(value="#{offerDetailsManagedBean}")
+	private OfferDetailsManagedBean offerDetailsManagedBean;
 	
 	private float priceLow;
 	private float priceHigh;
@@ -44,16 +46,27 @@ public class OffersManagedBean {
 		searchResults = OM.getAllActiveOffers();
 	}
 
-	public void postOffer() {
+	public String postOffer() {
 		
 		offer.setTim7User(loggedUserManagedBean.getUser());
 		boolean posted = OM.postOffer(offer);
 		
 		if (posted) {
 			feedbackO = "Offer was successfully posted";
+			Tim7Offer temp = offer;
 			offer = new Tim7Offer();
-		} else
+			
+			priceHigh=OM.getMaxPrice();
+			maxPrice = priceHigh;
+			dest= new Tim7Destination();
+			searchResults = OM.getAllActiveOffers();
+			
+			return offerDetailsManagedBean.loadOffer(temp);
+			
+		} else {
 			feedbackO="There was an error while posting the offer. Try again!";
+			return "";
+		}
 	}
 	
 	public void addDestination(){
@@ -178,6 +191,14 @@ public class OffersManagedBean {
 
 	public void setLoggedUserManagedBean(LoggedUserManagedBean loggedUserManagedBean) {
 		this.loggedUserManagedBean = loggedUserManagedBean;
+	}
+
+	public OfferDetailsManagedBean getOfferDetailsManagedBean() {
+		return offerDetailsManagedBean;
+	}
+
+	public void setOfferDetailsManagedBean(OfferDetailsManagedBean offerDetailsManagedBean) {
+		this.offerDetailsManagedBean = offerDetailsManagedBean;
 	}
 
 	public boolean isSearched() {

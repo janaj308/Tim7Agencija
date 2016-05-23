@@ -15,7 +15,10 @@
 		
 			<p:toolbar id="toolbar">
 				<f:facet name="left">
-					<p:button value="Home" icon="ui-icon-home" outcome="/pages/index" />
+					<p:splitButton value="Home" icon="ui-icon-home" action="/pages/index?faces-redirect=true" >
+						<p:menuitem value="Photos" outcome="/pages/postPhoto"/>
+						<p:menuitem value="Forum" outcome="/pages/threads" />
+					</p:splitButton>
 					
 					<p:commandButton id="notifications" type="button" rendered="#{loggedUserManagedBean.user != null}">
 						<c:if
@@ -77,7 +80,7 @@
 						rendered="#{loggedUserManagedBean.user != null}"/>
 					
 					<p:commandButton value="Login" action="#{UserLogInManagedBean.loadLogin}" rendered="#{loggedUserManagedBean.user == null}" >
-						<f:setPropertyActionListener value="#{'/pages/index'}" target="#{loggedUserManagedBean.fromPage}" />
+						<f:setPropertyActionListener value="#{'/pages/userProfile'}" target="#{loggedUserManagedBean.fromPage}" />
 					</p:commandButton>
 					<p:button value="Register" outcome="/pages/RegistrationUser" rendered="#{loggedUserManagedBean.user == null}" />
 				</f:facet>
@@ -165,7 +168,8 @@
 				</p:layoutUnit>
 			</p:layout>
 			
-			<p:dataList value="#{userProfileManagedBean.comments}" var="comm" rendered="#{not empty userProfileManagedBean.comments}">
+			<p:dataList value="#{userProfileManagedBean.comments}" var="comm" type="unordered" itemType="none"
+				rendered="#{not empty userProfileManagedBean.comments}">
 		       <f:facet name="header">
 		            Comments
 		       </f:facet>

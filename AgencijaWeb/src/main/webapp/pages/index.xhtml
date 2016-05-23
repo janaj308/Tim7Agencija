@@ -88,14 +88,30 @@
 		</h:form>
 	
 		<p:outputPanel style="margin-top: 30px; margin-bottom: 20px; text-align:center">
-			<h:outputText value="Travel company"
+			<h:outputText value="Travel Company"
 				style="font-size: 2.0em; font-weight: bold; color: #004080" />
 		</p:outputPanel>
 		
 		<h:panelGrid columns="1" style="margin-left: auto; margin-right: auto">
 			<p:graphicImage url="/resources/images/logo250.png" />
 		</h:panelGrid>
-	
+		
+		<h:panelGrid columns="2" style="margin-right: auto; margin-left: auto">
+			<p:panel style="min-width: 350px">
+				<h:panelGrid columns="2" style="margin-right: auto; margin-left: auto">
+					<p:graphicImage url="/resources/images/photos.png"/>
+					<p:link value="Browse destination photos" outcome="/pages/postPhoto" />
+				</h:panelGrid>
+			</p:panel>
+			
+			<p:panel style="min-width: 350px" >
+				<h:panelGrid columns="2" style="margin-right: auto; margin-left: auto">
+					<p:graphicImage url="/resources/images/forum.png"/>
+					<p:link value="Forum" outcome="/pages/threads" />
+				</h:panelGrid>
+			</p:panel>
+		</h:panelGrid>
+		
 		<h:panelGrid columns="1" style="margin: 5px auto 5px auto"
 			rendered="#{loggedUserManagedBean.user != null and loggedUserManagedBean.user.role == 'owner' and not empty popularDestinationsManagedBean.list}">
 			<p:panel>
@@ -175,15 +191,6 @@
 			
 			<h:panelGrid columns="1" style="margin: 10px 0px 20px auto" rendered="#{loggedUserManagedBean.user != null}">
 				<p:button icon="ui-icon-plusthick" value="Post New Offer" outcome="/pages/postOffer" />
-			</h:panelGrid>
-	
-			<h:panelGrid columns="1" style="margin: 5px auto 5px auto">
-				<p:panel>
-					<h:panelGrid columns="2" style="margin-bottom: auto; margin-top: auto">
-						<p:graphicImage url="/resources/images/photos.png"/>
-						<p:link value="Browse destination photos" outcome="/pages/postPhoto" />
-					</h:panelGrid>
-				</p:panel>
 			</h:panelGrid>
 	
 			<p:carousel value="#{dataManagedBean.recommendedOffers}" var="offer" headerText="Recommendations" 

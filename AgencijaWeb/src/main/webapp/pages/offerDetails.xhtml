@@ -17,7 +17,10 @@
 		
 			<p:toolbar id="toolbar">
 				<f:facet name="left">
-					<p:button value="Home" icon="ui-icon-home" outcome="/pages/index" />
+					<p:splitButton value="Home" icon="ui-icon-home" action="/pages/index?faces-redirect=true" >
+						<p:menuitem value="Photos" outcome="/pages/postPhoto"/>
+						<p:menuitem value="Forum" outcome="/pages/threads" />
+					</p:splitButton>
 					
 					<p:commandButton id="notifications" type="button" rendered="#{loggedUserManagedBean.user != null}">
 						<c:if
@@ -79,7 +82,7 @@
 						rendered="#{loggedUserManagedBean.user != null}"/>
 					
 					<p:commandButton value="Login" action="#{UserLogInManagedBean.loadLogin}" rendered="#{loggedUserManagedBean.user == null}" >
-						<f:setPropertyActionListener value="#{'/pages/index'}" target="#{loggedUserManagedBean.fromPage}" />
+						<f:setPropertyActionListener value="#{'/pages/offerDetails'}" target="#{loggedUserManagedBean.fromPage}" />
 					</p:commandButton>
 					<p:button value="Register" outcome="/pages/RegistrationUser" rendered="#{loggedUserManagedBean.user == null}" />
 				</f:facet>
@@ -102,7 +105,7 @@
 			</h:outputText>
 		</p:outputPanel>
 		
-		<h:form style="margin-left: 25px; margin-right: 25px">
+		<h:form style="margin-left: 25px; margin-right: 25px" id="mainForm">
 			
 			<p:layout style="min-height: 550px">
 				<p:layoutUnit position="center" style="padding: 10px" >
@@ -169,7 +172,7 @@
 					</h:panelGrid>
 					
 					<h:panelGrid id="acceptBtn" columns="1" style="margin-left: auto; margin-right: auto" 
-						rendered="#{loggedUserManagedBean.user != null and !offerDetailsManagedBean.accepted}">
+						rendered="#{loggedUserManagedBean.user != null and !offerDetailsManagedBean.accepted and offerDetailsManagedBean.offer.travelernumber > offerDetailsManagedBean.offer.travelercurrentcount}">
 						<p:commandButton value="Accept" action="#{offerDetailsManagedBean.acceptOffer}" 
 							update="spotNo travelerList noTravelers acceptBtn" ajax="false" />
 					</h:panelGrid>
@@ -181,7 +184,7 @@
 					<p:inputTextarea rows="5" cols="50" value="#{ratingManagedBean.comm}"/>
 					<h:panelGrid columns="2" id="ratingPanel">
 		        		<p:rating id="rat" value="#{ratingManagedBean.rating}" stars="5" cancel="false" />
-		        		<p:commandButton action="#{ratingManagedBean.rate()}" value="Submit"  />	
+		        		<p:commandButton action="#{ratingManagedBean.rate()}" value="Submit" update=":mainForm" />	
 		        	</h:panelGrid>
 				
 				</p:layoutUnit>

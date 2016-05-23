@@ -1,18 +1,18 @@
 package managedBeans;
 
+import java.util.Date;
 import java.util.List;
 
-import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
 
 import managers.ForumManager;
-import model.Tim7Offer;
 import model.Tim7Post;
 import model.Tim7Thread;
 
 @ManagedBean(name = "forumManagedBean")
-@ApplicationScoped
+@SessionScoped
 public class ForumManagedBean {
 
 	private Tim7Post post;
@@ -22,27 +22,48 @@ public class ForumManagedBean {
 	private String feedbackP;
 	private List<Tim7Thread> threads;
 	private List<Tim7Post> posts;
-	private int threadId;
+	private Tim7Thread selectedThread;
+	private Tim7Thread newThread;
 	
 	public ForumManagedBean() {
 		post= new Tim7Post();
-		threads= new ForumManager().getAllThreads();
+		fm = new ForumManager();
+		threads= fm.getAllThreads();
+		newThread = new Tim7Thread();
 	}
 	
 	public void addPost() {
 
 		post.setTim7User(loggedUserManagedBean.getUser());
+		post.setPosttime(new Date());
+		post.setTim7Thread(selectedThread);
+		
 		boolean posted = fm.saveNewPost(post);
 
 		if (posted) {
 			feedbackP = "Post was successfully added";
 			post = new Tim7Post();
+			posts = new ForumManager().getAllPostsForThread(selectedThread.getIdthread());
 		} else
 			feedbackP = "There was an error while adding the post. Try again!";
 	}
 	
-	public void loadPostsForThread(){
-		posts= new ForumManager().getAllPostsForThread(threadId);
+	public String loadPostsForThread(Tim7Thread thread){
+		selectedThread = thread;
+		posts = new ForumManager().getAllPostsForThread(selectedThread.getIdthread());
+		
+		return "/pages/posts?faces-redirect=true";
+	}
+	
+	public void createThread() {
+		
+		newThread.setThreadcreatedtime(new Date());
+		newThread.setTim7User(loggedUserManagedBean.getUser());
+		
+		fm.createThread(newThread);
+		
+		threads= fm.getAllThreads();
+		
 	}
 
 	public List<Tim7Post> getPosts() {
@@ -93,14 +114,20 @@ public class ForumManagedBean {
 		this.threads = threads;
 	}
 
-	public int getThreadId() {
-		return threadId;
+	public Tim7Thread getSelectedThread() {
+		return selectedThread;
 	}
 
-	public void setThreadId(int threadId) {
-		this.threadId = threadId;
+	public void setSelectedThread(Tim7Thread selectedThread) {
+		this.selectedThread = selectedThread;
 	}
-		
+
+	public Tim7Thread getNewThread() {
+		return newThread;
+	}
+
+	public void setNewThread(Tim7Thread newThread) {
+		this.newThread = newThread;
+	}
 	
-
 }

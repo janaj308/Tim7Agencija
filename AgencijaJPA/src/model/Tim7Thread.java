@@ -2,7 +2,7 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.util.Date;
 
 
 /**
@@ -23,7 +23,8 @@ public class Tim7Thread implements Serializable {
 	@JoinColumn(name="IDUSER")
 	private Tim7User tim7User;
 
-	private Timestamp threadcreatedtime;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date threadcreatedtime;
 
 	private String threadname;
 
@@ -46,11 +47,11 @@ public class Tim7Thread implements Serializable {
 		this.tim7User = tim7User;
 	}
 
-	public Timestamp getThreadcreatedtime() {
-		return this.threadcreatedtime;
+	public Date getThreadcreatedtime() {
+		return threadcreatedtime;
 	}
 
-	public void setThreadcreatedtime(Timestamp threadcreatedtime) {
+	public void setThreadcreatedtime(Date threadcreatedtime) {
 		this.threadcreatedtime = threadcreatedtime;
 	}
 

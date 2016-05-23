@@ -17,7 +17,10 @@
 
 			<p:toolbar id="toolbar">
 				<f:facet name="left">
-					<p:button value="Home" icon="ui-icon-home" outcome="/pages/index" />
+					<p:splitButton value="Home" icon="ui-icon-home" action="/pages/index?faces-redirect=true" >
+						<p:menuitem value="Photos" outcome="/pages/postPhoto"/>
+						<p:menuitem value="Forum" outcome="/pages/threads" />
+					</p:splitButton>
 					
 					<p:commandButton id="notifications" type="button" rendered="#{loggedUserManagedBean.user != null}">
 						<c:if
@@ -93,7 +96,7 @@
 			
 			<p:layout style="min-height: 450px; margin-top: 20px">
 			
-				<p:layoutUnit position="west" style="max-width: 150px">
+				<p:layoutUnit position="west" style="max-width: 180px">
 					<p:dataTable value="#{messagesManagedBean.contacts}" var="contact" selectionMode="single" 
 						selection="#{messagesManagedBean.selectedContact}" rowKey="#{contact.iduser}" >
 						<p:ajax event="rowSelect" listener="#{messagesManagedBean.loadConversation}" 
@@ -107,7 +110,8 @@
 				
 				<p:layoutUnit position="center" id="messages" style="margin: auto auto auto auto">
 					<p:dataScroller value="#{messagesManagedBean.allMessages}" var="m" mode="inline" scrollHeight="320"
-						rendered="#{not empty messagesManagedBean.allMessages}" >
+						rendered="#{not empty messagesManagedBean.allMessages}" styleClass="scroller">
+						
 						<h:panelGrid columns="1" style="margin-left: 0px; margin-right: auto" rendered="#{m.received}">
 							<h:outputText value="#{m.content}" />
 							<h:outputText value="#{m.dateTime}" style="font-size: 0.8em" >
@@ -129,7 +133,7 @@
 						<p:commandButton action="#{messagesManagedBean.createNewMessage(messagesManagedBean.selectedContact)}" value="Send" update=":mainForm" />
 					</h:panelGrid>
 					
-					<p:outputPanel rendered="#{empty messagesManagedBean.allMessages}" >
+					<p:outputPanel rendered="#{empty messagesManagedBean.allMessages}" style="text-alignment: center">
 						<h:outputText value="Choose a conversation" />
 					</p:outputPanel>
 				</p:layoutUnit>

@@ -142,6 +142,10 @@ public class MessagingManager {
 			e.printStackTrace();
 			em.getTransaction().rollback();
 			
+		} finally {
+			
+			em.close();
+			
 		}
 		
 	}

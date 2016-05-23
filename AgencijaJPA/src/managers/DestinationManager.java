@@ -41,7 +41,7 @@ public class DestinationManager {
 	public List<Tim7Destination> getVisitedDestinations(Tim7User user){
 		try {
 			
-			TypedQuery<Tim7Destination> dest=JPAUtil.getEntityManager().createQuery("select distinct d from Tim7Destination d, Tim7Traveleroffer t, Tim7Offer o where t.tim7Offer.idoffer=o.idoffer and t.tim7User.iduser=:user and o.tim7Destination.iddestination=d.iddestination and o.enddate < :date ",Tim7Destination.class);
+			TypedQuery<Tim7Destination> dest=JPAUtil.getEntityManager().createQuery("select distinct d from Tim7Destination d, Tim7Traveleroffer t, Tim7Offer o where t.tim7Offer.idoffer=o.idoffer and t.tim7User.iduser=:user and o.tim7Destination.iddestination=d.iddestination and o.enddate < :date order by d.destinationname",Tim7Destination.class);
 			dest.setParameter("user", user.getIduser());
 			dest.setParameter("date", new Date());
 			return dest.getResultList();  

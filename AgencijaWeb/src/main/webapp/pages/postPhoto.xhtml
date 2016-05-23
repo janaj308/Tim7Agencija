@@ -18,7 +18,10 @@
 		
 			<p:toolbar id="toolbar">
 				<f:facet name="left">
-					<p:button value="Home" icon="ui-icon-home" outcome="/pages/index" />
+					<p:splitButton value="Home" icon="ui-icon-home" action="/pages/index?faces-redirect=true" >
+						<p:menuitem value="Photos" outcome="/pages/postPhoto"/>
+						<p:menuitem value="Forum" outcome="/pages/threads" />
+					</p:splitButton>
 					
 					<p:commandButton id="notifications" type="button" rendered="#{loggedUserManagedBean.user != null}">
 						<c:if

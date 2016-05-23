@@ -10,28 +10,123 @@
 </h:head>
 <h:body>
 	<f:view>
-		<h:form id="posts">   
-					<p:dataScroller value="#{forumManagedBean.posts}" var="post" mode="inline" scrollHeight="300" >
+		
+		<h:form id="notificationForm">
+
+			<p:toolbar id="toolbar">
+				<f:facet name="left">
+					<p:splitButton value="Home" icon="ui-icon-home" action="/pages/index?faces-redirect=true" >
+						<p:menuitem value="Photos" outcome="/pages/postPhoto"/>
+						<p:menuitem value="Forum" outcome="/pages/threads" />
+					</p:splitButton>
 					
-						<f:facet name="header">
-				            Posts
-				       </f:facet>
-				       
-						<p:outputPanel style="margin-top: 10px; margin-bottom: 10px">
-							<h:outputText value="#{post.Tim7User.username}" >
-							</h:outputText>
-							<h:outputText value="#{post.postcontent}" >
-							</h:outputText>
-							<h:outputText value=" - " style="color: #004080" />
-							<h:outputText value="#{post.posttime}" >
+					<p:commandButton id="notifications" type="button" rendered="#{loggedUserManagedBean.user != null}">
+						<c:if
+							test="#{not empty notificationsManagedBean.newNotifications}">
+							<f:attribute name="icon" value="ui-icon-notice" />
+						</c:if>
+						<c:if test="#{empty notificationsManagedBean.newNotifications}">
+							<f:attribute name="icon" value="ui-icon-comment" />
+						</c:if>
+					</p:commandButton>
+					<p:overlayPanel id="notificationPanel" for="notifications"
+						hideEffect="fade" dynamic="true">
+
+						<h:outputText value="No new notifications"
+							rendered="#{empty notificationsManagedBean.newNotifications}"
+							id="noNot" />
+
+						<p:dataScroller
+							value="#{notificationsManagedBean.newNotifications}" var="n"
+							id="scroller"
+							rendered="#{not empty notificationsManagedBean.newNotifications}">
+
+							<p:outputPanel style="padding: 8px">
+								<h:commandLink
+									action="#{offerDetailsManagedBean.loadOffer(n.tim7Offer)}"
+									value="#{n.notificationmessage}"
+									style="color:black; text-decoration: none" />
+							</p:outputPanel>
+
+						</p:dataScroller>
+
+						<h:panelGrid columns="2" style="margin: 10px auto 0px auto">
+							<p:commandButton update="notificationForm"
+								onclick="#{notificationsManagedBean.checkAsSeen()}"
+								value="Mark all as seen" ajax="false"
+								disabled="#{empty notificationsManagedBean.newNotifications}" />
+							<p:commandButton value="See all notifications"
+								oncomplete="PF('dialog').show()" />
+						</h:panelGrid>
+					</p:overlayPanel>
+					
+					<p:button id="messages" rendered="#{loggedUserManagedBean.user != null}" outcome="/pages/inbox">
+						<c:if
+							test="#{not empty notificationsManagedBean.newMessages}">
+							<f:attribute name="icon" value="ui-icon-mail-open" />
+						</c:if>
+						<c:if test="#{empty notificationsManagedBean.newMessages}">
+							<f:attribute name="icon" value="ui-icon-mail-closed" />
+						</c:if>
+					</p:button>
+				</f:facet>
+
+				<f:facet name="right">
+					<h:outputText value="#{loggedUserManagedBean.user.username}" 
+						rendered="#{loggedUserManagedBean.user != null}" />
+					<p:commandButton value="Profile" icon="ui-icon-person" action="#{userProfileManagedBean.loadProfile(loggedUserManagedBean.user)}" 
+						rendered="#{loggedUserManagedBean.user != null}" />
+					<p:commandButton value="Logout" action="#{UserLogInManagedBean.logOutUser()}" 
+						rendered="#{loggedUserManagedBean.user != null}"/>
+					
+					<p:commandButton value="Login" action="#{UserLogInManagedBean.loadLogin}" rendered="#{loggedUserManagedBean.user == null}" >
+						<f:setPropertyActionListener value="#{'/pages/posts'}" target="#{loggedUserManagedBean.fromPage}" />
+					</p:commandButton>
+					<p:button value="Register" outcome="/pages/RegistrationUser" rendered="#{loggedUserManagedBean.user == null}" />
+				</f:facet>
+			</p:toolbar>
+
+			<p:sticky target="toolbar" />
+
+		</h:form>
+		
+		<p:outputPanel style="margin-top: 30px; margin-bottom: 20px">
+			<h:outputText value="#{forumManagedBean.selectedThread.threadname}"
+				style="font-size: 2.0em; font-weight: bold; color: #004080" />
+		</p:outputPanel>
+		
+		<h:form id="posts">   
+			<p:dataList value="#{forumManagedBean.posts}" var="post" paginator="true" rows="15" styleClass="paginated" 
+				type="unordered" itemType="none" rendered="#{not empty forumManagedBean.posts}" >
+		       
+		       <h:panelGrid columns="2">
+					<p:outputPanel style="max-width: 100px" >
+						<h:panelGrid columns="1">
+							<p:commandLink value="#{post.tim7User.username}" style="text-decoration: none; font-weight: bold"
+								action="#{userProfileManagedBean.loadProfile(post.tim7User)}" />
+							<h:outputText value="#{post.posttime}">
 								<f:convertDateTime pattern="dd.MM.yyyy." />
 							</h:outputText>
-						</p:outputPanel>
+						</h:panelGrid>
+					</p:outputPanel>
 					
-					</p:dataScroller>
-	
-   					<p:inputTextarea rows="6" cols="50" completeMethod="#{forumManagedBean.post}" queryDelay="750" minQueryLength="4" />
- 					<p:commandButton actionListener="#{forumManagedBean.addPost}" value="Post" update=":main"/>
+					<p:outputPanel style="margin-left: 25px">
+						<h:outputText value="#{post.postcontent}" />
+					</p:outputPanel>
+				</h:panelGrid>
+			
+			</p:dataList>
+			
+			<p:panel rendered="#{empty forumManagedBean.posts}" >
+				<h:outputText value="No posts on this thread yet"/>
+			</p:panel>
+
+			<p:panel style="margin-top: 20px" rendered="#{loggedUserManagedBean.user != null}">
+				<h:panelGrid columns="2" style="margin-left: auto; margin-right: auto">
+					<p:inputTextarea rows="4" cols="85" value="#{forumManagedBean.post.postcontent}" />
+					<p:commandButton action="#{forumManagedBean.addPost}" value="Post" update=":posts"/>
+				</h:panelGrid>
+			</p:panel>
 		</h:form>
 	</f:view>
 </h:body>
