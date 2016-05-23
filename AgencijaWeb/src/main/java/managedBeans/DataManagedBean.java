@@ -7,9 +7,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 
-import managers.MessagingManager;
 import managers.OfferManager;
-import managers.UserManager;
 import model.Tim7Destination;
 import model.Tim7Messagereceived;
 import model.Tim7Messagesent;
@@ -22,7 +20,6 @@ public class DataManagedBean {
 
 	@ManagedProperty(value = "#{loggedUserManagedBean}")
 	LoggedUserManagedBean loggedUserManagedBean;
-	private Tim7User temp;
 	private List<Tim7Offer> allActiveOffers;
 	
 	private List<Tim7Offer> recommendedOffers;
@@ -41,69 +38,33 @@ public class DataManagedBean {
 		
 	}
 	
-	/*public void reloadSentMessages(){
-		allMessageSent = new MessagingManager().getAllUserSentMessages(loggedUserManagedBean.getUser().getIduser());
-	//	populateUsersForSent();		
-	}
-	
-	private void populateUsersForSent(){
-		UserManager um = new UserManager();
-		for (Tim7Messagesent a : allMessageSent) {			
-			temp = um.getUserById(a.getIduserreceiver());
-			allUsersForSentMessages.add(temp);
-		}
-	}
-	public void reloadReceivedMessages(){
-		allMessageRecived = new MessagingManager().getAllUserReceivedMessages(loggedUserManagedBean.getUser().getIduser());
-		//populateUsersForResived();
-	}
-	private void populateUsersForResived(){
-		UserManager um = new UserManager();
-		for (Tim7Messagereceived a : allMessageRecived) {	
-			temp = um.getUserById(a.getIdmessagereceived());
-			allUsersForRecivedMessages.add(temp);
-		}
-	}*/
 	@PostConstruct
 	public void post() {
 		
-		OfferManager om = new OfferManager();
-		MessagingManager mm = new MessagingManager();		
+		OfferManager om = new OfferManager();		
 		
 		allActiveOffers = om.getAllActiveOffers();		
 		allDestinations = om.getAllDestinations();
 		try{
 			recommendedOffers = om.getOffersByAge(loggedUserManagedBean.getUser().getDateofbirth());
-			//allMessageSent = mm.getAllUserSentMessages(loggedUserManagedBean.getUser().getIduser());
-			//populateUsersForSent();
-			//allMessageRecived = mm.getAllUserReceivedMessages(loggedUserManagedBean.getUser().getIduser());
-		//	populateUsersForResived();
 		}catch(Exception e){}
 	}
 	
 	public LoggedUserManagedBean getLoggedUserManagedBean() {
 		return loggedUserManagedBean;
 	}
-
-
-
+	
 	public void setLoggedUserManagedBean(LoggedUserManagedBean loggedUserManagedBean) {
 		this.loggedUserManagedBean = loggedUserManagedBean;
 	}
-
-
-
+	
 	public List<Tim7Offer> getRecommendedOffers() {
 		return recommendedOffers;
 	}
 
-
-
 	public void setRecommendedOffers(List<Tim7Offer> recommendedOffers) {
 		this.recommendedOffers = recommendedOffers;
 	}
-
-
 
 	public List<Tim7Offer> getAllActiveOffers() {
 		return allActiveOffers;
@@ -152,6 +113,5 @@ public class DataManagedBean {
 	public void setAllUsersForRecivedMessages(List<Tim7User> allUsersForRecivedMessages) {
 		this.allUsersForRecivedMessages = allUsersForRecivedMessages;
 	}
-	
 	
 }

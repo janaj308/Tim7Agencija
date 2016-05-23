@@ -162,7 +162,8 @@
 					</h:outputText>
 				</p:outputPanel>
 				<p:outputPanel>	
-					<h:outputText value="Posted by: #{offer.tim7User.username}" />
+					<h:outputText value="Posted by: " />
+					<p:commandLink value="#{offer.tim7User.username}" action="#{userProfileManagedBean.loadProfile(offer.tim7User)}"  />
 				</p:outputPanel>
 				
 			</p:dataScroller>

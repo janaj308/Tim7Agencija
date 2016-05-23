@@ -15,60 +15,83 @@
 		
 			<p:toolbar id="toolbar">
 				<f:facet name="left">
-        			<p:button value="Home" icon="ui-icon-home" outcome="/pages/index" />
-        			
-        			<p:commandButton id="notifications" type="button" rendered="#{loggedUserManagedBean.user != null}" >
-        				<c:if test="#{not empty notificationsManagedBean.newNotifications}" >
-        					<f:attribute name="icon" value="ui-icon-notice" />
-        				</c:if>
-        				<c:if test="#{empty notificationsManagedBean.newNotifications}">
-        					<f:attribute name="icon" value="ui-icon-comment" />
-        				</c:if>
-        			</p:commandButton>
-        			<p:overlayPanel id="notificationPanel" for="notifications" hideEffect="fade" dynamic="true" >
-        			
-        				<h:outputText value="No new notifications" rendered="#{empty notificationsManagedBean.newNotifications}" 
-        					id="noNot" />
-        					
-        				<p:dataScroller value="#{notificationsManagedBean.newNotifications}" var="n" id="scroller" 
-        					rendered="#{not empty notificationsManagedBean.newNotifications}">
-        				
-	        				<p:outputPanel style="padding: 8px">
-	        					<h:commandLink action="#{offerDetailsManagedBean.loadOffer(n.tim7Offer)}" value="#{n.notificationmessage}"
-	       							style="color:black; text-decoration: none" />
-	       					</p:outputPanel>
-        					
-        				</p:dataScroller>
-        				
-        				<h:panelGrid columns="2" style="margin: 10px auto 0px auto">
-   							<p:commandButton update="notificationForm" 
-   								onclick="#{notificationsManagedBean.checkAsSeen()}" 
-   								value="Mark all as seen" ajax="false"
-   								disabled="#{empty notificationsManagedBean.newNotifications}" />
-   							<p:commandButton value="See all notifications" oncomplete="PF('dialog').show()" />
-       					</h:panelGrid>
-        			</p:overlayPanel>
+					<p:button value="Home" icon="ui-icon-home" outcome="/pages/index" />
+					
+					<p:commandButton id="notifications" type="button" rendered="#{loggedUserManagedBean.user != null}">
+						<c:if
+							test="#{not empty notificationsManagedBean.newNotifications}">
+							<f:attribute name="icon" value="ui-icon-notice" />
+						</c:if>
+						<c:if test="#{empty notificationsManagedBean.newNotifications}">
+							<f:attribute name="icon" value="ui-icon-comment" />
+						</c:if>
+					</p:commandButton>
+					<p:overlayPanel id="notificationPanel" for="notifications"
+						hideEffect="fade" dynamic="true">
+
+						<h:outputText value="No new notifications"
+							rendered="#{empty notificationsManagedBean.newNotifications}"
+							id="noNot" />
+
+						<p:dataScroller
+							value="#{notificationsManagedBean.newNotifications}" var="n"
+							id="scroller"
+							rendered="#{not empty notificationsManagedBean.newNotifications}">
+
+							<p:outputPanel style="padding: 8px">
+								<h:commandLink
+									action="#{offerDetailsManagedBean.loadOffer(n.tim7Offer)}"
+									value="#{n.notificationmessage}"
+									style="color:black; text-decoration: none" />
+							</p:outputPanel>
+
+						</p:dataScroller>
+
+						<h:panelGrid columns="2" style="margin: 10px auto 0px auto">
+							<p:commandButton update="notificationForm"
+								onclick="#{notificationsManagedBean.checkAsSeen()}"
+								value="Mark all as seen" ajax="false"
+								disabled="#{empty notificationsManagedBean.newNotifications}" />
+							<p:commandButton value="See all notifications"
+								oncomplete="PF('dialog').show()" />
+						</h:panelGrid>
+					</p:overlayPanel>
+					
+					<p:button id="messages" rendered="#{loggedUserManagedBean.user != null}" outcome="/pages/inbox">
+						<c:if
+							test="#{not empty notificationsManagedBean.newMessages}">
+							<f:attribute name="icon" value="ui-icon-mail-open" />
+						</c:if>
+						<c:if test="#{empty notificationsManagedBean.newMessages}">
+							<f:attribute name="icon" value="ui-icon-mail-closed" />
+						</c:if>
+					</p:button>
 				</f:facet>
-				
+
 				<f:facet name="right">
+					<h:outputText value="#{loggedUserManagedBean.user.username}" 
+						rendered="#{loggedUserManagedBean.user != null}" />
+					<p:commandButton value="Profile" icon="ui-icon-person" action="#{userProfileManagedBean.loadProfile(loggedUserManagedBean.user)}" 
+						rendered="#{loggedUserManagedBean.user != null and loggedUserManagedBean.user.iduser != userProfileManagedBean.user.iduser}" />
 					<p:commandButton value="Logout" action="#{UserLogInManagedBean.logOutUser()}" 
 						rendered="#{loggedUserManagedBean.user != null}"/>
 					
 					<p:commandButton value="Login" action="#{UserLogInManagedBean.loadLogin}" rendered="#{loggedUserManagedBean.user == null}" >
-						<f:setPropertyActionListener value="#{'/pages/viewOffers'}" target="#{loggedUserManagedBean.fromPage}" />
+						<f:setPropertyActionListener value="#{'/pages/index'}" target="#{loggedUserManagedBean.fromPage}" />
 					</p:commandButton>
 					<p:button value="Register" outcome="/pages/RegistrationUser" rendered="#{loggedUserManagedBean.user == null}" />
 				</f:facet>
 			</p:toolbar>
-			
+
 			<p:sticky target="toolbar" />
 			
 		</h:form>
 		
 		<p:outputPanel style="margin-top: 30px; margin-bottom: 30px; text-align:center">
 			<h:panelGrid columns="1" style="margin-left: auto; margin-right: auto">
-				<h:outputText value="#{loggedUserManagedBean.user.username}" style="font-size: 1.5em; font-weight: bold; color: #004080;" />
-				<p:button  value="Private Message" style="margin-top: 10px" outcome="/pages/newMessage" />
+				<h:outputText value="#{userProfileManagedBean.user.username}" style="font-size: 1.5em; font-weight: bold; color: #004080;" />
+				<p:button  value="Private Message" style="margin-top: 10px" outcome="/pages/newMessage" 
+					rendered="#{loggedUserManagedBean.user != null}" />
 			</h:panelGrid>
 		</p:outputPanel>
 		
@@ -97,20 +120,21 @@
 							
 					</h:panelGrid>
 					
-					<!-- VISITED DESTINATIONS (NATALIJA) -->
-					<p:dataScroller value="#{userProfileManagedBean.visitedDestinations}" var="dest" mode="inline" scrollHeight="300" >
+					<p:spacer height="20px" />
+					
+					<p:dataTable value="#{userProfileManagedBean.visitedDestinations}" var="dest"  
+						rendered="#{not empty userProfileManagedBean.visitedDestinations}" 
+						style="max-width: 250px; margin-left: auto; margin-right: auto" >
 					
 						<f:facet name="header">
 				            Visited destinations
 				       </f:facet>
 				       
-					   <h:panelGrid columns="1">
-							<h:outputText style="font-weight: bold" />
+					   <p:column>
 				         	<h:outputText value="#{dest.destinationname}" />
-				       </h:panelGrid>
+				       </p:column>
 				       
-					</p:dataScroller>
-					
+					</p:dataTable>
 					
 				</p:layoutUnit>
 				

@@ -12,6 +12,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
@@ -25,11 +26,11 @@ import model.Tim7Photo;
 @SessionScoped
 public class PostPhotoManagedBean {
 	private UploadedFile file;
-	private Tim7Destination destin;
 	private List<Tim7Destination> allDestinations;
 	private List<Tim7Photo> photos;
 	private Map<Integer, Tim7Photo> photoMap;
 	private Tim7Photo photo;
+	private Tim7Destination selectedDestination;
 	private PhotoManager pm;
 	@ManagedProperty(value="#{loggedUserManagedBean}")
 	private LoggedUserManagedBean loggedUserManagedBean;
@@ -41,14 +42,11 @@ public class PostPhotoManagedBean {
 		photo=new Tim7Photo();
 		file = null;
 		allDestinations=om.getAllDestinations();
-		//destinationPhotos = new ArrayList<>();
 	}
 
-	public void loadPhotos(Tim7Destination d) {
+	public void loadPhotos(SelectEvent event) {
 		
-		//GET PHOTOS FOR DESTINATION
-		//destinationPhotos = new ArrayList<>();
-		photos = pm.getPhotosForDestination(d);
+		photos = pm.getPhotosForDestination(selectedDestination);
 		
 		photoMap = new HashMap<>();
         for (Tim7Photo p : photos) {
@@ -56,24 +54,20 @@ public class PostPhotoManagedBean {
         }
 		
 	}
-	
-	public UploadedFile getFile() {
-		return file;
-	}
-
-	public void setFile(UploadedFile file) {
-		this.file = file;
-	}
 
 	public void upload() {
 		if (file != null) {
 			byte[] image=handleFileUpload(file);
 			photo.setTim7User(loggedUserManagedBean.getUser());
 			photo.setPhotoinfo(image);
+			photo.setTim7Destination(selectedDestination);
 			
 			pm.savePhoto(photo);
+			
+			loadPhotos(null);
+			file = null;
 		} else {
-			//as
+			System.out.println("NULL");
 		}
 	}
 	
@@ -105,15 +99,15 @@ public class PostPhotoManagedBean {
         }
         return streamedContent;
     }
-    
-	public Tim7Destination getDestin() {
-		return destin;
+
+	public UploadedFile getFile() {
+		return file;
 	}
 
-	public void setDestin(Tim7Destination destin) {
-		this.destin = destin;
+	public void setFile(UploadedFile file) {
+		this.file = file;
 	}
-
+	
 	public List<Tim7Destination> getAllDestinations() {
 		return allDestinations;
 	}
@@ -136,6 +130,14 @@ public class PostPhotoManagedBean {
 
 	public void setPhoto(Tim7Photo photo) {
 		this.photo = photo;
+	}
+
+	public Tim7Destination getSelectedDestination() {
+		return selectedDestination;
+	}
+
+	public void setSelectedDestination(Tim7Destination selectedDestination) {
+		this.selectedDestination = selectedDestination;
 	}
 
 	public LoggedUserManagedBean getLoggedUserManagedBean() {

@@ -31,16 +31,16 @@ public class UserProfileManagedBean {
 		UserManager um = new UserManager();
 		DestinationManager dm= new DestinationManager();
 		
-		if (loggedUserManagedBean.getUser().getIduser() == this.user.getIduser()) {
-			
-			finishedOffers = um.getFinishedAcceptedOffers(this.user);
-			visitedDestinations= dm.getVisitedDestinations(this.user);
+		finishedOffers = new ArrayList<>();
+		if (loggedUserManagedBean.getUser() != null) {
+			if (loggedUserManagedBean.getUser().getIduser() == this.user.getIduser()) {
+				
+				finishedOffers = um.getFinishedAcceptedOffers(this.user);
+				
+			}
 		}
-		else {
-			
-			finishedOffers = new ArrayList<>();
-			visitedDestinations= new ArrayList<>();
-		}
+		
+		visitedDestinations= dm.getVisitedDestinations(this.user);
 		comments = um.getCommentsForUser(user.getIduser());
 		
 		return "/pages/userProfile?faces-redirect=true";

@@ -18,13 +18,8 @@ public class MessagingManager {
 			
 			em.getTransaction().begin();
 			
-			//em.merge(sender);
-			//em.merge(receiver);
 			em.persist(newSentM);
 			em.persist(newReceM);
-			
-//			em.merge(newSentM);
-//			em.merge(newReceM);
 			
 			em.getTransaction().commit();
 			return true;
@@ -108,7 +103,8 @@ public class MessagingManager {
 			
 			TypedQuery<Tim7User> tq = JPAUtil.getEntityManager().createQuery("select distinct u from Tim7User u, Tim7Messagesent ms where "
 					+ "ms.userSender.iduser = u.iduser and ms.userReceiver.iduser = :r "
-					+ "or ms.userReceiver.iduser = u.iduser and ms.userSender.iduser = :s", Tim7User.class);
+					+ "or ms.userReceiver.iduser = u.iduser and ms.userSender.iduser = :s "
+					+ "order by ms.messagesenttime", Tim7User.class);
 			tq.setParameter("r", iduser);
 			tq.setParameter("s", iduser);
 			
