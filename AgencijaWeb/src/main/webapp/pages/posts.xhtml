@@ -29,6 +29,9 @@
 						</p:outputPanel>
 					
 					</p:dataScroller>
+	
+   					<p:inputTextarea rows="6" cols="50" completeMethod="#{forumManagedBean.post}" queryDelay="750" minQueryLength="4" />
+ 					<p:commandButton actionListener="#{forumManagedBean.addPost}" value="Post" update=":main"/>
 		</h:form>
 	</f:view>
 </h:body>

@@ -29,7 +29,7 @@ public class ForumManagedBean {
 		threads= new ForumManager().getAllThreads();
 	}
 	
-	public void postOffer() {
+	public void addPost() {
 
 		post.setTim7User(loggedUserManagedBean.getUser());
 		boolean posted = fm.saveNewPost(post);
